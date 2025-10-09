@@ -1,0 +1,31 @@
+{
+  "HomePage": {
+    "title": "Welcome to the homepage",
+    "about": "About us"
+  },
+  "Meta": {
+    "homeTitle": "Welcome to the homepage",
+    "homeDescription": "This is the homepage of our multi-language website",
+    "aboutTitle": "About Us",
+    "aboutDescription": "Information about us"
+  },
+  "AboutPage": {
+    "title": "About Us",
+    "description": "We are a company that loves Next.js and i18n."
+  },
+  "Navbar": {
+    "home": "Home",
+    "about": "About",
+    "news": "News & Events",
+    "services": "Public Services",
+    "documents": "Documents & Forms",
+    "contact": "Contact",
+    "searchPlaceholder": "Search..."
+  },
+  "Header": {
+    "portalName": "Electronic Information Portal",
+    "organizationName": "Thanh Hoa Ward",
+    "en": "English",
+    "vi": "Vietnamese"
+  }
+}

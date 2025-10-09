@@ -1,0 +1,31 @@
+{
+  "HomePage": {
+    "title": "Chào mừng đến trang chủ",
+    "about": "Về chúng tôi"
+  },
+  "Meta": {
+    "homeTitle": "Chào mừng đến trang chủ",
+    "homeDescription": "Đây là trang chủ của website đa ngôn ngữ",
+    "aboutTitle": "Về chúng tôi",
+    "aboutDescription": "Thông tin về chúng tôi"
+  },
+  "AboutPage": {
+    "title": "Về chúng tôi",
+    "description": "Chúng tôi là một công ty yêu thích Next.js và i18n."
+  },
+  "Navbar": {
+  "home": "Trang chủ",
+  "about": "Giới thiệu",
+  "news": "Tin tức - Sự kiện",
+  "services": "Dịch vụ công",
+  "documents": "Văn bản - Biểu mẫu",
+  "contact": "Liên hệ",
+  "searchPlaceholder": "Tìm kiếm..."
+},
+  "Header": {
+    "portalName": "CỔNG THÔNG TIN ĐIỆN TỬ",
+    "organizationName": "PHƯỜNG THANH HOÀ",
+    "en": "English",
+    "vi": "Tiếng Việt"
+  }
+}
