@@ -1,4 +1,0 @@
-11:38:31.628 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
-11:38:31.756 [main] INFO com.firebase.server.forge.App$ - Listening at 127.0.0.1:9000
-11:38:39.149 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO com.firebase.core.namespace.NamespaceActor - nguyenhuynh-dev successfully activated FBKV (SurveyIdle(0)) wait: 88ms, init: 0ms
-11:38:39.180 [NamespaceSystem-blocking-namespace-operation-dispatcher-6] INFO com.firebase.core.namespace.StateManager - Namespace nguyenhuynh-dev status Active to Active

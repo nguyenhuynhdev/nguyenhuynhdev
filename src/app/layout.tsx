@@ -1,16 +1,8 @@
 import "./globals.css";
-import { Geist, Geist_Mono } from "next/font/google";
-import type { Metadata, ResolvingMetadata } from 'next';
 import Providers from "./providers";
-import type { LocaleParams } from '@/types/next-intl';
-import { getPageMetadata } from '@/lib/getPageMetadata';
 
-export async function generateMetadata(
-  { params: { locale } }: LocaleParams,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  return getPageMetadata(locale, 'home', parent);
-}
+import { Geist, Geist_Mono } from "next/font/google";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
