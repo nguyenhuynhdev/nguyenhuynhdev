@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "nguyenhuynh-dev"
+  },
+  "targets": {
+    "your-project-id": {
+      "hosting": {
+        "web": [
+          "nguyenhuynhdev"
+        ]
+      }
+    }
+  }
+}
