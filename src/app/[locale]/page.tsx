@@ -1,24 +1,28 @@
-import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
+//import { useTranslations } from 'next-intl';
+// import { Link } from '@/i18n/navigation';
+import { getDictionary } from "@/i18n/get-dictionary";
+import { Locale } from "@/i18n/i18n-config";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { LocaleSwitcher } from "@/components/locale-switcher";
 
-export default function HomePage() {
-  const t = useTranslations("HomePage");
+import Link from "next/link";
 
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const translations = (await getDictionary(locale as Locale)).AboutPage;
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen gap-6 text-center">
       <div>
-        <h1 className="text-3xl font-bold mb-2">{t("title")}</h1>
-        <Link
-          href="/about"
-          className="text-blue-500 hover:underline dark:text-blue-300"
-        >
-          {t("about")}
-        </Link>
+        <h1 className="text-3xl font-bold mb-2">{translations.title}</h1>
+        <Link className="text-blue-500 hover:underline dark:text-blue-300"
+         href={`/${locale}/about`}>{translations.description}</Link>
       </div>
-
-      {/* 🌗 Nút đổi theme */}
       <ThemeSwitcher />
+      <LocaleSwitcher/>
     </div>
   );
 }

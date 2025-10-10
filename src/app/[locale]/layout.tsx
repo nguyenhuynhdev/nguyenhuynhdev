@@ -1,55 +1,35 @@
-import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
 import Background from "@/components/backgrounds/background";
-import { getMessages } from "next-intl/server";
+import { i18n, type Locale } from "@/i18n/i18n-config";
+import { logger } from "@/lib/logger";
+import { getDictionary } from "@/i18n/get-dictionary";
+import type {Metadata, ResolvingMetadata} from 'next';
 
-import type { LocaleParams } from '@/types/next-intl';
-import { getPageMetadata } from '@/lib/getPageMetadata';
 
-import { getTranslations } from 'next-intl/server';
-import type { Metadata, ResolvingMetadata } from 'next';
-
-type Props = {
-  params: Promise<{ locale: string }>
-}
+// export const metadata = {
+//   title: "i18n within app router - Vercel Examples",
+//   description: "How to do i18n in Next.js 15 within app router",
+// };
 
 export async function generateMetadata(
-  { params }: Props,
+  params: Promise<{ locale: string }>,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  // read route params
   const { locale } = await params
-  const previousImages = (await parent).openGraph?.images || []
- return await getPageMetadata(locale, 'home', parent);
+  const translations = (await getDictionary(locale as Locale)).Meta
+  //const previousImages = (await parent).openGraph?.images || []
+      return {
+    title: translations.homeTitle,
+    description: translations.homeDescription,
+    openGraph: {
+      title: translations.homeTitle,
+      description: translations.homeDescription,
+    },
+  };
 }
 
-// export async function generateMetadata(
-//   { params }: { params: { locale: string } },   // destructuring trực tiếp
-//   parent: ResolvingMetadata
-// ): Promise<Metadata> {
-//   const locale = params.locale;
-
-//   const t = await getTranslations({ locale, namespace: 'Meta' });
-//   const previousMetadata = await parent;
-
-//   return {
-//     title: t('homeTitle'),
-//     description: t('homeDescription'),
-//     openGraph: {
-//       title: t('homeTitle'),
-//       description: t('homeDescription'),
-//     },
-//   };
-// }
-// export async function generateMetadata(
-//   { params }: LocaleParams,       // destructuring trực tiếp
-//   parent: ResolvingMetadata
-// ): Promise<Metadata> {
-//   const locale = params.locale;   // lấy string locale
-
-//   return await getPageMetadata(locale, 'home', parent);
-// }
+export async function generateStaticParams() {
+  return i18n.locales.map((locale) => ({ lang: locale }));
+}
 
 export default async function LocaleLayout({
   children,
@@ -59,16 +39,16 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  if (!hasLocale(routing.locales, locale)) notFound();
-
-  const messages = await getMessages();
-
+  logger.info("LocaleLayout - locale: " + locale);
+  //if (!hasLocale(routing.locales, locale)) notFound();
   return (
-    <NextIntlClientProvider messages={messages}>
-      <Background />
+    //<NextIntlClientProvider messages={messages}>
+    <div>
+    <Background />
       <div className="relative z-10 flex max-w-[1280px] mx-auto px-4 py-8 min-h-screen">
         {children}
       </div>
-    </NextIntlClientProvider>
+    </div>
+   // </NextIntlClientProvider>
   );
 }
