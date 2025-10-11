@@ -1,5 +1,5 @@
 /* ============================= */
-/* 🌌 DARK MODE BACKGROUND (GALAXY) */
+/* 🌌 DARK MODE BACKGROUND (GALAXY) + GRID CARO */
 /* ============================= */
 .dark-background {
   position: fixed;
@@ -14,14 +14,31 @@
   animation: galaxyGradient 20s ease infinite;
 }
 
-@keyframes galaxyGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* Dark mode grid caro */
+.dark-background::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0; /* dưới stars */
+  
+  /* các biến để điều chỉnh grid */
+  --s: 45px;  /* kích thước ô */
+  --n: 3;      /* số đoạn dash trên ô */
+  --t: 1px;    /* độ dày của dash */
+  --g: 5px;    /* khoảng cách giữa dash */
+  --c: rgba(255,255,255,0.03) 25%, transparent 0;
+
+  background:
+    conic-gradient(at var(--g) var(--t), var(--c))
+      calc((var(--s)/var(--n) - var(--g) + var(--t))/2) 0 /
+      calc(var(--s)/var(--n)) var(--s),
+    conic-gradient(from 180deg at var(--t) var(--g), var(--c))
+      0 calc((var(--s)/var(--n) - var(--g) + var(--t))/2) /
+      var(--s) calc(var(--s)/var(--n));
 }
 
 /* 🌟 Stars layers */
-.dark-background::before,
 .dark-background::after {
   content: "";
   position: absolute;
@@ -29,18 +46,23 @@
   background-repeat: repeat;
   background-size: 300px 300px;
   animation: blinkStars 8s infinite ease-in-out;
+  z-index: 1; /* stars hiển thị trên grid */
 }
-.dark-background::before {
-  background-image:
-    radial-gradient(1px 1px at 10px 20px, rgba(255,255,255,0.8), transparent),
-    radial-gradient(1px 1px at 50px 100px, rgba(135,206,250,0.8), transparent),
-    radial-gradient(1px 1px at 150px 200px, rgba(173,216,255,0.9), transparent);
-}
+
 .dark-background::after {
   background-image:
     radial-gradient(1px 1px at 100px 50px, rgba(255,255,255,0.6), transparent),
     radial-gradient(1px 1px at 200px 150px, rgba(135,206,250,0.6), transparent);
   animation-delay: 3s;
+}
+
+
+
+
+@keyframes galaxyGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 @keyframes blinkStars {
@@ -49,9 +71,8 @@
 }
 
 /* ============================================= */
-/* ☁️ LIGHT MODE BACKGROUND — FLOATING BLUR LIGHTS */
+/* ☁️ LIGHT MODE BACKGROUND — FLOATING BLUR LIGHTS + GRID CARO */
 /* ============================================= */
-
 .light-background {
   position: fixed;
   inset: 0;
@@ -63,6 +84,30 @@
   background: #f9f9f9; /* soft off-white background */
 }
 
+/* Light mode grid caro */
+.light-background::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0; /* dưới blur-light */
+  
+  /* các biến để điều chỉnh grid */
+  --s: 45px;
+  --n: 3;
+  --t: 1px;
+  --g: 5px;
+  --c: rgba(0,0,0,0.03) 25%, transparent 0;
+
+  background:
+    conic-gradient(at var(--g) var(--t), var(--c))
+      calc((var(--s)/var(--n) - var(--g) + var(--t))/2) 0 /
+      calc(var(--s)/var(--n)) var(--s),
+    conic-gradient(from 180deg at var(--t) var(--g), var(--c))
+      0 calc((var(--s)/var(--n) - var(--g) + var(--t))/2) /
+      var(--s) calc(var(--s)/var(--n));
+}
+
 /* 💜 Floating blur circles */
 .light-background .blur-light {
   position: absolute;
@@ -71,6 +116,7 @@
   mix-blend-mode: multiply;
   opacity: 0.6;
   animation: floatDynamic 25s ease-in-out infinite;
+  z-index: 1; /* trên grid */
 }
 
 /* 🎨 Different sizes, colors, and positions */
@@ -103,22 +149,10 @@
 
 /* 🌬️ Smooth floating animation with gentle motion */
 @keyframes floatDynamic {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  20% {
-    transform: translate(60px, -50px) scale(1.1);
-  }
-  40% {
-    transform: translate(-80px, 30px) scale(0.95);
-  }
-  60% {
-    transform: translate(50px, 60px) scale(1.05);
-  }
-  80% {
-    transform: translate(-40px, -30px) scale(1.08);
-  }
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
+  0% { transform: translate(0,0) scale(1); }
+  20% { transform: translate(60px,-50px) scale(1.1); }
+  40% { transform: translate(-80px,30px) scale(0.95); }
+  60% { transform: translate(50px,60px) scale(1.05); }
+  80% { transform: translate(-40px,-30px) scale(1.08); }
+  100% { transform: translate(0,0) scale(1); }
 }

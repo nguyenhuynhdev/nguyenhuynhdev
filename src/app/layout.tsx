@@ -1,18 +1,8 @@
 import "./globals.css";
 import Providers from "./providers";
 
-import { Geist, Geist_Mono } from "next/font/google";
-
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { GeistSans } from 'geist/font/sans'
+import { GeistMono } from 'geist/font/mono'
 
 
 export default function RootLayout({
@@ -21,8 +11,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="en" suppressHydrationWarning className={`${GeistSans.className} ${GeistMono.className}`}>
+      <body>
         <Providers>{children}</Providers>
       </body>
     </html>

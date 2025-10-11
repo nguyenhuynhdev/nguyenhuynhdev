@@ -1,11 +1,17 @@
-//import { useTranslations } from 'next-intl';
-// import { Link } from '@/i18n/navigation';
 import { getDictionary } from "@/i18n/get-dictionary";
-import { Locale } from "@/i18n/i18n-config";
+import { i18n, type Locale } from "@/i18n/i18n-config";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 
 import Link from "next/link";
+
+// export async function generateStaticParams() {
+//   return [{ locale: 'en' }, { locale: 'vi' }];
+// }
+
+export async function generateStaticParams() {
+  return i18n.locales.map((locale) => ({ locale: locale }));
+}
 
 export default async function HomePage({
   params,

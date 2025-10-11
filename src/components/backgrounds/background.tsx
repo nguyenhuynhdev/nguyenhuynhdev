@@ -10,14 +10,10 @@ export default function Background() {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  if (!mounted) {
-    return null;
-  }
-
+  const currentTheme = mounted ? theme : "dark";
   return (
     <>
-      {theme === "dark" ? (
+      {currentTheme === "dark" ? (
         <div className="dark-background" />
       ) : (
         <div className="light-background">
