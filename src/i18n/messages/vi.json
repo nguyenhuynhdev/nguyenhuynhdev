@@ -27,5 +27,18 @@
     "organizationName": "PHƯỜNG THANH HOÀ",
     "en": "English",
     "vi": "Tiếng Việt"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "about": "Giới thiệu",
+    "projects": "Dự án",
+    "blog": "Blog",
+    "contact": "Liên hệ",
+    "search": "Tìm kiếm..."
+  },
+  "hero": {
+    "welcome": "Chào mừng đến với trang web của chúng tôi",
+    "description": "Chúng tôi cung cấp những dịch vụ tốt nhất cho bạn.",
+    "getStarted": "Bắt đầu"
   }
 }

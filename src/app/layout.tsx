@@ -11,7 +11,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${GeistSans.className} ${GeistMono.className}`}>
+    <html lang="en" suppressHydrationWarning >
       <body>
         <Providers>{children}</Providers>
       </body>

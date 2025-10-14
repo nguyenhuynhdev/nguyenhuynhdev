@@ -27,5 +27,18 @@
     "organizationName": "Thanh Hoa Ward",
     "en": "English",
     "vi": "Vietnamese"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "blog": "Blog",
+    "contact": "Contact",
+    "search": "Search..."
+  },
+  "hero": {
+    "welcome": "Welcome to Our Website",
+    "description": "We provide the best services for you.",
+    "getStarted": "Get Started"
   }
 }
