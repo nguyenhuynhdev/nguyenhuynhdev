@@ -7,9 +7,10 @@ export default function HeroSection({ t }: { t: any }) {
     const bp = useBreakpoint();
 
     const codeLines = [
+        "// Hi! I'm Nguyen",
         "const dev = {",
-        '    role: "Full Stack Developer",',
-        '    skills: ["Android", "Web", "Flutter"],',
+        '  role: "Full Stack Developer",',
+        '  platforms: ["Mobile","Web","Desktop"],',
         "};",
     ];
     const fullText = codeLines.join("\n");
@@ -24,18 +25,12 @@ export default function HeroSection({ t }: { t: any }) {
         let timer: any;
 
         if (!isDeleting && index < fullText.length) {
-            // Typing phase
             timer = setTimeout(() => {
-                const nextText = fullText.slice(0, index + 1);
-                setDisplayText(nextText);
+                setDisplayText(fullText.slice(0, index + 1));
                 setIndex(index + 1);
-
-                // 🔽 đảm bảo cursor xuống đúng dòng sau khi layout render xong
-                requestAnimationFrame(() => setCursorVisible(true));
             }, 35);
-            setCursorVisible(true);
         } else if (!isDeleting && index === fullText.length) {
-            // Finished typing -> blink cursor 3 times (6 toggles)
+            // Blink cursor 3 times
             let blinkCount = 0;
             const blinkInterval = setInterval(() => {
                 setCursorVisible((v) => !v);
@@ -46,18 +41,11 @@ export default function HeroSection({ t }: { t: any }) {
                 }
             }, 400);
         } else if (isDeleting && index > 0) {
-            // Deleting phase
             timer = setTimeout(() => {
-                const nextText = fullText.slice(0, index - 1);
-                setDisplayText(nextText);
+                setDisplayText(fullText.slice(0, index - 1));
                 setIndex(index - 1);
-
-                requestAnimationFrame(() => setCursorVisible(true));
             }, 15);
-
-            setCursorVisible(true);
         } else if (isDeleting && index === 0) {
-            // Blink 2 times before retyping
             let blinkCount = 0;
             const blinkInterval = setInterval(() => {
                 setCursorVisible((v) => !v);
@@ -141,59 +129,75 @@ export default function HeroSection({ t }: { t: any }) {
 
                         {/* Code typing */}
                         <pre
-                            className="
-    p-3 text-sm leading-6
-    bg-[#f5f5f5] dark:bg-[#1e1e2f]
-    text-gray-800 dark:text-gray-100
-    w-full
-    overflow-x-auto overflow-y-hidden
-    whitespace-pre-wrap break-words
-  "
-                            style={{
-                                minHeight: "180px",
-                                maxWidth: "100%",  // ⬅️ Ngăn kéo vượt container
-                            }}
+                            className="p-3 text-sm leading-6 bg-[#f5f5f5] dark:bg-[#1e1e2f] text-gray-800 dark:text-gray-100 w-full overflow-x-auto overflow-y-hidden whitespace-pre-wrap break-words"
+                            style={{ minHeight: "180px", maxWidth: "100%", }}
                         >
                             <code>
                                 {displayText.split("\n").map((line, i, arr) => {
                                     const isLastLine = i === arr.length - 1;
+
+                                    // Check comment
+                                    const isComment = line.trimStart().startsWith("//") || line.trimStart().startsWith("/*") || line.trimStart().startsWith("*/");
+
+                                    if (isComment) {
+                                        return (
+                                            <div key={i} className="flex flex-wrap">
+                                                <span className="text-green-600 dark:text-green-400 font-bold">
+                                                    {line}
+                                                </span>
+                                            </div>
+                                        );
+                                    }
+
+                                    // Syntax highlighting
+                                    const parts = line
+                                        .replace("const", "<const>")
+                                        .replace("dev", "<dev>")
+                                        .replace("role", "<role>")
+                                        .replace("platforms", "<platforms>")
+                                        .split(/(<const>|<dev>|<role>|<platforms>)/);
+
                                     return (
-                                        <div key={i} className="flex">
-                                            <span>
-                                                {line
-                                                    .replace("const", "<const>")
-                                                    .replace("role", "<role>")
-                                                    .replace("skills", "<skills>")
-                                                    .split(/(<const>|<role>|<skills>)/)
-                                                    .map((part, idx) => {
-                                                        if (part === "<const>")
-                                                            return (
-                                                                <span key={idx} className="text-purple-600 dark:text-purple-400 font-semibold">
-                                                                    const
-                                                                </span>
-                                                            );
-                                                        if (part === "<role>")
-                                                            return (
-                                                                <span key={idx} className="text-blue-600 dark:text-blue-400 font-semibold">
-                                                                    role
-                                                                </span>
-                                                            );
-                                                        if (part === "<skills>")
-                                                            return (
-                                                                <span key={idx} className="text-blue-600 dark:text-blue-400 font-semibold">
-                                                                    skills
-                                                                </span>
-                                                            );
-                                                        return part;
-                                                    })}
-                                            </span>
-                                            {isLastLine && cursorVisible && (
-                                                <span className="text-gray-400 ml-1">|</span>
-                                            )}
+                                        <div key={i} className="flex flex-wrap">
+                                            {parts.map((part, idx) => {
+                                                let content: React.ReactNode = part;
+
+                                                if (part === "<const>") {
+                                                    content = (
+                                                        <span className="text-purple-600 dark:text-purple-400 font-semibold">
+                                                            const
+                                                        </span>
+                                                    );
+                                                } else if (part === "<dev>") {
+                                                    content = (
+                                                        <span className="text-blue-800 dark:text-blue-400 font-semibold">
+                                                            dev
+                                                        </span>
+                                                    );
+                                                } else if (part === "<role>" || part === "<platforms>") {
+                                                    content = (
+                                                        <span className="text-blue-500 dark:text-blue-300 font-semibold">
+                                                            {part.replace(/<|>/g, "")}
+                                                        </span>
+                                                    );
+                                                }
+
+                                                const isLastPart = isLastLine && idx === parts.length - 1;
+
+                                                return (
+                                                    <span key={idx} className="whitespace-pre">
+                                                        {content}
+                                                        {isLastPart && cursorVisible && (
+                                                            <span className="text-gray-400">|</span>
+                                                        )}
+                                                    </span>
+                                                );
+                                            })}
                                         </div>
                                     );
                                 })}
                             </code>
+
                         </pre>
                     </div>
                 </div>
