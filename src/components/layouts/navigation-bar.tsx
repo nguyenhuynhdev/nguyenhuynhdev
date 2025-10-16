@@ -2,9 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useState } from "react";
+import { SearchInput } from "@/components/SearchInput";
 import { i18n, type Locale } from "@/i18n/i18n-config";
 import { useBreakpoint } from "@/hooks/use-breakpoint";
-import { Menu, Search } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 import {
     Sheet,
     SheetTrigger,
@@ -19,7 +21,7 @@ import { useTheme } from "next-themes";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 
-import { Logo } from "@/components/ui/logo";
+import { Logo } from "@/components/logo";
 
 import {
     NavigationMenu,
@@ -60,6 +62,7 @@ export default function NavigationBar({ dictionary, locale }: NavigationBarProps
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
 
     return (
         <header
@@ -126,15 +129,7 @@ function DesktopNav({
             <Separator orientation="vertical" className="h-6" />
 
             {/* Search nhỏ */}
-            <div className="relative">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                    type="text"
-                    placeholder={search}
-                    className="pl-8 w-36 md:w-48 rounded-full"
-                />
-            </div>
-
+           <SearchInput placeholder={search} className="w-36 md:w-48" />
             <LocaleSwitcher />
             <ThemeSwitcher />
         </nav>
@@ -156,14 +151,7 @@ function TabletNav({
     return (
         <div className="flex items-center gap-3">
             {/* Search bar size chuẩn */}
-            <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                    type="text"
-                    placeholder={search}
-                    className="pl-9 pr-3 py-2 w-full rounded-full"
-                />
-            </div>
+            <SearchInput placeholder={search} className="flex-1 max-w-md" />
 
             {/* Language + Theme switch */}
             <LocaleSwitcher />
@@ -201,14 +189,7 @@ function MobileNav({
     return (
         <div className="flex items-center gap-2 flex-1 justify-end">
             {/* Search full width */}
-            <div className="relative flex-1 max-w-[70%]">
-                <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                    type="text"
-                    placeholder={search}
-                    className="pl-9 pr-3 py-2 w-full rounded-full"
-                />
-            </div>
+            <SearchInput placeholder={search} className="flex-1 max-w-[70%]" />
 
             {/* Menu Drawer */}
             <Sheet>
@@ -225,7 +206,7 @@ function MobileNav({
                                 alt="Logo"
                                 className="w-8 h-8 rounded-full"
                             />
-                            <span>NGUYENHUYNHDEV</span>
+                            <span>NGUYENHUYNH</span>
                         </SheetTitle>
                     </SheetHeader>
 

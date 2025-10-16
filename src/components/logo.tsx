@@ -2,6 +2,9 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+import { Anton } from 'next/font/google'
+
+const roboto = Anton({ subsets: ["latin"], weight: ["400", "400"] });
 export function Logo({ locale }: { locale: string }) {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -21,15 +24,15 @@ export function Logo({ locale }: { locale: string }) {
 
   return (
     <Link
-      href={`/${locale}`}
-      className="flex items-center gap-2 flex-shrink-0 select-none"
-    >
+      href={`/${locale}`}className="flex items-center gap-1 flex-shrink-0 select-none">
       <img
         src={logoSrc}
         alt="Logo"
         className="w-6 h-6"
       />
-      <span className="text-base font-semibold">NGUYENHUYNHDEV</span>
+      <span className={`${roboto.className} text-2xl tracking-tight leading-none`}>
+        NGUYENHUYNH
+      </span>
     </Link>
   );
 }

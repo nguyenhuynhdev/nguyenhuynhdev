@@ -39,6 +39,10 @@
   "hero": {
     "welcome": "Chào mừng đến với trang web của chúng tôi",
     "description": "Chúng tôi cung cấp những dịch vụ tốt nhất cho bạn.",
-    "getStarted": "Bắt đầu"
+    "getStarted": "Bắt đầu",
+    "hello": "// Chào bạn, tôi là Nguyên Huỳnh 👋",
+    "contact": "Liên hệ",
+    "previewCV": "Xem trước CV",
+    "intro": "Tôi là một <strong>lập trình viên tự do</strong>, có khả năng <strong>biến ý tưởng của bạn thành hiện thực</strong>. Tôi luôn hướng đến việc tạo ra những sản phẩm <strong>chỉnh chu, hoàn thiện và chất lượng</strong>. Liên hệ với tôi nếu bạn muốn cùng hợp tác."
   }
 }

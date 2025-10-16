@@ -1,9 +1,10 @@
 import "./globals.css";
 import Providers from "./providers";
+import { Roboto } from 'next/font/google'
 
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
-
+const roboto = Roboto({
+  subsets: ['latin'],
+})
 
 export default function RootLayout({
   children,
@@ -11,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning >
+    <html lang="en" suppressHydrationWarning className={roboto.className}>
       <body>
         <Providers>{children}</Providers>
       </body>

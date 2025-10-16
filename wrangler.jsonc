@@ -3,7 +3,7 @@
  * https://developers.cloudflare.com/workers/wrangler/configuration/
  */
 {
-	"name": "nguyenhuynhdev",
+	"name": "nguyenhuynh",
 	"pages_build_output_dir": "./out",
 	"compatibility_date": "2025-10-10",
 	"d1_databases": [

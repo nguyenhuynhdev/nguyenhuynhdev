@@ -1,6 +1,6 @@
 import { getDictionary } from "@/i18n/get-dictionary";
 import { i18n, type Locale } from "@/i18n/i18n-config";
-import HeroSection from "./components/HeroSection";
+import HeroSection from "./components/hero/HeroSection";
 import SkillsSection from "./components/SkillsSection";
 import FooterSection from "./components/FooterSection";
 

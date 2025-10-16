@@ -39,6 +39,10 @@
   "hero": {
     "welcome": "Welcome to Our Website",
     "description": "We provide the best services for you.",
-    "getStarted": "Get Started"
+    "getStarted": "Get Started",
+    "hello": "// Hi there, I’m Nguyen H. 👋",
+    "contact": "Contact Me",
+    "previewCV": "Preview CV",
+    "intro": "I’m a <strong>freelance developer</strong> with the ability to <strong>turn your ideas into reality</strong>. I always strive to create <strong>polished, complete, and high-quality products</strong>. Contact me if you’re interested in working together."
   }
 }
