@@ -7,6 +7,8 @@ import { SearchInput } from "@/components/SearchInput";
 import { i18n, type Locale } from "@/i18n/i18n-config";
 import { useBreakpoint } from "@/hooks/use-breakpoint";
 import { Menu, Search, X } from "lucide-react";
+import { usePathname } from "next/navigation";
+
 import {
     Sheet,
     SheetTrigger,
@@ -32,28 +34,22 @@ import {
     NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
 
+
 interface NavigationBarProps {
-    dictionary: {
-        home: string;
-        about: string;
-        projects: string;
-        blog: string;
-        contact: string;
-        search: string;
-    };
+    dictionary: any;
     locale: string;
 }
 
 export default function NavigationBar({ dictionary, locale }: NavigationBarProps) {
     const menuItems = [
-        { name: dictionary.home, href: `/${locale}#home` },
-        { name: dictionary.about, href: `/${locale}#about` },
-        { name: dictionary.projects, href: `/${locale}#projects` },
-        { name: dictionary.blog, href: `/${locale}#blog` },
-        { name: dictionary.contact, href: `/${locale}#contact` },
+        { name: dictionary.services, href: `/${locale}` },
+        { name: dictionary.works, href: `/${locale}/works` },
+        { name: dictionary.blog, href: `/${locale}/blog` },
     ];
 
     const bp = useBreakpoint();
+    const pathname = usePathname();
+
     const { theme, setTheme } = useTheme();
     const [scrolled, setScrolled] = React.useState(false);
 
@@ -75,19 +71,19 @@ export default function NavigationBar({ dictionary, locale }: NavigationBarProps
             <div className="mx-auto max-w-7xl flex items-center justify-between px-4 py-3 gap-3">
                 {/* Logo */}
                 <Logo locale={locale} />
-            
+
                 {/* DESKTOP NAV */}
                 {bp.isDesktop && (
-                    <DesktopNav theme={theme} setTheme={setTheme} menuItems={menuItems} search={dictionary.search}/>
+                    <DesktopNav theme={theme} setTheme={setTheme} menuItems={menuItems} search={dictionary.search} pathname={pathname}/>
                 )}
                 {bp.isLaptop && (
-                    <DesktopNav theme={theme} setTheme={setTheme} menuItems={menuItems} search={dictionary.search}/>
+                    <DesktopNav theme={theme} setTheme={setTheme} menuItems={menuItems} search={dictionary.search} pathname={pathname}/>
                 )}
                 {bp.isTablet && (
-                    <TabletNav theme={theme} setTheme={setTheme} search={dictionary.search}/>
+                    <TabletNav theme={theme} setTheme={setTheme}  menuItems={menuItems} search={dictionary.search} pathname={pathname}/>
                 )}
                 {bp.isMobile && (
-                    <MobileNav theme={theme} setTheme={setTheme} menuItems={menuItems} search={dictionary.search}/>
+                    <MobileNav theme={theme} setTheme={setTheme} menuItems={menuItems} search={dictionary.search} pathname={pathname}/>
                 )}
             </div>
         </header>
@@ -102,51 +98,63 @@ function DesktopNav({
     search,
     setTheme,
     menuItems,
+    pathname,
 }: {
     theme: string | undefined;
     search: string;
     setTheme: (theme: string) => void;
     menuItems: { name: string; href: string }[];
+    pathname: string;
 }) {
     return (
         <nav className="flex items-center gap-4">
-            {/* Menu */}
             <NavigationMenu>
                 <NavigationMenuList>
-                    {menuItems.map((item) => (
-                        <NavigationMenuItem key={item.name}>
-                            <NavigationMenuLink
-                                href={item.href}
-                                className="text-sm font-medium px-3 py-2 rounded-md hover:text-primary transition-colors"
-                            >
-                                {item.name}
-                            </NavigationMenuLink>
-                        </NavigationMenuItem>
-                    ))}
+                    {menuItems.map((item) => {
+                        const isActive =
+                            pathname === item.href || pathname.startsWith(item.href + "/");
+
+                        return (
+                            <NavigationMenuItem key={item.name}>
+                                <Link
+                                    href={item.href}
+                                    className={`text-sm font-medium px-3 py-2 rounded-md transition-colors ${isActive
+                                            ? "text-primary font-semibold"
+                                            : "hover:text-primary text-muted-foreground"
+                                        }`}
+                                >
+                                    {item.name}
+                                </Link>
+                            </NavigationMenuItem>
+                        );
+                    })}
                 </NavigationMenuList>
             </NavigationMenu>
 
             <Separator orientation="vertical" className="h-6" />
-
-            {/* Search nhỏ */}
-           <SearchInput placeholder={search} className="w-36 md:w-48" />
+            <SearchInput placeholder={search} className="w-36 md:w-48" />
             <LocaleSwitcher />
             <ThemeSwitcher />
         </nav>
     );
 }
 
+
 /* ---------------------------------------
    TABLET NAV
 ----------------------------------------*/
 function TabletNav({
-    theme,
+     theme,
     search,
     setTheme,
+    menuItems,
+    pathname,
 }: {
-    theme: string | undefined,
+    theme: string | undefined;
     search: string;
-    setTheme: (theme: string) => void
+    pathname: string;
+    setTheme: (theme: string) => void;
+    menuItems: { name: string; href: string }[];
 }) {
     return (
         <div className="flex items-center gap-3">
@@ -160,12 +168,42 @@ function TabletNav({
             {/* Menu button (drawer) */}
             <Sheet>
                 <SheetTrigger asChild>
-                    <Button variant="ghost" size="icon">
+                    <Button variant="ghost" size="icon" className="rounded-md">
                         <Menu size={20} />
                     </Button>
                 </SheetTrigger>
                 <SheetContent side="right" className="w-64 sm:w-72">
-                    {/* Nội dung menu items + switchers */}
+                    <SheetHeader>
+                        <SheetTitle className="flex items-center gap-2">
+                            <img
+                                src="/logo.png"
+                                alt="Logo"
+                                className="w-8 h-8 rounded-full"
+                            />
+                            <span>NGUYENHUYNH</span>
+                        </SheetTitle>
+                    </SheetHeader>
+
+                    <nav className="mt-6 flex flex-col gap-2">
+                        {menuItems.map((item) => {
+                            const isActive =
+                                pathname === item.href || pathname.startsWith(item.href + "/");
+
+                            return (
+                                <Link
+                                    key={item.name}
+                                    href={item.href}
+                                    className={`px-3 py-2 rounded-md text-sm transition-colors ${isActive
+                                            ? "bg-accent text-primary font-semibold"
+                                            : "hover:bg-accent hover:text-primary"
+                                        }`}
+                                >
+                                    {item.name}
+                                </Link>
+                            );
+                        })}
+
+                    </nav>
                 </SheetContent>
             </Sheet>
         </div>
@@ -180,9 +218,11 @@ function MobileNav({
     search,
     setTheme,
     menuItems,
+    pathname,
 }: {
     theme: string | undefined;
     search: string;
+    pathname: string;
     setTheme: (theme: string) => void;
     menuItems: { name: string; href: string }[];
 }) {
@@ -211,22 +251,24 @@ function MobileNav({
                     </SheetHeader>
 
                     <nav className="mt-6 flex flex-col gap-2">
-                        {menuItems.map((item) => (
-                            <a
-                                key={item.name}
-                                href={item.href}
-                                className="px-3 py-2 rounded-md text-sm hover:bg-accent hover:text-primary transition-colors"
-                            >
-                                {item.name}
-                            </a>
-                        ))}
+                        {menuItems.map((item) => {
+                            const isActive =
+                                pathname === item.href || pathname.startsWith(item.href + "/");
 
-                        <Separator className="my-4" />
+                            return (
+                                <Link
+                                    key={item.name}
+                                    href={item.href}
+                                    className={`px-3 py-2 rounded-md text-sm transition-colors ${isActive
+                                            ? "bg-accent text-primary font-semibold"
+                                            : "hover:bg-accent hover:text-primary"
+                                        }`}
+                                >
+                                    {item.name}
+                                </Link>
+                            );
+                        })}
 
-                        <div className="flex items-center justify-between gap-2">
-                            <LocaleSwitcher />
-                            <ThemeSwitcher />
-                        </div>
                     </nav>
                 </SheetContent>
             </Sheet>

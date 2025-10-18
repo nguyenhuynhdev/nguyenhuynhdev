@@ -1,5 +1,5 @@
 /* ============================= */
-/* 🌌 DARK MODE BACKGROUND (GALAXY) + GRID CARO */
+/* 🌑 DARK MODE BACKGROUND — FLOATING BLUR CIRCLES + GRID CARO */
 /* ============================= */
 .dark-background {
   position: fixed;
@@ -9,24 +9,23 @@
   overflow: hidden;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(circle at 20% 20%, #001b33, #000814 70%);
-  background-size: 400% 400%;
-  animation: galaxyGradient 20s ease infinite;
+  
+  /* Dark soft background color */
+  background: #00000080;
 }
 
-/* Dark mode grid caro */
+/* Grid caro (same as light mode) */
 .dark-background::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 0; /* dưới stars */
-  
-  /* các biến để điều chỉnh grid */
-  --s: 45px;  /* kích thước ô */
-  --n: 3;      /* số đoạn dash trên ô */
-  --t: 1px;    /* độ dày của dash */
-  --g: 5px;    /* khoảng cách giữa dash */
+  z-index: 0;
+
+  --s: 45px;  /* square size */
+  --n: 3;     /* number of dashes per square */
+  --t: 1px;   /* dash thickness */
+  --g: 5px;   /* gap between dashes */
   --c: rgba(255,255,255,0.03) 25%, transparent 0;
 
   background:
@@ -38,36 +37,43 @@
       var(--s) calc(var(--s)/var(--n));
 }
 
-/* 🌟 Stars layers */
-.dark-background::after {
-  content: "";
+/* Floating blur circles (animated, like light mode) */
+.dark-background .blur-light {
   position: absolute;
-  inset: 0;
-  background-repeat: repeat;
-  background-size: 300px 300px;
-  animation: blinkStars 8s infinite ease-in-out;
-  z-index: 1; /* stars hiển thị trên grid */
+  border-radius: 50%;
+  filter: blur(140px);
+  mix-blend-mode: multiply;
+  opacity: 0.5; /* slightly stronger than before */
+  /* animation: floatDynamic 25s ease-in-out infinite; */
+  z-index: 1;
 }
 
-.dark-background::after {
-  background-image:
-    radial-gradient(1px 1px at 100px 50px, rgba(255,255,255,0.6), transparent),
-    radial-gradient(1px 1px at 200px 150px, rgba(135,206,250,0.6), transparent);
-  animation-delay: 3s;
+/* Different dark-themed blur colors and positions */
+.dark-background .blur-light:nth-child(1) {
+  background: rgb(255, 0, 0); /* purple-ish */
+  width: 480px;
+  height: 480px;
+  top: 5%;
+  left: 10%;
+  animation-delay: 0s;
 }
 
-
-
-
-@keyframes galaxyGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.dark-background .blur-light:nth-child(2) {
+  background: rgb(234, 0, 255); /* red-ish */
+  width: 600px;
+  height: 600px;
+  top: 60%;
+  left: 20%;
+  animation-delay: 8s;
 }
 
-@keyframes blinkStars {
-  0%,100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.1); }
+.dark-background .blur-light:nth-child(3) {
+  background: rgb(3, 161, 21); /* cyan-ish */
+  width: 420px;
+  height: 420px;
+  top: 40%;
+  left: 40%;
+  animation-delay: 20s;
 }
 
 /* ============================================= */
@@ -115,7 +121,7 @@
   filter: blur(140px);
   mix-blend-mode: multiply;
   opacity: 0.6;
-  animation: floatDynamic 25s ease-in-out infinite;
+  /* animation: floatDynamic 25s ease-in-out infinite; */
   z-index: 1; /* trên grid */
 }
 

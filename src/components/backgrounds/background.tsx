@@ -14,7 +14,11 @@ export default function Background() {
   return (
     <>
       {currentTheme === "dark" ? (
-        <div className="dark-background" />
+        <div className="dark-background">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="blur-light" />
+          ))}
+        </div>
       ) : (
         <div className="light-background">
           {Array.from({ length: 3 }).map((_, i) => (

@@ -29,9 +29,8 @@
     "vi": "Vietnamese"
   },
   "nav": {
-    "home": "Home",
-    "about": "About",
-    "projects": "Projects",
+    "services": "Services",
+    "works": "Works",
     "blog": "Blog",
     "contact": "Contact",
     "search": "Search..."
@@ -42,6 +41,7 @@
     "getStarted": "Get Started",
     "hello": "// Hi there, I’m Nguyen H. 👋",
     "contact": "Contact Me",
+    "aboutMe": "About Me",
     "previewCV": "Preview CV",
     "intro": "I’m a <strong>freelance developer</strong> with the ability to <strong>turn your ideas into reality</strong>. I always strive to create <strong>polished, complete, and high-quality products</strong>. Contact me if you’re interested in working together."
   }

@@ -29,9 +29,8 @@
     "vi": "Tiếng Việt"
   },
   "nav": {
-    "home": "Trang chủ",
-    "about": "Giới thiệu",
-    "projects": "Dự án",
+    "services": "Dịch vụ",
+    "works": "Dự án",
     "blog": "Blog",
     "contact": "Liên hệ",
     "search": "Tìm kiếm..."
@@ -42,6 +41,7 @@
     "getStarted": "Bắt đầu",
     "hello": "// Chào bạn, tôi là Nguyên Huỳnh 👋",
     "contact": "Liên hệ",
+    "aboutMe": "Về tôi",
     "previewCV": "Xem trước CV",
     "intro": "Tôi là một <strong>lập trình viên tự do</strong>, có khả năng <strong>biến ý tưởng của bạn thành hiện thực</strong>. Tôi luôn hướng đến việc tạo ra những sản phẩm <strong>chỉnh chu, hoàn thiện và chất lượng</strong>. Liên hệ với tôi nếu bạn muốn cùng hợp tác."
   }
