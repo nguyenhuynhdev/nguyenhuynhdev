@@ -95,20 +95,19 @@ export default function SkillsSection({ t }: { t: any }) {
 
       {/* --- MOBILE / TABLET: Carousel --- */}
       {(isMobile || isTablet) ? (
-        <div className={`w-full mx-auto ${isMobile ? "max-w-md" : "max-w-[640px]"}`}>
+        <div className={`w-full mx-auto ${isMobile ? "max-w-xs" : "max-w-lg"}`}>
           <Carousel
             setApi={setApi}
             plugins={[Autoplay({ delay: 8000 })]}
             opts={{ loop: true, align: "center" }}
           >
-            <CarouselContent className="gap-6">
+            <CarouselContent className="gap-6 px-[5%]">
               {skillsData.map((item, idx) => (
                 <CarouselItem
                   key={idx}
-                  className="basis-[80%] flex justify-center cursor-pointer"
-                >
+                  className="basis-[80%] flex justify-center cursor-pointer">
                   <div
-                    className=" flex flex-col justify-between h-full rounded-xl border border-gray-200 dark:border-gray-700 p-8 bg-white/40 dark:bg-gray-800/30 backdrop-blur-sm text-left select-none transition-all duration-300 hover:shadow-lg hover:border-indigo-300 dark:hover:border-indigo-500">
+                    className="flex flex-col justify-between h-full rounded-xl border border-gray-200 dark:border-gray-700 p-8 bg-white/40 dark:bg-gray-800/30 backdrop-blur-sm text-left select-none transition-all duration-300 hover:shadow-lg hover:border-indigo-300 dark:hover:border-indigo-500">
                     <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
                       {item.title}
                     </h3>
@@ -150,9 +149,13 @@ export default function SkillsSection({ t }: { t: any }) {
           </div>
         </div>
       ) : (
-        /* --- DESKTOP / LAPTOP: 2x2 GRID equal height --- */
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[1100px] mx-auto items-stretch">
+/* --- DESKTOP / LAPTOP: Grid --- */
+<div
+  className={`grid grid-cols-1 gap-8 max-w-[1100px] mx-auto items-stretch ${
+    isLaptop ? "md:grid-cols-2" : "" /* 2 cột trên laptop */
+  } ${isDesktop ? "lg:grid-cols-4" : ""}` /* 4 cột trên desktop */}
+>
+
           {skillsData.map((item, idx) => (
             <div
               key={idx}
