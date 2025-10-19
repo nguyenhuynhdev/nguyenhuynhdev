@@ -51,23 +51,18 @@ export default function NavigationBar({ dictionary, locale }: NavigationBarProps
     const pathname = usePathname();
 
     const { theme, setTheme } = useTheme();
-    const [scrolled, setScrolled] = React.useState(false);
+    // const [scrolled, setScrolled] = React.useState(false);
 
-    React.useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 20);
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    // React.useEffect(() => {
+    //     const handleScroll = () => setScrolled(window.scrollY > 20);
+    //     window.addEventListener("scroll", handleScroll);
+    //     return () => window.removeEventListener("scroll", handleScroll);
+    // }, []);
 
 
     return (
         <header
-            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 
-                ${scrolled
-                    ? "backdrop-blur-md  border-b border-gray-200 dark:border-gray-800"
-                    : "bg-transparent"
-                }`}
-        >
+            className="fixed top-0 left-0 w-full z-50 transition-all duration-300 backdrop-blur-md  border-b border-gray-200 dark:border-gray-800">
             <div className="mx-auto max-w-7xl flex items-center justify-between px-4 py-3 gap-3">
                 {/* Logo */}
                 <Logo locale={locale} />

@@ -22,8 +22,8 @@
   pointer-events: none;
   z-index: 0;
 
-  --s: 45px;  /* square size */
-  --n: 3;     /* number of dashes per square */
+  --s: 35px;  /* square size */
+  --n: 4;     /* number of dashes per square */
   --t: 1px;   /* dash thickness */
   --g: 5px;   /* gap between dashes */
   --c: rgba(255,255,255,0.03) 25%, transparent 0;
@@ -99,8 +99,8 @@
   z-index: 0; /* dưới blur-light */
   
   /* các biến để điều chỉnh grid */
-  --s: 45px;
-  --n: 3;
+  --s: 35px;
+  --n: 4;
   --t: 1px;
   --g: 5px;
   --c: rgba(0,0,0,0.03) 25%, transparent 0;

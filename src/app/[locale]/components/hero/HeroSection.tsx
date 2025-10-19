@@ -2,7 +2,7 @@
 
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { useBreakpoint } from "@/hooks/use-breakpoint";
-import { Ubuntu } from "next/font/google";
+import { Ubuntu, Concert_One, Inder } from "next/font/google";
 import { FaRegFilePdf } from "react-icons/fa6";
 import { IoMailOutline } from "react-icons/io5";
 import { SiGithub, SiFacebook, SiX, SiYoutube } from "react-icons/si";
@@ -11,6 +11,19 @@ const ubuntu = Ubuntu({
   subsets: ["latin"],
   weight: ["400"],
 });
+
+const concertOne = Concert_One({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-concert-one",
+});
+
+const inder = Inder({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-inder",
+});
+
 
 function HeroSection({ t }: { t: any }) {
   const bp = useBreakpoint();
@@ -71,22 +84,22 @@ function HeroSection({ t }: { t: any }) {
     return () => cancelAnimationFrame(id);
   }, [fullText]);
 
-  const width = bp.isDesktop ? 400 : bp.isLaptop ? 350 : bp.isTablet ? 400 : 350;
+  const width = bp.isDesktop || bp.isLaptop ? 400 : bp.isTablet ? 400 : 350;
 
   return (
     <section
       className="
         flex flex-col-reverse lg:flex-row 
         justify-between items-center
-        pt-24 
         gap-10 lg:gap-20 
+        pt-24 
         text-center lg:text-left
         w-full max-w-[1200px] mx-auto
         px-6 md:px-10
       "
     >
       {/* LEFT: Code + Description */}
-      <div className="flex-1 flex flex-col items-start w-full lg:pl-0 lg:pr-8 max-w-[650px]">
+      <div className="flex-1 flex flex-col items-start w-full lg:pl-0 lg:pr-0 max-w-lg">
         {/* Code box */}
         <div className="bg-[#f5f5f5] dark:bg-[#1e1e2f] text-gray-800 dark:text-gray-100 rounded-lg shadow-lg font-mono text-left overflow-hidden mb-6 border border-gray-300 dark:border-gray-700 w-full">
           <div className="relative flex items-center justify-center px-4 py-2 bg-gray-200 dark:bg-gray-800 text-xs text-gray-500 dark:text-gray-400">
@@ -181,15 +194,15 @@ function HeroSection({ t }: { t: any }) {
         <div className="relative bg-[#f5f5f5] dark:bg-[#1e1e2f] border border-gray-300 dark:border-gray-700 rounded-lg px-6 py-6 shadow-inner mb-10 font-mono overflow-hidden w-full">
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
 
-          <p className="text-gray-800 dark:text-gray-100 leading-relaxed text-left text-base">
-            <span className="text-green-600 dark:text-green-400 text-lg font-normal mb-2 block">
-              /* {t.aboutMe} */
+          <p className="text-gray-800 dark:text-gray-100 leading-relaxed text-left text-base font-normal">
+            <span className="text-center text-3xl mb-5 block font-bold">
+            {t.aboutMe}
             </span>
-            <span dangerouslySetInnerHTML={{ __html: t.intro }} />
+            <span>{t.intro}</span>
           </p>
 
           {/* Buttons */}
-          <div className="flex flex-wrap gap-3 font-mono text-base mt-4">
+          <div className="flex flex-wrap gap-3 font-bold text-base mt-6">
             <span
               className="flex items-center gap-2 cursor-pointer text-green-500 hover:text-white bg-green-50 dark:bg-green-900/20 hover:bg-green-500 dark:hover:bg-green-600 px-3 py-3 rounded-lg transition-all shadow-sm"
               onClick={() => window.open("/cv.pdf", "_blank")}
@@ -208,7 +221,8 @@ function HeroSection({ t }: { t: any }) {
           </div>
 
           {/* Social icons */}
-          <div className="mt-6 border-t border-gray-300 dark:border-gray-700 pt-3 flex justify-start items-center gap-6">
+          {/* Social icons */}
+          <div className="mt-6 border-t border-gray-300 dark:border-gray-700 pt-3 flex justify-center items-center gap-6">
             <a
               href="https://github.com/nguyenhuynhdev"
               target="_blank"
@@ -246,7 +260,7 @@ function HeroSection({ t }: { t: any }) {
       </div>
 
       {/* RIGHT: Profile image */}
-      <div className="relative flex justify-center lg:justify-end flex-shrink-0">
+      <div className="relative flex justify-center lg:justify-end flex-shrink-0 pb-10">
         <div
           className="rounded-full overflow-hidden shadow-[0_0_25px_rgba(0,0,0,0.25)] dark:shadow-[0_0_25px_rgba(255,255,255,0.25)]"
           style={{

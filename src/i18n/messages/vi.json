@@ -14,14 +14,14 @@
     "description": "Chúng tôi là một công ty yêu thích công nghệ."
   },
   "Navbar": {
-  "home": "Trang chủ",
-  "about": "Giới thiệu",
-  "news": "Tin tức - Sự kiện",
-  "services": "Dịch vụ công",
-  "documents": "Văn bản - Biểu mẫu",
-  "contact": "Liên hệ",
-  "searchPlaceholder": "Tìm kiếm..."
-},
+    "home": "Trang chủ",
+    "about": "Giới thiệu",
+    "news": "Tin tức - Sự kiện",
+    "services": "Dịch vụ công",
+    "documents": "Văn bản - Biểu mẫu",
+    "contact": "Liên hệ",
+    "searchPlaceholder": "Tìm kiếm..."
+  },
   "Header": {
     "portalName": "CỔNG THÔNG TIN ĐIỆN TỬ",
     "organizationName": "PHƯỜNG THANH HOÀ",
@@ -43,6 +43,31 @@
     "contact": "Liên hệ",
     "aboutMe": "Về tôi",
     "previewCV": "Xem trước CV",
-    "intro": "Tôi là một <strong>lập trình viên tự do</strong>, có khả năng <strong>biến ý tưởng của bạn thành hiện thực</strong>. Tôi luôn hướng đến việc tạo ra những sản phẩm <strong>chỉnh chu, hoàn thiện và chất lượng</strong>. Liên hệ với tôi nếu bạn muốn cùng hợp tác."
+    "intro": "Tôi là lập trình viên tự do, chuyên về phát triển phần mềm. Tôi luôn hướng đến việc tạo ra những sản phẩm hoàn thiện, chất lượng và chỉnh chu. Hãy liên hệ với tôi nếu bạn muốn cùng hợp tác."
+  },
+  "skills": {
+    "skillTitle": "Kỹ năng & Công nghệ",
+    "mobile": "Mobile",
+    "mobileDescription": "Có khả năng phát triển đầy đủ các ứng dụng di động đa nền tảng, xử lý cả frontend và backend.",
+    "web": "Web",
+    "webDescription": "Có thể phát triển ứng dụng web full-stack, triển khai tất cả các yêu cầu frontend, backend và tích hợp.",
+    "desktop": "Window",
+    "desktopDescription": "Kinh nghiệm xây dựng ứng dụng desktop đầy đủ chức năng, từ giao diện đến logic nghiệp vụ và công cụ tự động hóa.",
+    "database": "Cơ sở dữ liệu",
+    "databaseDescription": "Thành thạo thiết kế, quản lý và tích hợp cơ sở dữ liệu để hỗ trợ các ứng dụng trên mọi nền tảng."
+  },
+  "tools": {
+    "toolLabel": "Công nghệ tôi sử dụng",
+    "toolTitle": "Công cụ & Phần mềm",
+    "toolDescription": "Những công cụ và nền tảng tôi thường sử dụng trong quá trình phát triển để nâng cao hiệu suất và chất lượng sản phẩm.",
+    "toolFooter": "(Luôn khám phá các công cụ mới để nâng cao hiệu suất làm việc.)",
+    "ide": "Môi trường phát triển",
+    "ideDescription": "Thành thạo trong việc sử dụng nhiều IDE khác nhau như VS Code, Android Studio và Visual Studio để tối ưu hóa quy trình phát triển.",
+    "versionControl": "Quản lý mã nguồn & CI/CD",
+    "versionControlDescription": "Sử dụng Git và GitHub để quản lý mã nguồn, cùng các pipeline CI/CD để tự động hóa kiểm thử và triển khai.",
+    "designTools": "UI/UX & Thiết kế nguyên mẫu",
+    "designToolsDescription": "Thiết kế và tạo nguyên mẫu giao diện hiện đại, thân thiện với người dùng bằng Figma và Adobe XD.",
+    "otherTools": "Đám mây & DevOps",
+    "otherToolsDescription": "Làm việc với Docker, Firebase và các dịch vụ đám mây khác để xây dựng ứng dụng có khả năng mở rộng và dễ bảo trì."
   }
 }

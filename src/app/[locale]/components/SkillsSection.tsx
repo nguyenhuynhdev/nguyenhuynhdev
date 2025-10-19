@@ -31,49 +31,45 @@ export default function SkillsSection({ t }: { t: any }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const skillsData = [
-    {
-      title: "Mobile",
-      description:
-        "Build clean architecture mobile apps with Flutter, Kotlin, Dart, and Java — cross-platform, custom UI, and optimized performance.",
-      icons: [
-        { icon: <SiKotlin />, name: "Kotlin" },
-        { icon: <SiDart />, name: "Dart" },
-        { icon: <SiFlutter />, name: "Flutter" },
-        { icon: <FaJava />, name: "Java" },
-      ],
-    },
-    {
-      title: "Web",
-      description:
-        "Develop full-stack web apps using HTML, JS, TS, Node.js, and Next.js — frontend, backend, CMS, extensions, and automation scripts.",
-      icons: [
-        { icon: <BiLogoTypescript />, name: "TypeScript" },
-        { icon: <RiJavascriptFill />, name: "JavaScript" },
-        { icon: <SiNodedotjs />, name: "Node.js" },
-        { icon: <SiNextdotjs />, name: "Next.js" },
-      ],
-    },
-    {
-      title: "Desktop",
-      description:
-        "Build Windows applications, automation tools, and batch scripts using C#, Visual Studio, and Windows APIs.",
-      icons: [
-        { icon: <TbBrandCSharp />, name: "C#" },
-        { icon: <DiVisualstudio />, name: "Visual Studio" },
-        { icon: <FaWindows />, name: "Windows" },
-      ],
-    },
-    {
-      title: "Database",
-      description:
-        "Design and manage small-scale databases using PostgreSQL, MySQL, and MongoDB — model data, optimize queries, and integrate with APIs.",
-      icons: [
-        { icon: <SiPostgresql />, name: "PostgreSQL" },
-        { icon: <SiMysql />, name: "MySQL" },
-        { icon: <SiMongodb />, name: "MongoDB" },
-      ],
-    },
-  ];
+  {
+    title: t.mobile,
+    description: t.mobileDescription,
+    icons: [
+      { icon: <SiKotlin />, name: "Kotlin" },
+      { icon: <SiDart />, name: "Dart" },
+      { icon: <SiFlutter />, name: "Flutter" },
+      { icon: <FaJava />, name: "Java" },
+    ],
+  },
+  {
+    title: t.web,
+    description: t.webDescription,
+    icons: [
+      { icon: <BiLogoTypescript />, name: "TypeScript" },
+      { icon: <RiJavascriptFill />, name: "JavaScript" },
+      { icon: <SiNodedotjs />, name: "Node.js" },
+      { icon: <SiNextdotjs />, name: "Next.js" },
+    ],
+  },
+  {
+    title: t.desktop,
+    description: t.desktopDescription,
+    icons: [
+      { icon: <TbBrandCSharp />, name: "C#" },
+      { icon: <DiVisualstudio />, name: "Visual Studio" },
+      { icon: <FaWindows />, name: "Windows" },
+    ],
+  },
+  {
+    title: t.database,
+    description: t.databaseDescription,
+    icons: [
+      { icon: <SiPostgresql />, name: "PostgreSQL" },
+      { icon: <SiMysql />, name: "MySQL" },
+      { icon: <SiMongodb />, name: "MongoDB" },
+    ],
+  },
+];
 
   // --- Track carousel ---
   useEffect(() => {
@@ -88,10 +84,10 @@ export default function SkillsSection({ t }: { t: any }) {
   };
 
   return (
-    <section className="text-center bg-transparent overflow-hidden pt-8 lg:pt-16 pb-16 lg:pb-24 px-6 md:px-10">
-      <h2 className="text-3xl font-bold mb-10">
-        {t.skillTitle || "Skills & Technology"}
-      </h2>
+    <section className="text-center bg-transparent overflow-hidden mt-6 py-10 lg:pt-16 pb-16 lg:pb-24 px-6 md:px-10">
+      <h2 className="text-3xl font-bold mb-15">
+  {t.skillTitle}
+</h2>
 
       {/* --- MOBILE / TABLET: Carousel --- */}
       {(isMobile || isTablet) ? (
@@ -101,7 +97,7 @@ export default function SkillsSection({ t }: { t: any }) {
             plugins={[Autoplay({ delay: 8000 })]}
             opts={{ loop: true, align: "center" }}
           >
-            <CarouselContent className="gap-6 px-[5%]">
+            <CarouselContent className="gap-6 px-[7%]">
               {skillsData.map((item, idx) => (
                 <CarouselItem
                   key={idx}
@@ -149,13 +145,9 @@ export default function SkillsSection({ t }: { t: any }) {
           </div>
         </div>
       ) : (
-/* --- DESKTOP / LAPTOP: Grid --- */
-<div
-  className={`grid grid-cols-1 gap-8 max-w-[1100px] mx-auto items-stretch ${
-    isLaptop ? "md:grid-cols-2" : "" /* 2 cột trên laptop */
-  } ${isDesktop ? "lg:grid-cols-4" : ""}` /* 4 cột trên desktop */}
->
-
+        /* --- DESKTOP / LAPTOP: Grid --- */
+        <div
+          className={`grid grid-cols-1 gap-8 max-w-[1100px] mx-auto items-stretch ${isLaptop ? "md:grid-cols-2" : ""} ${isDesktop ? "lg:grid-cols-4" : ""}`}>
           {skillsData.map((item, idx) => (
             <div
               key={idx}
@@ -163,10 +155,10 @@ export default function SkillsSection({ t }: { t: any }) {
                 }`}
             >
               <div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
                   {item.title}
                 </h3>
-                <p className="text-gray-700 dark:text-gray-300 mb-6 text-sm leading-relaxed">
+                <p className="text-gray-700 dark:text-gray-300 mb-6 text-base leading-relaxed">
                   {item.description}
                 </p>
               </div>

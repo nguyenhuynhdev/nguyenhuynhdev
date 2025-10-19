@@ -43,6 +43,31 @@
     "contact": "Contact Me",
     "aboutMe": "About Me",
     "previewCV": "Preview CV",
-    "intro": "I’m a <strong>freelance developer</strong> with the ability to <strong>turn your ideas into reality</strong>. I always strive to create <strong>polished, complete, and high-quality products</strong>. Contact me if you’re interested in working together."
-  }
+    "intro": "I am a freelance developer, specializing in building software. I always strive to write clean, efficient, and reliable code. Feel free to get in touch if you want to collaborate."
+  },
+  "skills": {
+    "skillTitle": "Skills & Technologies",
+    "mobile": "Mobile",
+    "mobileDescription": "Capable of delivering complete mobile applications across platforms, handling both frontend and backend requirements.",
+    "web": "Web",
+    "webDescription": "Able to develop full-stack web applications, implementing all frontend, backend, and integration needs.",
+    "desktop": "Desktop",
+    "desktopDescription": "Experienced in building full-featured desktop applications, from UI to business logic and automation tools.",
+    "database": "Database",
+    "databaseDescription": "Skilled in designing, managing, and integrating databases to support applications on any platform."
+  },
+  "tools": {
+  "toolLabel": "Technologies I Use",
+  "toolTitle": "Tools & Software",
+  "toolDescription": "The tools and platforms I frequently use throughout development to improve productivity and ensure high-quality results.",
+  "toolFooter": "(Always exploring new tools to enhance productivity.)",
+  "ide": "Development Environments",
+  "ideDescription": "Comfortable working across multiple IDEs such as VS Code, Android Studio, and Visual Studio to streamline development workflows.",
+  "versionControl": "Version Control & CI/CD",
+  "versionControlDescription": "Utilize Git and GitHub for version control, with CI/CD pipelines to automate testing and deployment processes.",
+  "designTools": "UI/UX & Prototyping",
+  "designToolsDescription": "Design and prototype modern, user-friendly interfaces using tools like Figma and Adobe XD.",
+  "otherTools": "Cloud & DevOps",
+  "otherToolsDescription": "Work with Docker, Firebase, and other cloud services to build scalable, maintainable applications."
+}
 }
