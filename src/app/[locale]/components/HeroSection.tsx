@@ -195,7 +195,7 @@ function HeroSection({ t }: { t: any }) {
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
 
           <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-lg text-left font-normal">
-            <span className="text-center text-3xl mb-5 block font-bold">
+            <span className="text-center text-3xl mb-5 block font-bold mb-2 bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900 dark:from-white dark:via-blue-100 dark:to-indigo-100 bg-clip-text text-transparent leading-tight py-1">
             {t.aboutMe}
             </span>
             <span>{t.intro}</span>

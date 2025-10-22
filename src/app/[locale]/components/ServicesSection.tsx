@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 
-export default function SkillsSection({ t }: { t: any }) {
+export default function ServicesSection({ t }: { t: any }) {
   const { isMobile, isTablet, isLaptop, isDesktop } = useBreakpoint();
   const [api, setApi] = useState<any>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -96,13 +96,13 @@ export default function SkillsSection({ t }: { t: any }) {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-full text-indigo-600 dark:text-indigo-400 text-sm font-medium mb-4">
             <span className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span>
-            {t.skillTitle}
+            {t.services}
           </div>
           <h2 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900 dark:from-white dark:via-blue-100 dark:to-indigo-100 bg-clip-text text-transparent mb-4 leading-tight py-2">
-            {t.skillTitle}
+            {t.servicesTitle}
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            {t.skillSubtitle}
+            {t.servicesSubtitle}
           </p>
         </div>
         </div>

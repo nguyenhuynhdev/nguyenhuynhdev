@@ -45,17 +45,18 @@
     "previewCV": "Xem trước CV",
     "intro": "Tôi là lập trình viên tự do, chuyên về phát triển phần mềm. Tôi luôn hướng đến việc tạo ra những sản phẩm hoàn thiện, chất lượng và chỉnh chu. Hãy liên hệ với tôi nếu bạn muốn cùng hợp tác."
   },
-  "skills": {
-    "skillTitle": "Kỹ năng & Công nghệ",
-    "skillSubtitle": "Chuyên môn toàn diện trên nhiều nền tảng và công nghệ",
+  "services": {
+    "services": "Dịch vụ tôi cung cấp",
+    "servicesTitle": "Dịch vụ & Năng lực",
+    "servicesSubtitle": "Biến ý tưởng thành những trải nghiệm số trực quan, với chuyên môn toàn diện trên nhiều nền tảng và công nghệ.",
     "mobile": "Mobile",
-    "mobileDescription": "Có khả năng phát triển đầy đủ các ứng dụng di động đa nền tảng, xử lý cả frontend và backend.",
-    "web": "Web",
-    "webDescription": "Có thể phát triển ứng dụng web full-stack, triển khai tất cả các yêu cầu frontend, backend và tích hợp.",
-    "desktop": "Window",
-    "desktopDescription": "Kinh nghiệm xây dựng ứng dụng desktop đầy đủ chức năng, từ giao diện đến logic nghiệp vụ và công cụ tự động hóa.",
-    "database": "Cơ sở dữ liệu",
-    "databaseDescription": "Thành thạo thiết kế, quản lý và tích hợp cơ sở dữ liệu để hỗ trợ các ứng dụng trên mọi nền tảng."
+    "mobileDescription": "Cung cấp giải pháp ứng dụng di động native và đa nền tảng, tối ưu hiệu năng, thiết kế tinh gọn và dễ mở rộng.",
+    "web": "Website",
+    "webDescription": "Xây dựng ứng dụng web từ frontend đến backend, tối ưu trải nghiệm, hiệu suất và khả năng mở rộng để đáp ứng mục tiêu kinh doanh.",
+    "desktop": "Desktop",
+    "desktopDescription": "Cung cấp giải pháp phần mềm desktop giúp tự động hóa công việc, tối ưu quy trình vận hành và tăng hiệu quả doanh nghiệp.",
+    "database": "Database",
+    "databaseDescription": "Thiết kế và quản lý hệ thống cơ sở dữ liệu đáng tin cậy, đảm bảo hiệu năng, khả năng mở rộng và tích hợp giữa các nền tảng."
   },
   "tools": {
     "toolLabel": "Công nghệ tôi sử dụng",
@@ -67,8 +68,8 @@
     "ideDescription": "Thành thạo trong việc sử dụng nhiều IDE khác nhau như VS Code, Android Studio và Visual Studio để tối ưu hóa quy trình phát triển.",
     "versionControl": "Quản lý mã nguồn & CI/CD",
     "versionControlDescription": "Sử dụng Git và GitHub để quản lý mã nguồn, cùng các pipeline CI/CD để tự động hóa kiểm thử và triển khai.",
-    "designTools": "UI/UX & Thiết kế nguyên mẫu",
-    "designToolsDescription": "Thiết kế và tạo nguyên mẫu giao diện hiện đại, thân thiện với người dùng bằng Figma và Adobe XD.",
+    "designTools": "UI/UX",
+    "designToolsDescription": "Thiết kế giao diện trực quan và hấp dẫn, mang lại trải nghiệm người dùng tối ưu.",
     "otherTools": "Đám mây & DevOps",
     "otherToolsDescription": "Làm việc với Docker, Firebase và các dịch vụ đám mây khác để xây dựng ứng dụng có khả năng mở rộng và dễ bảo trì."
   },
@@ -122,6 +123,10 @@
   "footer": {
     "footerDescription": "Đam mê tạo ra những giải pháp sáng tạo và chia sẻ kiến thức với cộng đồng lập trình viên.",
     "quickLinks": "Liên kết nhanh",
+    "services": "Dịch vụ",
+    "works": "Dự án",
+    "blog": "Blog",
+    "contact": "Liên hệ",
     "contactInfo": "Thông tin liên hệ",
     "availableForWork": "Sẵn sàng nhận việc",
     "allRightsReserved": "Tất cả quyền được bảo lưu."

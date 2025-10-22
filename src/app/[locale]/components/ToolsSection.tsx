@@ -52,7 +52,7 @@ export default function ToolsSection({ t }: { t: any }) {
                     <span className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span>
                     {t.toolLabel}
                 </div>
-                <h2 className="text-3xl lg:text-4xl font-bold mb-2 bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900 dark:from-white dark:via-blue-100 dark:to-indigo-100 bg-clip-text text-transparent leading-tight py-1">
+                <h2 className="text-4xl lg:text-5xl font-bold mb-2 bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900 dark:from-white dark:via-blue-100 dark:to-indigo-100 bg-clip-text text-transparent leading-tight py-1">
                     {t.toolTitle}
                 </h2>
                 <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">

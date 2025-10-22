@@ -67,7 +67,7 @@ export default function FooterSection({ t }: { t: any }) {
             <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-md">
               {t.footer?.footerDescription || "Passionate about creating innovative solutions and sharing knowledge with the developer community."}
             </p>
-            
+
             {/* Social Links */}
             <div className="flex gap-4">
               {socialLinks.map((social) => (
@@ -130,16 +130,12 @@ export default function FooterSection({ t }: { t: any }) {
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-gray-200/50 dark:border-gray-700/50 mt-8 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              © {currentYear} Nguyen Huynh. {t.footer?.allRightsReserved || "All rights reserved."}
+        <div className="mt-8 pt-8">
+          <div className="flex justify-center">
+            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+              © {currentYear} Nguyen Huynh.{" "}
+              {t.footer?.allRightsReserved || "All rights reserved."}
             </p>
-            
-            <div className="flex items-center gap-4">
-              <ThemeSwitcher />
-              <LocaleSwitcher />
-            </div>
           </div>
         </div>
       </div>

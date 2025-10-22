@@ -1,7 +1,7 @@
 import { getDictionary } from "@/i18n/get-dictionary";
 import { i18n, type Locale } from "@/i18n/i18n-config";
 import HeroSection from "./components/HeroSection";
-import SkillsSection from "./components/SkillsSection";
+import ServicesSection from "./components/ServicesSection";
 import ToolsSection from "./components/ToolsSection";
 import FooterSection from "./components/FooterSection";
 
@@ -20,7 +20,7 @@ export default async function HomePage({
   return (
     <div className="flex flex-col min-h-screen">
       <HeroSection t={t.hero} />
-      <SkillsSection t={t.skills} />
+      <ServicesSection t={t.services} />
       <ToolsSection t={t.tools} />
       <FooterSection t={t.footer} />
     </div>
