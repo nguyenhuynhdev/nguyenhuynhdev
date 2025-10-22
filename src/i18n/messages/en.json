@@ -47,6 +47,7 @@
   },
   "skills": {
     "skillTitle": "Skills & Technologies",
+    "skillSubtitle": "Comprehensive expertise across multiple platforms and technologies",
     "mobile": "Mobile",
     "mobileDescription": "Capable of delivering complete mobile applications across platforms, handling both frontend and backend requirements.",
     "web": "Web",
@@ -59,6 +60,7 @@
   "tools": {
   "toolLabel": "Technologies I Use",
   "toolTitle": "Tools & Software",
+  "toolSubtitle": "Professional development tools and technologies for exceptional results",
   "toolDescription": "The tools and platforms I frequently use throughout development to improve productivity and ensure high-quality results.",
   "toolFooter": "(Always exploring new tools to enhance productivity.)",
   "ide": "Development Environments",
@@ -69,5 +71,59 @@
   "designToolsDescription": "Design and prototype modern, user-friendly interfaces using tools like Figma and Adobe XD.",
   "otherTools": "Cloud & DevOps",
   "otherToolsDescription": "Work with Docker, Firebase, and other cloud services to build scalable, maintainable applications."
-}
+},
+"works": {
+  "worksLabel": "My Portfolio",
+  "worksTitle": "Featured Works",
+  "worksSubtitle": "A showcase of my recent projects and creative solutions",
+  "allWorks": "All Works",
+  "webWorks": "Web Apps",
+  "mobileWorks": "Mobile Apps",
+  "desktopWorks": "Desktop Apps",
+  "featured": "Featured",
+  "viewCode": "View Code",
+  "viewLive": "View Live",
+  "viewMoreWorks": "View More Works",
+  "work1Title": "E-Commerce Platform",
+  "work1Description": "A modern e-commerce platform built with Next.js, featuring real-time inventory management and secure payment processing.",
+  "work2Title": "Task Management App",
+  "work2Description": "A cross-platform task management application developed with Flutter, offering seamless synchronization across devices.",
+  "work3Title": "Business Management System",
+  "work3Description": "A comprehensive desktop application for business management, built with C# and WPF for optimal performance.",
+  "work4Title": "Social Media Dashboard",
+  "work4Description": "A responsive web dashboard for social media analytics, featuring real-time data visualization and reporting."
+},
+"blog": {
+  "blogLabel": "Latest Articles",
+  "blogTitle": "Blog & Insights",
+  "blogSubtitle": "Sharing knowledge, tips, and insights from my development journey",
+  "allPosts": "All Posts",
+  "tutorials": "Tutorials",
+  "tips": "Tips & Tricks",
+  "projects": "Projects",
+  "featured": "Featured",
+  "searchPosts": "Search posts...",
+  "readMore": "Read More",
+  "viewMorePosts": "View More Posts",
+  "author": "Nguyen Huynh",
+  "blog1Title": "Building Modern Web Apps with Next.js",
+  "blog1Excerpt": "Learn how to create fast, SEO-friendly web applications using Next.js and modern development practices.",
+  "blog1Content": "In this comprehensive guide, we'll explore the power of Next.js for building modern web applications...",
+  "blog2Title": "Flutter Performance Optimization Tips",
+  "blog2Excerpt": "Discover essential techniques to optimize your Flutter applications for better performance and user experience.",
+  "blog2Content": "Performance optimization is crucial for mobile applications. Here are proven techniques...",
+  "blog3Title": "Creating Desktop Apps with C# and WPF",
+  "blog3Excerpt": "A step-by-step guide to building professional desktop applications using C# and WPF framework.",
+  "blog3Content": "Desktop applications still play a vital role in business environments. Let's explore...",
+    "blog4Title": "Database Design Best Practices",
+    "blog4Excerpt": "Essential principles and patterns for designing efficient and scalable database systems.",
+    "blog4Content": "Good database design is the foundation of any successful application. Here's what you need to know..."
+  },
+  "footer": {
+    "footerDescription": "Passionate about creating innovative solutions and sharing knowledge with the developer community.",
+    "quickLinks": "Quick Links",
+    "contactInfo": "Contact Info",
+    "availableForWork": "Available for work",
+    "allRightsReserved": "All rights reserved."
+  }
 }

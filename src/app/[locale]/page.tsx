@@ -1,6 +1,6 @@
 import { getDictionary } from "@/i18n/get-dictionary";
 import { i18n, type Locale } from "@/i18n/i18n-config";
-import HeroSection from "./components/hero/HeroSection";
+import HeroSection from "./components/HeroSection";
 import SkillsSection from "./components/SkillsSection";
 import ToolsSection from "./components/ToolsSection";
 import FooterSection from "./components/FooterSection";
@@ -22,7 +22,7 @@ export default async function HomePage({
       <HeroSection t={t.hero} />
       <SkillsSection t={t.skills} />
       <ToolsSection t={t.tools} />
-      <FooterSection t={t} />
+      <FooterSection t={t.footer} />
     </div>
   );
 }
