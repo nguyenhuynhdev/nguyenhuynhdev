@@ -16,7 +16,7 @@ export async function onRequestGet({ env, request }: any) {
 
     if (userId) {
       query += ' WHERE user_id = ?';
-      params.push(parseInt(userId));
+      params.push(userId);
       if (unreadOnly) {
         query += ' AND read = 0';
       }
@@ -93,7 +93,7 @@ export async function onRequestPost({ env, request }: any) {
 // PUT /api/v1/notifications - Mark as read/unread
 export async function onRequestPut({ env, request }: any) {
   try {
-    const { getAuthUser, errorResponse } = await import('../../_utils');
+    const { getAuthUser, errorResponse } = await import('../_utils');
     const user = getAuthUser(request);
     if (!user) {
       return errorResponse('Unauthorized', 401);

@@ -57,9 +57,9 @@ export default function EditBlogPage() {
     }
 
     Promise.all([
-      apiClient.get('/categories'),
-      apiClient.get('/tags'),
-      apiClient.get(`/blogs/${blogId}`),
+      apiClient.get<{ success: boolean; data: any[] }>('/categories'),
+      apiClient.get<{ success: boolean; data: any[] }>('/tags'),
+      apiClient.get<{ success: boolean; data: any }>(`/blogs/${blogId}`),
     ]).then(([catsRes, tagsRes, blogRes]) => {
       setCategories(catsRes.data || []);
       setTags(tagsRes.data || []);

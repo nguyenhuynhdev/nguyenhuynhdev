@@ -55,8 +55,8 @@ export default function NewBlogPage() {
     }
 
     Promise.all([
-      apiClient.get('/categories'),
-      apiClient.get('/tags'),
+      apiClient.get<{ success: boolean; data: any[] }>('/categories'),
+      apiClient.get<{ success: boolean; data: any[] }>('/tags'),
     ]).then(([catsRes, tagsRes]) => {
       setCategories(catsRes.data || []);
       setTags(tagsRes.data || []);
