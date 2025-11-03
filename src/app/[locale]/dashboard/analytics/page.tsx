@@ -3,6 +3,11 @@
 import { PageHeader } from '@/components/dashboard/page-header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useParams } from 'next/navigation';
+import { i18n, type Locale } from "@/i18n/i18n-config";
+
+export async function generateStaticParams() {
+  return i18n.locales.map((locale) => ({ locale }));
+}
 
 export default function AnalyticsPage() {
   const params = useParams();

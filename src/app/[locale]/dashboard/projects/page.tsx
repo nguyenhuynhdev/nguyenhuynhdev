@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { PageHeader } from '@/components/dashboard/page-header';
+import { i18n, type Locale } from "@/i18n/i18n-config";
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -25,6 +26,10 @@ import {
 } from '@/components/ui/dialog';
 import { Edit, Trash2, Plus } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
+
+export async function generateStaticParams() {
+  return i18n.locales.map((locale) => ({ locale }));
+}
 
 interface Project {
   id: number;

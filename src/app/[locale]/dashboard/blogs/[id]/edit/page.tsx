@@ -23,12 +23,9 @@ const statusOptions = [
   { value: 'archived', label: 'Archived' },
 ];
 
-// Required for static export with dynamic routes
+import { i18n, type Locale } from "@/i18n/i18n-config";
 export async function generateStaticParams() {
-  // Return empty array - routes will be handled client-side
-  // since this is behind authentication and blogs are created dynamically
-  // The locale param is handled at the [locale] layout level
-  return [];
+  return i18n.locales.map((locale) => ({ locale }));
 }
 
 export default function EditBlogPage() {
