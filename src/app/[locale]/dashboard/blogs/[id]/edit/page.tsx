@@ -23,6 +23,14 @@ const statusOptions = [
   { value: 'archived', label: 'Archived' },
 ];
 
+// Required for static export with dynamic routes
+export async function generateStaticParams() {
+  // Return empty array - routes will be handled client-side
+  // since this is behind authentication and blogs are created dynamically
+  // The locale param is handled at the [locale] layout level
+  return [];
+}
+
 export default function EditBlogPage() {
   const { user } = useAuth();
   const router = useRouter();
