@@ -1,7 +1,7 @@
 // GET /api/v1/settings - Get all settings
 export async function onRequestGet({ env, request }: any) {
   try {
-    const { getAuthUser, errorResponse } = await import('../../_utils');
+    const { getAuthUser, errorResponse } = await import('../_utils');
     const user = getAuthUser(request);
     if (!user) {
       return errorResponse('Unauthorized', 401);

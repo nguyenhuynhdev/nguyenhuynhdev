@@ -2,7 +2,7 @@
 export async function onRequestGet({ env, request }: any) {
   try {
     // Categories are public for selection in blog forms
-    const { getAuthUser } = await import('../../_utils');
+    const { getAuthUser } = await import('../_utils');
     const user = getAuthUser(request);
     if (!user) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
