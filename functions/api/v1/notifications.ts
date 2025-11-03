@@ -48,7 +48,7 @@ export async function onRequestGet({ env, request }: any) {
 // POST /api/v1/notifications - Create notification
 export async function onRequestPost({ env, request }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
+    const { getAuthUser, checkRole, errorResponse } = await import('../_utils');
     const user = getAuthUser(request);
     if (!user || !checkRole(user, ['admin'])) {
       return errorResponse('Forbidden', 403);

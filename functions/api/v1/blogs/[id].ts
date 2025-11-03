@@ -1,7 +1,7 @@
 // GET /api/v1/blogs/[id]
 export async function onRequestGet({ env, request, params }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../../_utils');
+    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
     const user = getAuthUser(request);
     if (!user) {
       return errorResponse('Unauthorized', 401);
@@ -61,7 +61,7 @@ export async function onRequestGet({ env, request, params }: any) {
 // PUT /api/v1/blogs/[id]
 export async function onRequestPut({ env, request, params }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../../_utils');
+    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
     const user = getAuthUser(request);
     if (!user) {
       return errorResponse('Unauthorized', 401);
@@ -224,7 +224,7 @@ export async function onRequestPut({ env, request, params }: any) {
 // DELETE /api/v1/blogs/[id]
 export async function onRequestDelete({ env, request, params }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../../_utils');
+    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
     const user = getAuthUser(request);
     if (!user) {
       return errorResponse('Unauthorized', 401);

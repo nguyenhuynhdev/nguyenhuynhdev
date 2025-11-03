@@ -1,7 +1,7 @@
 // GET /api/v1/users - List all users
 export async function onRequestGet({ env, request }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
+    const { getAuthUser, checkRole, errorResponse } = await import('../_utils');
     const user = getAuthUser(request);
     if (!user || !checkRole(user, ['admin'])) {
       return errorResponse('Forbidden', 403);
@@ -45,7 +45,7 @@ export async function onRequestGet({ env, request }: any) {
 // POST /api/v1/users - Create user
 export async function onRequestPost({ env, request }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
+    const { getAuthUser, checkRole, errorResponse } = await import('../_utils');
     const user = getAuthUser(request);
     if (!user || !checkRole(user, ['admin'])) {
       return errorResponse('Forbidden', 403);

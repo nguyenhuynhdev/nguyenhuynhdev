@@ -51,7 +51,7 @@ export async function onRequestGet({ env, request }: any) {
 // POST /api/v1/projects - Create project
 export async function onRequestPost({ env, request }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
+    const { getAuthUser, checkRole, errorResponse } = await import('../_utils');
     const user = getAuthUser(request);
     if (!user || !checkRole(user, ['admin', 'editor'])) {
       return errorResponse('Forbidden', 403);

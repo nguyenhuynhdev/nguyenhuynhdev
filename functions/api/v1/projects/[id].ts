@@ -46,7 +46,7 @@ export async function onRequestGet({ env, request, params }: any) {
 // PUT /api/v1/projects/[id]
 export async function onRequestPut({ env, request, params }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../../_utils');
+    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
     const user = getAuthUser(request);
     if (!user || !checkRole(user, ['admin', 'editor'])) {
       return errorResponse('Forbidden', 403);
@@ -115,7 +115,7 @@ export async function onRequestPut({ env, request, params }: any) {
 // DELETE /api/v1/projects/[id]
 export async function onRequestDelete({ env, request, params }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../../_utils');
+    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
     const user = getAuthUser(request);
     if (!user || !checkRole(user, ['admin', 'editor'])) {
       return errorResponse('Forbidden', 403);

@@ -43,7 +43,7 @@ export async function onRequestGet({ env, request }: any) {
 // PUT /api/v1/settings - Update settings
 export async function onRequestPut({ env, request }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
+    const { getAuthUser, checkRole, errorResponse } = await import('../_utils');
     const user = getAuthUser(request);
     if (!user || !checkRole(user, ['admin'])) {
       return errorResponse('Forbidden', 403);

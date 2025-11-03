@@ -10,7 +10,7 @@ export async function onRequestGet({ env, request }: any) {
 
     // Use mock data if no results
     if (!results.results || results.results.length === 0) {
-      const { loadMockData } = await import('../../_mock-data');
+      const { loadMockData } = await import('../_mock-data');
       const mockData = await loadMockData('tags');
       return new Response(
         JSON.stringify({
@@ -43,7 +43,7 @@ export async function onRequestGet({ env, request }: any) {
 // POST /api/v1/tags - Create tag
 export async function onRequestPost({ env, request }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
+    const { getAuthUser, checkRole, errorResponse } = await import('../_utils');
     const user = getAuthUser(request);
     if (!user || !checkRole(user, ['admin', 'editor'])) {
       return errorResponse('Forbidden', 403);
