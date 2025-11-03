@@ -3,16 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { PageHeader } from '@/components/dashboard/page-header';
-import { i18n, type Locale } from "@/i18n/i18n-config";
 import { Button } from '@/components/ui/button';
 import { apiClient } from '@/lib/api-client';
 import { toast } from 'sonner';
 import { Trash2 } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
-
-export async function generateStaticParams() {
-  return i18n.locales.map((locale) => ({ locale }));
-}
 
 interface Media {
   id: number;

@@ -2,17 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { PageHeader } from '@/components/dashboard/page-header';
-import { i18n, type Locale } from "@/i18n/i18n-config";
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { apiClient } from '@/lib/api-client';
 import { toast } from 'sonner';
 import { useParams } from 'next/navigation';
-
-export async function generateStaticParams() {
-  return i18n.locales.map((locale) => ({ locale }));
-}
 
 interface Notification {
   id: number;

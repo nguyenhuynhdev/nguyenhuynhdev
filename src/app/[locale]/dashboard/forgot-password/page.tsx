@@ -10,11 +10,6 @@ import { toast } from 'sonner';
 import Link from 'next/link';
 import { apiClient } from '@/lib/api-client';
 import { ArrowLeft } from 'lucide-react';
-import { i18n, type Locale } from "@/i18n/i18n-config";
-
-export async function generateStaticParams() {
-  return i18n.locales.map((locale) => ({ locale }));
-}
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');

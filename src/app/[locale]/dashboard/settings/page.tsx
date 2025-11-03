@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/auth-context';
 import { PageHeader } from '@/components/dashboard/page-header';
-import { i18n, type Locale } from "@/i18n/i18n-config";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,10 +12,6 @@ import { toast } from 'sonner';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-export async function generateStaticParams() {
-  return i18n.locales.map((locale) => ({ locale }));
-}
 
 export default function SettingsPage() {
   const { user } = useAuth();

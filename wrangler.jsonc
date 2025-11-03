@@ -6,6 +6,7 @@
 	"name": "nguyenhuynh",
 	"pages_build_output_dir": "./out",
 	"compatibility_date": "2025-10-10",
+	"compatibility_flags": ["nodejs_compat"],
 	"d1_databases": [
 		{	
 			"binding": "DB",

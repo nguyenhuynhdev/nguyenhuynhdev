@@ -23,12 +23,14 @@ const statusOptions = [
   { value: 'archived', label: 'Archived' },
 ];
 
-export default function NewBlogPage() {
+export default function EditBlogPage() {
   const { user } = useAuth();
   const router = useRouter();
   const params = useParams();
   const locale = params.locale as string;
-  const [loading, setLoading] = useState(false);
+  const blogId = params.id as string;
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [preview, setPreview] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -57,41 +59,53 @@ export default function NewBlogPage() {
     Promise.all([
       apiClient.get<{ success: boolean; data: any[] }>('/categories'),
       apiClient.get<{ success: boolean; data: any[] }>('/tags'),
-    ]).then(([catsRes, tagsRes]) => {
+      apiClient.get<{ success: boolean; data: any }>(`/blogs/${blogId}`),
+    ]).then(([catsRes, tagsRes, blogRes]) => {
       setCategories(catsRes.data || []);
       setTags(tagsRes.data || []);
+      const blog = blogRes.data;
+      setFormData({
+        title: blog.title || '',
+        slug: blog.slug || '',
+        excerpt: blog.excerpt || '',
+        content: blog.content || '',
+        cover_image: blog.cover_image || '',
+        meta_title: blog.meta_title || '',
+        meta_description: blog.meta_description || '',
+        category_id: blog.category_id ? String(blog.category_id) : '',
+        tags: (blog.tags || []).map((t: any) => t.id),
+        status: blog.status || 'draft',
+        featured: blog.featured === 1,
+        publish_date: blog.publish_date
+          ? new Date(blog.publish_date).toISOString().slice(0, 16)
+          : '',
+      });
+      setLoading(false);
     });
-  }, [user, router, locale]);
-
-  const generateSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
-  };
-
-  const handleTitleChange = (value: string) => {
-    setFormData({ ...formData, title: value, slug: generateSlug(value) });
-  };
+  }, [user, router, locale, blogId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSaving(true);
 
     try {
-      await apiClient.post('/blogs', {
+      await apiClient.put(`/blogs/${blogId}`, {
         ...formData,
         category_id: formData.category_id ? parseInt(formData.category_id) : null,
         publish_date: formData.publish_date || null,
       });
-      toast.success('Blog created successfully');
+      toast.success('Blog updated successfully');
       router.push(`/${locale}/dashboard/blogs`);
     } catch (error: any) {
-      toast.error(error.message || 'Failed to create blog');
+      toast.error(error.message || 'Failed to update blog');
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
     return null;
@@ -100,11 +114,11 @@ export default function NewBlogPage() {
   return (
     <>
       <PageHeader
-        title="New Blog Post"
+        title="Edit Blog Post"
         breadcrumbs={[
           { label: 'Dashboard', href: `/${locale}/dashboard` },
           { label: 'Blogs', href: `/${locale}/dashboard/blogs` },
-          { label: 'New' },
+          { label: 'Edit' },
         ]}
       />
 
@@ -121,7 +135,7 @@ export default function NewBlogPage() {
                   <Input
                     id="title"
                     value={formData.title}
-                    onChange={(e) => handleTitleChange(e.target.value)}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     required
                   />
                 </div>
@@ -320,14 +334,14 @@ export default function NewBlogPage() {
             </Card>
 
             <div className="flex gap-2">
-              <Button type="submit" disabled={loading}>
-                {loading ? 'Creating...' : 'Create Blog Post'}
+              <Button type="submit" disabled={saving}>
+                {saving ? 'Saving...' : 'Save Changes'}
               </Button>
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => router.back()}
-                disabled={loading}
+                disabled={saving}
               >
                 Cancel
               </Button>

@@ -4,7 +4,8 @@ import { logger } from "@/lib/logger";
 import { getDictionary } from "@/i18n/get-dictionary";
 import type { Metadata, ResolvingMetadata } from 'next';
 import NavigationBar from "@/components/layouts/navigation-bar";
-import { notFound } from 'next/navigation'
+import { notFound } from 'next/navigation';
+import localesData from '@/i18n/locales.json';
 
 export async function generateMetadata({
   params,
@@ -26,7 +27,7 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  return i18n.locales.map((locale) => ({ locale: locale }));
+  return localesData.locales.map((locale) => ({ locale }));
 }
 
 export default async function LocaleLayout({

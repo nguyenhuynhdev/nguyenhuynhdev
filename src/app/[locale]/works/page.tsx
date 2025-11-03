@@ -1,9 +1,10 @@
 import { getDictionary } from "@/i18n/get-dictionary";
-import { i18n, type Locale } from "@/i18n/i18n-config";
+import { type Locale } from "@/i18n/i18n-config";
 import WorksSection from "../components/WorksSection";
+import localesData from '@/i18n/locales.json';
 
 export async function generateStaticParams() {
-  return i18n.locales.map((locale) => ({ locale }));
+  return localesData.locales.map((locale) => ({ locale }));
 }
 
 export default async function WorksPage({
