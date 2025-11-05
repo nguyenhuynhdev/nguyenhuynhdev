@@ -1,5 +1,13 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Documentation
+
+Comprehensive project docs live in `docs/`.
+
+- Start here: [docs/README.md](docs/README.md)
+- Components index: [docs/components/INDEX.md](docs/components/INDEX.md)
+- APIs index: [docs/apis/INDEX.md](docs/apis/INDEX.md)
+
 ## Getting Started
 
 First, run the development server:
