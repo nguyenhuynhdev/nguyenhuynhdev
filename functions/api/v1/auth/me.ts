@@ -26,14 +26,22 @@ function extractToken(request: Request): string | null {
   return null;
 }
 
+// OPTIONS handler for CORS
+export async function onRequestOptions() {
+  const { corsHeaders } = await import('../../_utils');
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 export async function onRequestGet({ env, request }: any) {
   try {
+    const { errorResponse, jsonResponse } = await import('../../_utils');
+    
     const token = extractToken(request);
     if (!token) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('Unauthorized', 401);
     }
 
     const decoded = jwt.verify(token, JWT_SECRET) as any;
@@ -45,26 +53,16 @@ export async function onRequestGet({ env, request }: any) {
       .first();
 
     if (!userResult) {
-      return new Response(JSON.stringify({ error: 'User not found' }), {
-        status: 404,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('User not found', 404);
     }
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: userResult,
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
+    return jsonResponse({
+      success: true,
+      data: userResult,
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../../_utils');
+    return errorResponse('Unauthorized', 401);
   }
 }
 

@@ -1,7 +1,16 @@
+// OPTIONS handler for CORS
+export async function onRequestOptions() {
+  const { corsHeaders } = await import('../../_utils');
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 // GET /api/v1/projects/[id]
 export async function onRequestGet({ env, request, params }: any) {
   try {
-    const { getAuthUser, errorResponse } = await import('../../_utils');
+    const { getAuthUser, errorResponse, jsonResponse } = await import('../../_utils');
     const user = getAuthUser(request);
     if (!user) {
       return errorResponse('Unauthorized', 401);
@@ -15,38 +24,28 @@ export async function onRequestGet({ env, request, params }: any) {
     )
       .bind(parseInt(id))
       .first();
-
+    
     if (!project) {
-      return new Response(JSON.stringify({ error: 'Project not found' }), {
-        status: 404,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('Project not found', 404);
     }
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: {
-          ...project,
-          tags: project.tags ? JSON.parse(project.tags) : [],
-        },
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    return jsonResponse({
+      success: true,
+      data: {
+        ...project,
+        tags: project.tags ? JSON.parse(project.tags) : [],
+      },
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 
 // PUT /api/v1/projects/[id]
 export async function onRequestPut({ env, request, params }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
+    const { getAuthUser, checkRole, errorResponse, jsonResponse } = await import('../../_utils');
     const user = getAuthUser(request);
     if (!user || !checkRole(user, ['admin', 'editor'])) {
       return errorResponse('Forbidden', 403);
@@ -75,10 +74,7 @@ export async function onRequestPut({ env, request, params }: any) {
     }
 
     if (updates.length === 0) {
-      return new Response(JSON.stringify({ error: 'No valid fields to update' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('No valid fields to update', 400);
     }
 
     updates.push('updated_at = datetime("now")');
@@ -92,51 +88,36 @@ export async function onRequestPut({ env, request, params }: any) {
       .bind(parseInt(id))
       .first();
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: {
-          ...updated,
-          tags: updated.tags ? JSON.parse(updated.tags) : [],
-        },
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    return jsonResponse({
+      success: true,
+      data: {
+        ...updated,
+        tags: updated.tags ? JSON.parse(updated.tags) : [],
+      },
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 
 // DELETE /api/v1/projects/[id]
 export async function onRequestDelete({ env, request, params }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
+    const { getAuthUser, checkRole, errorResponse, jsonResponse } = await import('../../_utils');
     const user = getAuthUser(request);
     if (!user || !checkRole(user, ['admin', 'editor'])) {
       return errorResponse('Forbidden', 403);
     }
     const { id } = await params;
     await env.DB.prepare('DELETE FROM projects WHERE id = ?').bind(parseInt(id)).run();
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'Project deleted successfully',
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    return jsonResponse({
+      success: true,
+      message: 'Project deleted successfully',
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 

@@ -1,3 +1,12 @@
+// OPTIONS handler for CORS
+export async function onRequestOptions() {
+  const { corsHeaders } = await import('../_utils');
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 // GET /api/v1/projects - List all projects
 export async function onRequestGet({ env, request }: any) {
   try {
@@ -22,29 +31,23 @@ export async function onRequestGet({ env, request }: any) {
 
     const countResult = await env.DB.prepare('SELECT COUNT(*) as total FROM projects').first();
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: results.results.map((p: any) => ({
-          ...p,
-          tags: p.tags ? JSON.parse(p.tags) : [],
-        })),
-        pagination: {
-          page,
-          limit,
-          total: countResult?.total || 0,
-          totalPages: Math.ceil((countResult?.total || 0) / limit),
-        },
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    const { jsonResponse } = await import('../_utils');
+    return jsonResponse({
+      success: true,
+      data: results.results.map((p: any) => ({
+        ...p,
+        tags: p.tags ? JSON.parse(p.tags) : [],
+      })),
+      pagination: {
+        page,
+        limit,
+        total: countResult?.total || 0,
+        totalPages: Math.ceil((countResult?.total || 0) / limit),
+      },
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 
@@ -60,15 +63,12 @@ export async function onRequestPost({ env, request }: any) {
     const { title, slug, description, content, cover_image, featured, status, tags, created_by } = body;
 
     if (!title || !slug) {
-      return new Response(JSON.stringify({ error: 'Title and slug are required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('Title and slug are required', 400);
     }
 
-    const result = await env.DB.prepare(
+    const insertResult = await env.DB.prepare(
       `INSERT INTO projects (title, slug, description, content, cover_image, featured, status, tags, created_by)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING *`
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
       .bind(
         title,
@@ -81,32 +81,26 @@ export async function onRequestPost({ env, request }: any) {
         tags ? JSON.stringify(tags) : '[]',
         created_by || null
       )
+      .run();
+
+    const result = await env.DB.prepare('SELECT * FROM projects WHERE id = ?')
+      .bind(insertResult.meta.last_row_id)
       .first();
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: {
-          ...result,
-          tags: result.tags ? JSON.parse(result.tags) : [],
-        },
-      }),
-      {
-        status: 201,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    const { jsonResponse } = await import('../_utils');
+    return jsonResponse({
+      success: true,
+      data: {
+        ...result,
+        tags: result.tags ? JSON.parse(result.tags) : [],
+      },
+    }, 201);
   } catch (err: any) {
+    const { errorResponse } = await import('../_utils');
     if (err.message?.includes('UNIQUE constraint')) {
-      return new Response(JSON.stringify({ error: 'Slug already exists' }), {
-        status: 409,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('Slug already exists', 409);
     }
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 

@@ -1,3 +1,12 @@
+// OPTIONS handler for CORS
+export async function onRequestOptions() {
+  const { corsHeaders } = await import('../../../_utils');
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 // GET /api/v1/blogs/slug/[slug] - Get blog by slug
 export async function onRequestGet({ env, params }: any) {
   try {
@@ -15,11 +24,10 @@ export async function onRequestGet({ env, params }: any) {
       .bind(slug)
       .first();
 
+    const { errorResponse, jsonResponse } = await import('../../../_utils');
+    
     if (!blog) {
-      return new Response(JSON.stringify({ error: 'Blog not found' }), {
-        status: 404,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('Blog not found', 404);
     }
 
     const tags = await env.DB.prepare(
@@ -30,23 +38,16 @@ export async function onRequestGet({ env, params }: any) {
       .bind(blog.id)
       .all();
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: {
-          ...blog,
-          tags: tags.results || [],
-        },
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    return jsonResponse({
+      success: true,
+      data: {
+        ...blog,
+        tags: tags.results || [],
+      },
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../../../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 

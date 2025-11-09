@@ -1,3 +1,12 @@
+// OPTIONS handler for CORS
+export async function onRequestOptions() {
+  const { corsHeaders } = await import('../_utils');
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 // GET /api/v1/settings - Get all settings
 export async function onRequestGet({ env, request }: any) {
   try {
@@ -23,20 +32,14 @@ export async function onRequestGet({ env, request }: any) {
       settings[setting.key] = value;
     });
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: settings,
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    const { jsonResponse } = await import('../_utils');
+    return jsonResponse({
+      success: true,
+      data: settings,
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 
@@ -79,20 +82,14 @@ export async function onRequestPut({ env, request }: any) {
         .run();
     }
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'Settings updated successfully',
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    const { jsonResponse } = await import('../_utils');
+    return jsonResponse({
+      success: true,
+      message: 'Settings updated successfully',
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 

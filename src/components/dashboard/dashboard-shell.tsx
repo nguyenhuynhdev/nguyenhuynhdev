@@ -4,6 +4,7 @@ import { ReactNode, useEffect } from 'react';
 import { Sidebar } from '@/components/dashboard/sidebar';
 import { useAuth } from '@/contexts/auth-context';
 import { usePathname, useRouter } from 'next/navigation';
+import { ThemeSwitcher } from '@/components/theme-switcher';
 
 export function DashboardShell({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
@@ -18,22 +19,27 @@ export function DashboardShell({ children }: { children: ReactNode }) {
     
     if (!loading) {
       if (!isLoginPage && !user) {
-        const locale = pathname.split('/')[1] || 'vi';
-        router.push(`/${locale}/dashboard/login`);
+        router.push('/dashboard/login');
       } else if (isLoginPage && user) {
-        const locale = pathname.split('/')[1] || 'vi';
-        router.push(`/${locale}/dashboard`);
+        router.push('/dashboard');
       }
     }
-  }, [user, loading, isLoginPage, router, pathname]);
+  }, [user, loading, isLoginPage, router]);
 
   if (isLoginPage) {
-    return children;
+    return (
+      <div className="min-h-screen bg-background text-foreground transition-colors">
+        <div className="absolute top-4 right-4 z-50">
+          <ThemeSwitcher />
+        </div>
+        {children}
+      </div>
+    );
   }
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background text-foreground">
+      <div className="flex items-center justify-center min-h-screen bg-background text-foreground transition-colors">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
@@ -44,10 +50,10 @@ export function DashboardShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-background text-foreground transition-colors overflow-hidden">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto">
-        <div className="container mx-auto p-6">{children}</div>
+      <main className="flex-1 overflow-y-auto min-w-0">
+        <div className="container mx-auto p-4 sm:p-6 max-w-7xl">{children}</div>
       </main>
     </div>
   );

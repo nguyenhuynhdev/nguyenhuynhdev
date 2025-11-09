@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nguyen Huynh Dev Portfolio
 
-## Getting Started
+Next.js portfolio website với Cloudflare Pages và D1 Database.
 
-First, run the development server:
+## Development
+
+### Setup Database (First Time)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Tạo database (nếu chưa có)
+npm run db:create
+
+# Khởi tạo database local
+npm run db:update
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Run Local Development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Build và start dev server với D1 database
+npm run dev:local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Server sẽ chạy tại `http://127.0.0.1:8788`
 
-## Learn More
+### Update Database Schema
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Update local database
+npm run db:update
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Update remote database (sau khi deploy)
+npm run db:deploy
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
+### Deploy Pages & Functions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run deploy
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Deploy Database
+
+```bash
+npm run db:deploy
+```
+
+## Scripts
+
+- `dev` - Next.js dev server (localhost:3000)
+- `dev:local` - Build và start với Wrangler Pages dev (localhost:8788)
+- `build` - Build Next.js app
+- `deploy` - Deploy Pages và Functions lên Cloudflare
+- `db:create` - Tạo D1 database mới
+- `db:update` - Update local D1 database từ schema.sql
+- `db:deploy` - Deploy database schema lên remote D1
+
+## Tech Stack
+
+- Next.js 15 (App Router)
+- Cloudflare Pages
+- Cloudflare D1 (SQLite)
+- Cloudflare Functions (API endpoints)
+- TypeScript
+- Tailwind CSS
+- shadcn/ui

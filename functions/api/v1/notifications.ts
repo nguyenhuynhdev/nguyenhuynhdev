@@ -1,3 +1,12 @@
+// OPTIONS handler for CORS
+export async function onRequestOptions() {
+  const { corsHeaders } = await import('../_utils');
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 // GET /api/v1/notifications - Get notifications
 export async function onRequestGet({ env, request }: any) {
   try {
@@ -28,20 +37,14 @@ export async function onRequestGet({ env, request }: any) {
 
     const results = await env.DB.prepare(query).bind(...params).all();
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: results.results || [],
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    const { jsonResponse } = await import('../_utils');
+    return jsonResponse({
+      success: true,
+      data: results.results || [],
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 
@@ -57,36 +60,27 @@ export async function onRequestPost({ env, request }: any) {
     const { user_id, title, message, type = 'info' } = body;
 
     if (!user_id || !title || !message) {
-      return new Response(
-        JSON.stringify({ error: 'user_id, title, and message are required' }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      return errorResponse('user_id, title, and message are required', 400);
     }
 
-    const result = await env.DB.prepare(
-      'INSERT INTO notifications (user_id, title, message, type) VALUES (?, ?, ?, ?) RETURNING *'
+    const insertResult = await env.DB.prepare(
+      'INSERT INTO notifications (user_id, title, message, type) VALUES (?, ?, ?, ?)'
     )
       .bind(user_id, title, message, type)
+      .run();
+
+    const result = await env.DB.prepare('SELECT * FROM notifications WHERE id = ?')
+      .bind(insertResult.meta.last_row_id)
       .first();
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: result,
-      }),
-      {
-        status: 201,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    const { jsonResponse } = await import('../_utils');
+    return jsonResponse({
+      success: true,
+      data: result,
+    }, 201);
   } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    const { errorResponse } = await import('../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 
@@ -103,10 +97,7 @@ export async function onRequestPut({ env, request }: any) {
     const userId = user.userId;
 
     if (typeof read !== 'boolean') {
-      return new Response(JSON.stringify({ error: 'read boolean is required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('read boolean is required', 400);
     }
 
     if (!Array.isArray(ids) || ids.length === 0) {
@@ -124,20 +115,14 @@ export async function onRequestPut({ env, request }: any) {
         .run();
     }
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'Notifications updated',
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    const { jsonResponse } = await import('../_utils');
+    return jsonResponse({
+      success: true,
+      message: 'Notifications updated',
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 

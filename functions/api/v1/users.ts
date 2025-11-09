@@ -1,3 +1,12 @@
+// OPTIONS handler for CORS
+export async function onRequestOptions() {
+  const { corsHeaders } = await import('../_utils');
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 // GET /api/v1/users - List all users
 export async function onRequestGet({ env, request }: any) {
   try {
@@ -19,26 +28,20 @@ export async function onRequestGet({ env, request }: any) {
 
     const countResult = await env.DB.prepare('SELECT COUNT(*) as total FROM users').first();
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: results.results || [],
-        pagination: {
-          page,
-          limit,
-          total: countResult?.total || 0,
-          totalPages: Math.ceil((countResult?.total || 0) / limit),
-        },
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    const { jsonResponse } = await import('../_utils');
+    return jsonResponse({
+      success: true,
+      data: results.results || [],
+      pagination: {
+        page,
+        limit,
+        total: countResult?.total || 0,
+        totalPages: Math.ceil((countResult?.total || 0) / limit),
+      },
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 
@@ -54,39 +57,32 @@ export async function onRequestPost({ env, request }: any) {
     const { email, password_hash, name, role = 'viewer' } = body;
 
     if (!email || !password_hash || !name) {
-      return new Response(JSON.stringify({ error: 'Email, password_hash, and name are required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('Email, password_hash, and name are required', 400);
     }
 
-    const result = await env.DB.prepare(
-      'INSERT INTO users (email, password_hash, name, role) VALUES (?, ?, ?, ?) RETURNING id, email, name, role, created_at'
+    const insertResult = await env.DB.prepare(
+      'INSERT INTO users (email, password_hash, name, role) VALUES (?, ?, ?, ?)'
     )
       .bind(email, password_hash, name, role)
+      .run();
+
+    const result = await env.DB.prepare(
+      'SELECT id, email, name, role, created_at FROM users WHERE id = ?'
+    )
+      .bind(insertResult.meta.last_row_id)
       .first();
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: result,
-      }),
-      {
-        status: 201,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    const { jsonResponse } = await import('../_utils');
+    return jsonResponse({
+      success: true,
+      data: result,
+    }, 201);
   } catch (err: any) {
+    const { errorResponse } = await import('../_utils');
     if (err.message?.includes('UNIQUE constraint')) {
-      return new Response(JSON.stringify({ error: 'Email already exists' }), {
-        status: 409,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('Email already exists', 409);
     }
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 

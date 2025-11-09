@@ -7,6 +7,7 @@
 	"pages_build_output_dir": "./out",
 	"compatibility_date": "2025-10-10",
 	"compatibility_flags": ["nodejs_compat"],
+	"$schema": "./node_modules/wrangler/config-schema.json",
 	"d1_databases": [
 		{	
 			"binding": "DB",

@@ -1,3 +1,12 @@
+// OPTIONS handler for CORS
+export async function onRequestOptions() {
+  const { corsHeaders } = await import('../_utils');
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 // GET /api/v1/blogs - List all blogs
 export async function onRequestGet({ env, request }: any) {
   try {
@@ -88,26 +97,20 @@ export async function onRequestGet({ env, request }: any) {
       .bind(...countBindings)
       .first();
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: blogsWithTags,
-        pagination: {
-          page,
-          limit,
-          total: countResult?.total || 0,
-          totalPages: Math.ceil((countResult?.total || 0) / limit),
-        },
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    const { jsonResponse } = await import('../_utils');
+    return jsonResponse({
+      success: true,
+      data: blogsWithTags,
+      pagination: {
+        page,
+        limit,
+        total: countResult?.total || 0,
+        totalPages: Math.ceil((countResult?.total || 0) / limit),
+      },
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 
@@ -140,13 +143,7 @@ export async function onRequestPost({ env, request }: any) {
     const finalAuthorId = checkRole(user, ['admin']) ? (author_id || user.userId) : user.userId;
 
     if (!title || !slug || !content) {
-      return new Response(
-        JSON.stringify({ error: 'Title, slug, content, and author_id are required' }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      return errorResponse('Title, slug, and content are required', 400);
     }
 
     // Calculate reading time (simple: ~200 words per minute)
@@ -158,12 +155,11 @@ export async function onRequestPost({ env, request }: any) {
       status === 'published' && !publish_date ? new Date().toISOString() : publish_date;
 
     // Insert blog
-    const blogResult = await env.DB.prepare(
+    const insertResult = await env.DB.prepare(
       `INSERT INTO blogs (
         title, slug, excerpt, content, cover_image, meta_title, meta_description,
         category_id, status, featured, author_id, reading_time, publish_date
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      RETURNING id`
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
       .bind(
         title,
@@ -180,9 +176,9 @@ export async function onRequestPost({ env, request }: any) {
         readingTime,
         finalPublishDate || null
       )
-      .first();
+      .run();
 
-    const blogId = blogResult.id;
+    const blogId = insertResult.meta.last_row_id;
 
     // Insert tags
     if (tags.length > 0) {
@@ -213,30 +209,20 @@ export async function onRequestPost({ env, request }: any) {
       .bind(blogId)
       .all();
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: {
-          ...newBlog,
-          tags: blogTags.results || [],
-        },
-      }),
-      {
-        status: 201,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    const { jsonResponse } = await import('../_utils');
+    return jsonResponse({
+      success: true,
+      data: {
+        ...newBlog,
+        tags: blogTags.results || [],
+      },
+    }, 201);
   } catch (err: any) {
+    const { errorResponse } = await import('../_utils');
     if (err.message?.includes('UNIQUE constraint')) {
-      return new Response(JSON.stringify({ error: 'Slug already exists' }), {
-        status: 409,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('Slug already exists', 409);
     }
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 

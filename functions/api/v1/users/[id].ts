@@ -1,7 +1,16 @@
+// OPTIONS handler for CORS
+export async function onRequestOptions() {
+  const { corsHeaders } = await import('../../_utils');
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 // GET /api/v1/users/[id]
 export async function onRequestGet({ env, request, params }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
+    const { getAuthUser, checkRole, errorResponse, jsonResponse } = await import('../../_utils');
     const user = getAuthUser(request);
     if (!user) {
       return errorResponse('Unauthorized', 401);
@@ -21,33 +30,22 @@ export async function onRequestGet({ env, request, params }: any) {
       .first();
 
     if (!result) {
-      return new Response(JSON.stringify({ error: 'User not found' }), {
-        status: 404,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('User not found', 404);
     }
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: result,
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    return jsonResponse({
+      success: true,
+      data: result,
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 
 // PUT /api/v1/users/[id]
 export async function onRequestPut({ env, request, params }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
+    const { getAuthUser, checkRole, errorResponse, jsonResponse } = await import('../../_utils');
     const user = getAuthUser(request);
     if (!user) {
       return errorResponse('Unauthorized', 401);
@@ -91,10 +89,7 @@ export async function onRequestPut({ env, request, params }: any) {
     }
 
     if (updates.length === 0) {
-      return new Response(JSON.stringify({ error: 'No valid fields to update' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('No valid fields to update', 400);
     }
 
     updates.push('updated_at = datetime("now")');
@@ -110,27 +105,20 @@ export async function onRequestPut({ env, request, params }: any) {
       .bind(userId)
       .first();
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: updated,
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    return jsonResponse({
+      success: true,
+      data: updated,
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 
 // DELETE /api/v1/users/[id]
 export async function onRequestDelete({ env, request, params }: any) {
   try {
-    const { getAuthUser, checkRole, errorResponse } = await import('../../_utils');
+    const { getAuthUser, checkRole, errorResponse, jsonResponse } = await import('../../_utils');
     const user = getAuthUser(request);
     if (!user || !checkRole(user, ['admin'])) {
       return errorResponse('Forbidden', 403);
@@ -139,21 +127,13 @@ export async function onRequestDelete({ env, request, params }: any) {
     const userId = parseInt(id);
 
     await env.DB.prepare('DELETE FROM users WHERE id = ?').bind(userId).run();
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'User deleted successfully',
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    return jsonResponse({
+      success: true,
+      message: 'User deleted successfully',
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 

@@ -1,23 +1,22 @@
+// OPTIONS handler for CORS
+export async function onRequestOptions() {
+  const { corsHeaders } = await import('../../_utils');
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 export async function onRequestPost({ env, request }: any) {
-  if (request.method === 'OPTIONS') {
-    return new Response(null, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
-    });
-  }
 
   try {
     const body = await request.json();
     const { email } = body;
 
+    const { errorResponse, jsonResponse } = await import('../../_utils');
+    
     if (!email) {
-      return new Response(JSON.stringify({ error: 'Email is required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('Email is required', 400);
     }
 
     // Check if user exists
@@ -33,20 +32,13 @@ export async function onRequestPost({ env, request }: any) {
       console.log(`Password reset requested for: ${email}`);
     }
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'If an account with that email exists, a password reset link has been sent.',
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    return jsonResponse({
+      success: true,
+      message: 'If an account with that email exists, a password reset link has been sent.',
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 

@@ -51,17 +51,37 @@ export function checkRole(user: JWTPayload | null, allowedRoles: string[]): bool
   return allowedRoles.includes(user.role);
 }
 
+export const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Max-Age': '86400',
+};
+
 export function jsonResponse(data: any, status: number = 200): Response {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
+      ...corsHeaders,
     },
   });
 }
 
 export function errorResponse(message: string, status: number = 400): Response {
   return jsonResponse({ error: message }, status);
+}
+
+// Helper to add CORS headers to any Response
+export function addCorsHeaders(response: Response): Response {
+  const newHeaders = new Headers(response.headers);
+  Object.entries(corsHeaders).forEach(([key, value]) => {
+    newHeaders.set(key, value);
+  });
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: newHeaders,
+  });
 }
 

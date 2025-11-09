@@ -1,3 +1,12 @@
+// OPTIONS handler for CORS
+export async function onRequestOptions() {
+  const { corsHeaders } = await import('../_utils');
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 // GET /api/v1/tags - List all tags
 export async function onRequestGet({ env, request }: any) {
   try {
@@ -8,35 +17,25 @@ export async function onRequestGet({ env, request }: any) {
     }
     const results = await env.DB.prepare('SELECT * FROM tags ORDER BY name ASC').all();
 
+    const { jsonResponse } = await import('../_utils');
+    
     // Use mock data if no results
     if (!results.results || results.results.length === 0) {
       const { loadMockData } = await import('../_mock-data');
       const mockData = await loadMockData('tags');
-      return new Response(
-        JSON.stringify({
-          success: true,
-          data: mockData.data || [],
-        }),
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      return jsonResponse({
+        success: true,
+        data: mockData.data || [],
+      });
     }
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: results.results || [],
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    return jsonResponse({
+      success: true,
+      data: results.results || [],
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 
@@ -52,37 +51,28 @@ export async function onRequestPost({ env, request }: any) {
     const { name, slug } = body;
 
     if (!name || !slug) {
-      return new Response(JSON.stringify({ error: 'Name and slug are required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('Name and slug are required', 400);
     }
 
-    const result = await env.DB.prepare('INSERT INTO tags (name, slug) VALUES (?, ?) RETURNING *')
+    const insertResult = await env.DB.prepare('INSERT INTO tags (name, slug) VALUES (?, ?)')
       .bind(name, slug)
+      .run();
+
+    const result = await env.DB.prepare('SELECT * FROM tags WHERE id = ?')
+      .bind(insertResult.meta.last_row_id)
       .first();
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: result,
-      }),
-      {
-        status: 201,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    const { jsonResponse } = await import('../_utils');
+    return jsonResponse({
+      success: true,
+      data: result,
+    }, 201);
   } catch (err: any) {
+    const { errorResponse } = await import('../_utils');
     if (err.message?.includes('UNIQUE constraint')) {
-      return new Response(JSON.stringify({ error: 'Tag already exists' }), {
-        status: 409,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('Tag already exists', 409);
     }
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 

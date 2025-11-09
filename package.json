@@ -4,9 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:local": "npm run build && wrangler pages dev out",
     "build": "next build --turbopack",
     "start": "next start",
-    "deploy": "npm run build && npx wrangler pages deploy out"
+    "deploy": "npm run build && npx wrangler pages deploy out",
+    "db:create": "wrangler d1 create database",
+    "db:update": "wrangler d1 execute database --local --file=./schema.sql",
+    "db:deploy": "wrangler d1 execute database --file=./schema.sql --remote"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.6.2",

@@ -44,34 +44,29 @@ export function Sidebar() {
   const { user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Extract locale from pathname
-  const locale = pathname.split('/')[1] || 'vi';
-  const basePath = `/${locale}`;
-
   const filteredNav = navigation.filter((item) =>
     item.roles.includes(user?.role || 'viewer')
   );
 
   const isActive = (href: string) => {
-    const fullPath = `${basePath}${href}`;
-    return pathname === fullPath || pathname.startsWith(fullPath + '/');
+    return pathname === href || pathname.startsWith(href + '/');
   };
 
   const NavContent = () => (
     <>
       <div className="flex items-center justify-between p-4 border-b">
-        <Link href={`/${locale}/dashboard`} className="text-xl font-bold">
+        <Link href="/dashboard" className="text-xl font-bold">
           Dashboard
         </Link>
       </div>
-      <nav className="flex-1 p-4 space-y-1">
+      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
         {filteredNav.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.href);
           return (
             <Link
               key={item.name}
-              href={`${basePath}${item.href}`}
+              href={item.href}
               className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
                 active
                   ? 'bg-primary text-primary-foreground'
@@ -79,8 +74,8 @@ export function Sidebar() {
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              <Icon className="h-5 w-5" />
-              {item.name}
+              <Icon className="h-5 w-5 shrink-0" />
+              <span className="truncate">{item.name}</span>
             </Link>
           );
         })}
@@ -89,13 +84,13 @@ export function Sidebar() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="w-full justify-start gap-3">
-              <Avatar className="h-8 w-8">
+              <Avatar className="h-8 w-8 shrink-0">
                 <AvatarImage src={user?.avatar_url} alt={user?.name} />
                 <AvatarFallback>{user?.name?.[0]?.toUpperCase() || 'U'}</AvatarFallback>
               </Avatar>
-              <div className="flex-1 text-left">
-                <div className="text-sm font-medium">{user?.name}</div>
-                <div className="text-xs text-muted-foreground">{user?.role}</div>
+              <div className="flex-1 text-left min-w-0">
+                <div className="text-sm font-medium truncate">{user?.name}</div>
+                <div className="text-xs text-muted-foreground capitalize">{user?.role}</div>
               </div>
             </Button>
           </DropdownMenuTrigger>
@@ -103,7 +98,7 @@ export function Sidebar() {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href={`/${locale}/dashboard/settings/account`}>Profile Settings</Link>
+              <Link href="/dashboard/settings">Profile Settings</Link>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={logout}>
               <LogOut className="mr-2 h-4 w-4" />
@@ -118,19 +113,19 @@ export function Sidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-64 border-r bg-card">
+      <aside className="hidden lg:flex flex-col w-64 border-r bg-card text-card-foreground shrink-0">
         <NavContent />
       </aside>
 
       {/* Mobile Sidebar */}
-      <div className="md:hidden fixed top-4 left-4 z-50">
+      <div className="lg:hidden fixed top-4 left-4 z-50">
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
           <SheetTrigger asChild>
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" className="bg-background">
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-64 p-0">
+          <SheetContent side="left" className="w-64 p-0 bg-card">
             <NavContent />
           </SheetContent>
         </Sheet>

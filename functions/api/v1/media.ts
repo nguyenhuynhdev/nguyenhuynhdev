@@ -1,3 +1,12 @@
+// OPTIONS handler for CORS
+export async function onRequestOptions() {
+  const { corsHeaders } = await import('../_utils');
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
+
 // GET /api/v1/media - List all media
 export async function onRequestGet({ env, request }: any) {
   try {
@@ -22,26 +31,20 @@ export async function onRequestGet({ env, request }: any) {
 
     const countResult = await env.DB.prepare('SELECT COUNT(*) as total FROM media').first();
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: results.results,
-        pagination: {
-          page,
-          limit,
-          total: countResult?.total || 0,
-          totalPages: Math.ceil((countResult?.total || 0) / limit),
-        },
-      }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    const { jsonResponse } = await import('../_utils');
+    return jsonResponse({
+      success: true,
+      data: results.results,
+      pagination: {
+        page,
+        limit,
+        total: countResult?.total || 0,
+        totalPages: Math.ceil((countResult?.total || 0) / limit),
+      },
     });
+  } catch (err: any) {
+    const { errorResponse } = await import('../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 
@@ -57,34 +60,28 @@ export async function onRequestPost({ env, request }: any) {
     const { filename, original_filename, file_type, file_size, url, uploaded_by } = body;
 
     if (!filename || !original_filename || !file_type || !url) {
-      return new Response(JSON.stringify({ error: 'All fields are required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return errorResponse('All fields are required', 400);
     }
 
-    const result = await env.DB.prepare(
+    const insertResult = await env.DB.prepare(
       `INSERT INTO media (filename, original_filename, file_type, file_size, url, uploaded_by)
-       VALUES (?, ?, ?, ?, ?, ?) RETURNING *`
+       VALUES (?, ?, ?, ?, ?, ?)`
     )
       .bind(filename, original_filename, file_type, file_size || 0, url, uploaded_by || null)
+      .run();
+
+    const result = await env.DB.prepare('SELECT * FROM media WHERE id = ?')
+      .bind(insertResult.meta.last_row_id)
       .first();
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: result,
-      }),
-      {
-        status: 201,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    const { jsonResponse } = await import('../_utils');
+    return jsonResponse({
+      success: true,
+      data: result,
+    }, 201);
   } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || 'Request failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    const { errorResponse } = await import('../_utils');
+    return errorResponse(err.message || 'Request failed', 500);
   }
 }
 
