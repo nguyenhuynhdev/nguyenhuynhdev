@@ -1,79 +1,111 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useBreakpoint } from "@/hooks/use-breakpoint";
 import { 
-  FaGithub, 
-  FaExternalLinkAlt,
   FaCode,
   FaMobile,
   FaDesktop,
-  FaGlobe
+  FaGlobe,
+  FaCalendarAlt,
+  FaUser,
+  FaTag,
+  FaArrowRight,
+  FaEye,
+  FaHeart
 } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { apiClient } from "@/lib/api-client";
+import WorkArticleView from "../works/article-view";
 
-export default function WorksSection({ t }: { t: any }) {
+interface Work {
+  id: number;
+  title: string;
+  slug: string;
+  summary: string;
+  full_content?: string;
+  cover_image_url?: string;
+  author_name: string;
+  published_at?: string;
+  created_at: string;
+  tags: Array<{ id: number; name: string; slug: string }>;
+  featured: number;
+  view_count?: number;
+  likes_count?: number;
+  gallery?: Array<{ id: number; url: string; alt_text?: string; caption?: string }>;
+  timeline?: Array<any>;
+}
+
+export default function WorksSection({ t, locale }: { t: any; locale?: string }) {
   const bp = useBreakpoint();
+  const router = useRouter();
+  
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [works, setWorks] = useState<Work[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [postSlug, setPostSlug] = useState<string | null>(null);
 
-  const worksData = [
-    {
-      id: 1,
-      title: t.work1Title,
-      description: t.work1Description,
-      image: "/images/work1.jpg",
-      category: "web",
-      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Firebase"],
-      githubUrl: "https://github.com/nguyenhuynhdev/project1",
-      liveUrl: "https://project1.vercel.app",
-      featured: true
-    },
-    {
-      id: 2,
-      title: t.work2Title,
-      description: t.work2Description,
-      image: "/images/work2.jpg",
-      category: "mobile",
-      technologies: ["Flutter", "Dart", "Firebase", "REST API"],
-      githubUrl: "https://github.com/nguyenhuynhdev/project2",
-      liveUrl: "https://play.google.com/store/apps/details?id=com.project2",
-      featured: true
-    },
-    {
-      id: 3,
-      title: t.work3Title,
-      description: t.work3Description,
-      image: "/images/work3.jpg",
-      category: "desktop",
-      technologies: ["C#", ".NET", "WPF", "SQL Server"],
-      githubUrl: "https://github.com/nguyenhuynhdev/project3",
-      liveUrl: null,
-      featured: false
-    },
-    {
-      id: 4,
-      title: t.work4Title,
-      description: t.work4Description,
-      image: "/images/work4.jpg",
-      category: "web",
-      technologies: ["React", "Node.js", "MongoDB", "Express"],
-      githubUrl: "https://github.com/nguyenhuynhdev/project4",
-      liveUrl: "https://project4.netlify.app",
-      featured: false
-    }
-  ];
+  // Get post slug from URL query parameter
+  useEffect(() => {
+    const checkUrlParams = () => {
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        const slug = urlParams.get('post');
+        setPostSlug(slug);
+      }
+    };
+    
+    checkUrlParams();
+    // Listen for popstate events (back/forward button)
+    window.addEventListener('popstate', checkUrlParams);
+    // Also check on hashchange and focus
+    window.addEventListener('hashchange', checkUrlParams);
+    window.addEventListener('focus', checkUrlParams);
+    return () => {
+      window.removeEventListener('popstate', checkUrlParams);
+      window.removeEventListener('hashchange', checkUrlParams);
+      window.removeEventListener('focus', checkUrlParams);
+    };
+  }, []);
 
-  const categories = [
-    { id: "all", label: t.allWorks, icon: <FaCode /> },
-    { id: "web", label: t.webWorks, icon: <FaGlobe /> },
-    { id: "mobile", label: t.mobileWorks, icon: <FaMobile /> },
-    { id: "desktop", label: t.desktopWorks, icon: <FaDesktop /> }
-  ];
+  // Fetch works
+  useEffect(() => {
+    const fetchWorks = async () => {
+      try {
+        setLoading(true);
+        // For public access, API will only return published works
+        let url = `/works?page=${page}&limit=6&sortBy=published_at`;
+        
+        if (selectedCategory !== "all") {
+          // Filter by tag/category if needed
+          url += `&tag=${selectedCategory}`;
+        }
 
-  const filteredWorks = selectedCategory === "all" 
-    ? worksData 
-    : worksData.filter(work => work.category === selectedCategory);
+        const response = await apiClient.get<{
+          success: boolean;
+          data: Work[];
+          pagination: { page: number; totalPages: number; total: number };
+        }>(url);
+        
+        if (response.success) {
+          setWorks(response.data || []);
+          setTotalPages(response.pagination?.totalPages || 1);
+        }
+      } catch (error: any) {
+        console.error('Failed to load works:', error);
+        setWorks([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWorks();
+  }, [page, selectedCategory]);
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
@@ -83,6 +115,32 @@ export default function WorksSection({ t }: { t: any }) {
       default: return <FaCode className="w-4 h-4" />;
     }
   };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  const closeWorkDetail = () => {
+    const workLocale = locale || 'en';
+    // Update URL without query parameter - use router to navigate
+    setPostSlug(null);
+    router.push(`/${workLocale}/works`);
+  };
+
+  // If postSlug is present, show full article view instead of works list
+  if (postSlug) {
+    return (
+      <WorkArticleView 
+        slug={postSlug} 
+        locale={locale || 'en'} 
+        onClose={closeWorkDetail}
+      />
+    );
+  }
 
   return (
     <section className="relative bg-transparent overflow-hidden py-16 lg:py-20 px-6 md:px-10">
@@ -110,104 +168,177 @@ export default function WorksSection({ t }: { t: any }) {
 
         {/* Category Filter */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {categories.map((category) => (
-            <Button
-              key={category.id}
-              variant={selectedCategory === category.id ? "default" : "outline"}
-              size="sm"
-              onClick={() => setSelectedCategory(category.id)}
-              className="flex items-center gap-2"
-            >
-              {category.icon}
-              {category.label}
-            </Button>
-          ))}
+          <Button
+            key="all"
+            variant={selectedCategory === "all" ? "default" : "outline"}
+            size="sm"
+            onClick={() => {
+              setSelectedCategory("all");
+              setPage(1);
+            }}
+            className="flex items-center gap-2"
+          >
+            <FaCode />
+            {t.allWorks || "All Works"}
+          </Button>
+          {/* Add more category filters if needed */}
         </div>
+
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600 dark:text-gray-400">Loading works...</p>
+          </div>
+        )}
 
         {/* Works Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredWorks.map((work) => (
-            <div
-              key={work.id}
-              className="group relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-indigo-500/20 hover:-translate-y-2 hover:scale-[1.02]"
-            >
-              {/* Featured Badge */}
-              {work.featured && (
-                <div className="absolute top-4 left-4 z-10">
-                  <Badge variant="default" className="bg-indigo-500 text-white">
-                    {t.featured}
-                  </Badge>
-                </div>
-              )}
-
-              {/* Project Image */}
-              <div className="relative h-48 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/50 dark:to-purple-900/50 overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  {getCategoryIcon(work.category)}
-                </div>
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+        {!loading && (
+          <>
+            {works.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-gray-600 dark:text-gray-400">{t.noWorks || "No works found"}</p>
               </div>
-
-              {/* Project Content */}
-              <div className="p-6">
-                <div className="flex items-center gap-2 mb-3">
-                  {getCategoryIcon(work.category)}
-                  <span className="text-sm text-gray-500 dark:text-gray-400 capitalize">
-                    {work.category}
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent group-hover:from-indigo-500 group-hover:to-purple-500 transition-all duration-300 mb-3 leading-tight py-1">
-                  {work.title}
-                </h3>
-
-                <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
-                  {work.description}
-                </p>
-
-                {/* Technologies */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {work.technologies.map((tech, index) => (
-                    <Badge key={index} variant="secondary" className="text-xs">
-                      {tech}
-                    </Badge>
-                  ))}
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex gap-3">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1 flex items-center gap-2"
-                    onClick={() => window.open(work.githubUrl, '_blank')}
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {works.map((work) => (
+                  <div
+                    key={work.id}
+                    className="group relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-indigo-500/20 hover:-translate-y-2 hover:scale-[1.02] cursor-pointer"
+                    onClick={() => {
+                      const workLocale = locale || 'en';
+                      const url = `/${workLocale}/works?post=${work.slug}`.replace(/\/works\/\?/, '/works?');
+                      if (typeof window !== 'undefined') {
+                        window.history.pushState({}, '', url);
+                        setPostSlug(work.slug);
+                      }
+                      router.push(url);
+                    }}
                   >
-                    <FaGithub className="w-4 h-4" />
-                    {t.viewCode}
-                  </Button>
-                  {work.liveUrl && (
-                    <Button
-                      variant="default"
-                      size="sm"
-                      className="flex-1 flex items-center gap-2"
-                      onClick={() => window.open(work.liveUrl, '_blank')}
-                    >
-                      <FaExternalLinkAlt className="w-4 h-4" />
-                      {t.viewLive}
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+                    {/* Featured Badge */}
+                    {work.featured === 1 && (
+                      <div className="absolute top-4 left-4 z-10">
+                        <Badge variant="default" className="bg-indigo-500 text-white">
+                          {t.featured || "Featured"}
+                        </Badge>
+                      </div>
+                    )}
 
-        {/* View More Button */}
-        <div className="text-center mt-12">
-          <Button variant="outline" size="lg" className="px-8">
-            {t.viewMoreWorks}
-          </Button>
-        </div>
+                    {/* Project Image */}
+                    <div className="relative h-48 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/50 dark:to-purple-900/50 overflow-hidden">
+                      {work.cover_image_url ? (
+                        <img
+                          src={work.cover_image_url}
+                          alt={work.title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <FaCode className="w-12 h-12 text-indigo-400" />
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+                    </div>
+
+                    {/* Project Content */}
+                    <div className="p-6">
+                      {/* Meta Info */}
+                      <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-3 flex-wrap">
+                        {work.published_at && (
+                          <span>{formatDate(work.published_at)}</span>
+                        )}
+                        {work.author_name && (
+                          <span>{work.author_name}</span>
+                        )}
+                      </div>
+
+                      <h3 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent group-hover:from-indigo-500 group-hover:to-purple-500 transition-all duration-300 mb-3 leading-tight py-1">
+                        {work.title}
+                      </h3>
+
+                      <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4 line-clamp-3">
+                        {work.summary || ''}
+                      </p>
+
+                      {/* Technologies/Tags */}
+                      {work.tags && work.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {work.tags.slice(0, 4).map((tag) => (
+                            <Badge key={tag.id} variant="secondary" className="text-xs">
+                              {tag.name}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Action Buttons */}
+                      <div className="flex gap-3">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex-1 flex items-center gap-2"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const workLocale = locale || 'en';
+                            const url = `/${workLocale}/works?post=${work.slug}`.replace(/\/works\/\?/, '/works?');
+                            if (typeof window !== 'undefined') {
+                              window.history.pushState({}, '', url);
+                              setPostSlug(work.slug);
+                            }
+                            router.push(url);
+                          }}
+                        >
+                          {t.viewDetails || "View Details"}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-4 mt-12">
+                <Button
+                  variant="outline"
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={page === 1 || loading}
+                >
+                  Previous
+                </Button>
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Page {page} of {totalPages}
+                </span>
+                <Button
+                  variant="outline"
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={page === totalPages || loading}
+                >
+                  Next
+                </Button>
+              </div>
+            )}
+
+            {/* View More Button */}
+            <div className="text-center mt-12">
+              <Button
+                variant="outline"
+                size="lg"
+                className="px-8"
+                onClick={() => {
+                  const workLocale = locale || 'en';
+                  router.push(`/${workLocale}/works`);
+                }}
+              >
+                {t.viewMoreWorks || "View More Works"}
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

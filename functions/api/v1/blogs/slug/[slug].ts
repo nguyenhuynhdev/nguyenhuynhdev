@@ -8,8 +8,19 @@ export async function onRequestOptions() {
 }
 
 // GET /api/v1/blogs/slug/[slug] - Get blog by slug
-export async function onRequestGet({ env, params }: any) {
+export async function onRequestGet({ env, params, request }: any) {
   try {
+    const { getAuthUser, checkRole, errorResponse, jsonResponse } = await import('../../../_utils');
+    // Allow public access - try to get user but don't require authentication
+    let user = null;
+    try {
+      if (request) {
+        user = getAuthUser(request);
+      }
+    } catch {
+      // Ignore auth errors for public access
+      user = null;
+    }
     const { slug } = await params;
 
     const blog = await env.DB.prepare(
@@ -23,11 +34,16 @@ export async function onRequestGet({ env, params }: any) {
     )
       .bind(slug)
       .first();
-
-    const { errorResponse, jsonResponse } = await import('../../../_utils');
     
     if (!blog) {
       return errorResponse('Blog not found', 404);
+    }
+
+    // Public access: only show published blogs, or allow authenticated users to see their own
+    if (blog.status !== 'published') {
+      if (!user || (blog.author_id !== user.userId && !checkRole(user, ['admin']))) {
+        return errorResponse('Blog not found', 404); // Don't reveal existence of unpublished blogs
+      }
     }
 
     const tags = await env.DB.prepare(
@@ -37,6 +53,14 @@ export async function onRequestGet({ env, params }: any) {
     )
       .bind(blog.id)
       .all();
+
+    // Increment view count if published and not author/admin viewing
+    if (blog.status === 'published' && (!user || blog.author_id !== user.userId)) {
+      await env.DB.prepare('UPDATE blogs SET view_count = view_count + 1 WHERE id = ?')
+        .bind(blog.id)
+        .run();
+      blog.view_count = (blog.view_count || 0) + 1;
+    }
 
     return jsonResponse({
       success: true,

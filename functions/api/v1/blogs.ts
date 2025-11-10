@@ -12,19 +12,18 @@ export async function onRequestGet({ env, request }: any) {
   try {
     const { getAuthUser, checkRole, errorResponse } = await import('../_utils');
     const user = getAuthUser(request);
-    if (!user) {
-      return errorResponse('Unauthorized', 401);
-    }
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get('page') || '1');
     const limit = parseInt(url.searchParams.get('limit') || '20');
     const sortBy = url.searchParams.get('sortBy') || 'publish_date';
     const status = url.searchParams.get('status');
+    const search = url.searchParams.get('search');
+    const categoryId = url.searchParams.get('category_id');
     const offset = (page - 1) * limit;
 
     let query = `
       SELECT 
-        b.id, b.title, b.slug, b.excerpt, b.cover_image, b.status, 
+        b.id, b.title, b.slug, b.summary, b.cover_image, b.status, 
         b.reading_time, b.view_count, b.featured, b.publish_date,
         b.created_at, b.updated_at,
         u.id as author_id, u.name as author_name, u.avatar_url as author_avatar,
@@ -37,15 +36,35 @@ export async function onRequestGet({ env, request }: any) {
     const conditions: string[] = [];
     const bindings: any[] = [];
 
-    // Editors and viewers can only see published blogs or their own
-    if (!checkRole(user, ['admin'])) {
+    // Public access: if no user or user is not admin, only show published blogs
+    if (!user) {
+      // Public access - only show published blogs
+      conditions.push('b.status = "published"');
+    } else if (!checkRole(user, ['admin'])) {
+      // Authenticated but not admin - show published or own blogs
+      if (status && status !== 'published') {
+        // Non-admin can only see published, so ignore other status filters
+        // But if they explicitly request published, show it
+      }
       conditions.push('(b.status = "published" OR b.author_id = ?)');
       bindings.push(user.userId);
+    } else {
+      // Admin users can see all blogs or filter by status
+      if (status) {
+        conditions.push('b.status = ?');
+        bindings.push(status);
+      }
     }
 
-    if (status) {
-      conditions.push('b.status = ?');
-      bindings.push(status);
+    if (search) {
+      conditions.push('(b.title LIKE ? OR b.summary LIKE ?)');
+      const searchTerm = `%${search}%`;
+      bindings.push(searchTerm, searchTerm);
+    }
+
+    if (categoryId) {
+      conditions.push('b.category_id = ?');
+      bindings.push(parseInt(categoryId));
     }
 
     if (conditions.length > 0) {
@@ -89,10 +108,15 @@ export async function onRequestGet({ env, request }: any) {
       })
     );
 
-    const countQuery = conditions.length > 0
-      ? `SELECT COUNT(*) as total FROM blogs b WHERE ${conditions.join(' AND ')}`
-      : 'SELECT COUNT(*) as total FROM blogs';
-    const countBindings = bindings.slice(0, -2);
+    // Build count query with same conditions (without limit/offset bindings)
+    let countQuery = `SELECT COUNT(*) as total FROM blogs b`;
+    // Use the same conditions but remove limit and offset from bindings
+    const countBindings = bindings.slice(0, -2); // Remove limit and offset (last 2)
+    
+    if (conditions.length > 0) {
+      countQuery += ` WHERE ${conditions.join(' AND ')}`;
+    }
+    
     const countResult = await env.DB.prepare(countQuery)
       .bind(...countBindings)
       .first();
@@ -126,7 +150,7 @@ export async function onRequestPost({ env, request }: any) {
     const {
       title,
       slug,
-      excerpt,
+      summary,
       content,
       cover_image,
       meta_title,
@@ -147,9 +171,19 @@ export async function onRequestPost({ env, request }: any) {
     }
 
     // Calculate reading time (simple: ~200 words per minute)
-    const wordsPerMinute = 200;
-    const words = content.trim().split(/\s+/).length;
-    const readingTime = Math.max(1, Math.ceil(words / wordsPerMinute));
+    // Strip HTML tags for accurate word count
+    function calculateReadingTime(htmlContent: string): number {
+      if (!htmlContent) return 1;
+      // Remove HTML tags
+      const textWithoutTags = htmlContent.replace(/<[^>]*>/g, ' ');
+      // Normalize whitespace
+      const normalizedText = textWithoutTags.replace(/\s+/g, ' ').trim();
+      // Count words (split by spaces and filter empty strings)
+      const words = normalizedText ? normalizedText.split(' ').filter((w) => w.length > 0).length : 0;
+      // Calculate reading time (200 words per minute)
+      return Math.max(1, Math.ceil(words / 200));
+    }
+    const readingTime = calculateReadingTime(content);
 
     const finalPublishDate =
       status === 'published' && !publish_date ? new Date().toISOString() : publish_date;
@@ -157,14 +191,14 @@ export async function onRequestPost({ env, request }: any) {
     // Insert blog
     const insertResult = await env.DB.prepare(
       `INSERT INTO blogs (
-        title, slug, excerpt, content, cover_image, meta_title, meta_description,
+        title, slug, summary, content, cover_image, meta_title, meta_description,
         category_id, status, featured, author_id, reading_time, publish_date
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
       .bind(
         title,
         slug,
-        excerpt || null,
+        summary || null,
         content,
         cover_image || null,
         meta_title || null,
@@ -179,6 +213,12 @@ export async function onRequestPost({ env, request }: any) {
       .run();
 
     const blogId = insertResult.meta.last_row_id;
+
+    // Update slug to include ID: {title-slug}-{id}
+    const finalSlug = `${slug}-${blogId}`;
+    await env.DB.prepare('UPDATE blogs SET slug = ? WHERE id = ?')
+      .bind(finalSlug, blogId)
+      .run();
 
     // Insert tags
     if (tags.length > 0) {

@@ -20,24 +20,68 @@ export async function onRequestGet({ env, request }: any) {
     const limit = parseInt(url.searchParams.get('limit') || '20');
     const offset = (page - 1) * limit;
 
-    const results = await env.DB.prepare(
-      `SELECT p.*, u.name as created_by_name 
-       FROM projects p 
-       LEFT JOIN users u ON p.created_by = u.id 
-       ORDER BY p.created_at DESC LIMIT ? OFFSET ?`
-    )
-      .bind(limit, offset)
-      .all();
+    let query = `
+      SELECT p.*, u.name as created_by_name 
+      FROM projects p 
+      LEFT JOIN users u ON p.created_by = u.id
+    `;
+    const conditions: string[] = [];
+    const bindings: any[] = [];
 
-    const countResult = await env.DB.prepare('SELECT COUNT(*) as total FROM projects').first();
+    // Add search filter if provided
+    const search = url.searchParams.get('search');
+    if (search) {
+      conditions.push('(p.title LIKE ? OR p.description LIKE ?)');
+      const searchTerm = `%${search}%`;
+      bindings.push(searchTerm, searchTerm);
+    }
+
+    // Add status filter if provided
+    const status = url.searchParams.get('status');
+    if (status) {
+      conditions.push('p.status = ?');
+      bindings.push(status);
+    }
+
+    if (conditions.length > 0) {
+      query += ' WHERE ' + conditions.join(' AND ');
+    }
+
+    query += ' ORDER BY p.created_at DESC LIMIT ? OFFSET ?';
+    bindings.push(limit, offset);
+
+    const results = await env.DB.prepare(query).bind(...bindings).all();
+
+    // Get total count
+    let countQuery = 'SELECT COUNT(*) as total FROM projects p';
+    if (conditions.length > 0) {
+      countQuery += ' WHERE ' + conditions.join(' AND ');
+    }
+    const countResult = await env.DB.prepare(countQuery).bind(...bindings.slice(0, -2)).first();
+
+    // Parse tags for each project and get tag details if tags are slug strings
+    const projects = results.results.map((p: any) => {
+      let tags = [];
+      if (p.tags) {
+        try {
+          const tagData = JSON.parse(p.tags);
+          if (Array.isArray(tagData)) {
+            tags = tagData;
+          }
+        } catch (e) {
+          // Ignore parse errors
+        }
+      }
+      return {
+        ...p,
+        tags,
+      };
+    });
 
     const { jsonResponse } = await import('../_utils');
     return jsonResponse({
       success: true,
-      data: results.results.map((p: any) => ({
-        ...p,
-        tags: p.tags ? JSON.parse(p.tags) : [],
-      })),
+      data: projects,
       pagination: {
         page,
         limit,

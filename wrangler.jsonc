@@ -14,7 +14,11 @@
 			"database_name": "database",
 			"database_id": "442877c2-6dc7-4fbf-bc10-5b6c1d189259"
 		}
-	]
+	],
+	"vars": {
+		"CLOUDFLARE_ACCOUNT_ID": "",
+		"CLOUDFLARE_API_TOKEN": ""
+	}
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

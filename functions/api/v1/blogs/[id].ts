@@ -97,21 +97,34 @@ export async function onRequestPut({ env, request, params }: any) {
       values.push(body.title);
     }
     if (body.slug !== undefined) {
+      // Ensure slug ends with -{id} format
+      const slugWithoutId = body.slug.replace(/-?\d+$/, '');
+      const finalSlug = `${slugWithoutId}-${blogId}`;
       updates.push('slug = ?');
-      values.push(body.slug);
+      values.push(finalSlug);
     }
-    if (body.excerpt !== undefined) {
-      updates.push('excerpt = ?');
-      values.push(body.excerpt);
+    if (body.summary !== undefined) {
+      updates.push('summary = ?');
+      values.push(body.summary);
     }
     if (body.content !== undefined) {
       updates.push('content = ?');
       values.push(body.content);
-      // Recalculate reading time
-      const wordsPerMinute = 200;
-      const words = body.content.trim().split(/\s+/).length;
+      // Recalculate reading time - strip HTML tags for accurate word count
+      function calculateReadingTime(htmlContent: string): number {
+        if (!htmlContent) return 1;
+        // Remove HTML tags
+        const textWithoutTags = htmlContent.replace(/<[^>]*>/g, ' ');
+        // Normalize whitespace
+        const normalizedText = textWithoutTags.replace(/\s+/g, ' ').trim();
+        // Count words (split by spaces and filter empty strings)
+        const words = normalizedText ? normalizedText.split(' ').filter((w) => w.length > 0).length : 0;
+        // Calculate reading time (200 words per minute)
+        return Math.max(1, Math.ceil(words / 200));
+      }
+      const readingTime = calculateReadingTime(body.content);
       updates.push('reading_time = ?');
-      values.push(Math.max(1, Math.ceil(words / wordsPerMinute)));
+      values.push(readingTime);
     }
     if (body.cover_image !== undefined) {
       updates.push('cover_image = ?');

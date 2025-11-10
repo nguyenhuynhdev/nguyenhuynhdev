@@ -52,7 +52,6 @@ export default function LoginPage() {
       </div>
     );
   }
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-background text-foreground p-4">
       <Card className="w-full max-w-md bg-card text-card-foreground border border-border shadow-lg">
@@ -116,4 +115,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
 

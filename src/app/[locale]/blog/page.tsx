@@ -17,7 +17,7 @@ export default async function BlogPage({
 
   return (
     <div className="flex flex-col min-h-screen">
-      <BlogSection t={t.blog} />
+      <BlogSection t={t.blog} locale={locale} />
     </div>
   );
 }

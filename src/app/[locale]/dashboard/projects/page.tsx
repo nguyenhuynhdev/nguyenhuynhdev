@@ -23,8 +23,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Edit, Trash2, Plus } from 'lucide-react';
+import { Edit, Trash2, Plus, Search } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
+import { Input } from '@/components/ui/input';
 
 interface Project {
   id: number;
@@ -33,6 +34,8 @@ interface Project {
   status: string;
   featured: number;
   created_at: string;
+  tags?: string[];
+  created_by_name?: string;
 }
 
 export default function ProjectsPage() {
@@ -44,22 +47,31 @@ export default function ProjectsPage() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; projectId?: number }>({
     open: false,
   });
 
   useEffect(() => {
     loadProjects();
-  }, [page]);
+  }, [page, statusFilter]);
 
   const loadProjects = async () => {
     try {
       setLoading(true);
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: '20',
+      });
+      if (statusFilter) params.append('status', statusFilter);
+      if (search) params.append('search', search);
+
       const response = await apiClient.get<{
         success: boolean;
         data: Project[];
         pagination: { page: number; totalPages: number };
-      }>(`/projects?page=${page}&limit=20`);
+      }>(`/projects?${params.toString()}`);
       setProjects(response.data);
       setTotalPages(response.pagination.totalPages);
     } catch (error: any) {
@@ -103,26 +115,60 @@ export default function ProjectsPage() {
         ]}
       />
 
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Title</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Created</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
+      <div className="space-y-4">
+        {/* Filters */}
+        <div className="flex gap-4 flex-wrap">
+          <div className="relative flex-1 min-w-[200px]">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search projects..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  loadProjects();
+                }
+              }}
+              className="pl-10"
+            />
+          </div>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="px-3 py-2 border rounded-md bg-background"
+          >
+            <option value="">All Status</option>
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+            <option value="archived">Archived</option>
+          </select>
+          <Button onClick={loadProjects} variant="outline">
+            Filter
+          </Button>
+        </div>
+
+        <div className="rounded-md border overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Title</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Tags</TableHead>
+                <TableHead>Created By</TableHead>
+                <TableHead>Created</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={4} className="text-center py-8">
+                <TableCell colSpan={6} className="text-center py-8">
                   Loading...
                 </TableCell>
               </TableRow>
             ) : projects.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
                   No projects found
                 </TableCell>
               </TableRow>
@@ -146,6 +192,25 @@ export default function ProjectsPage() {
                       {project.status}
                     </Badge>
                   </TableCell>
+                  <TableCell>
+                    <div className="flex flex-wrap gap-1">
+                      {project.tags && project.tags.length > 0 ? (
+                        project.tags.slice(0, 3).map((tag, index) => (
+                          <Badge key={index} variant="outline" className="text-xs">
+                            {tag}
+                          </Badge>
+                        ))
+                      ) : (
+                        <span className="text-muted-foreground text-sm">-</span>
+                      )}
+                      {project.tags && project.tags.length > 3 && (
+                        <Badge variant="outline" className="text-xs">
+                          +{project.tags.length - 3}
+                        </Badge>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell>{project.created_by_name || '-'}</TableCell>
                   <TableCell>
                     {new Date(project.created_at).toLocaleDateString()}
                   </TableCell>
@@ -178,9 +243,9 @@ export default function ProjectsPage() {
             )}
           </TableBody>
         </Table>
-      </div>
+        </div>
 
-      {totalPages > 1 && (
+        {totalPages > 1 && (
         <div className="flex items-center justify-between mt-4">
           <Button
             variant="outline"
@@ -200,7 +265,8 @@ export default function ProjectsPage() {
             Next
           </Button>
         </div>
-      )}
+        )}
+      </div>
 
       <Dialog open={deleteDialog.open} onOpenChange={(open) => setDeleteDialog({ open })}>
         <DialogContent>

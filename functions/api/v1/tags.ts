@@ -7,26 +7,66 @@ export async function onRequestOptions() {
   });
 }
 
-// GET /api/v1/tags - List all tags
+// GET /api/v1/tags - List all tags with usage counts
 export async function onRequestGet({ env, request }: any) {
   try {
-    const { getAuthUser, errorResponse } = await import('../_utils');
+    const { getAuthUser, errorResponse, jsonResponse } = await import('../_utils');
     const user = getAuthUser(request);
     if (!user) {
       return errorResponse('Unauthorized', 401);
     }
-    const results = await env.DB.prepare('SELECT * FROM tags ORDER BY name ASC').all();
 
-    const { jsonResponse } = await import('../_utils');
-    
-    // Use mock data if no results
-    if (!results.results || results.results.length === 0) {
-      const { loadMockData } = await import('../_mock-data');
-      const mockData = await loadMockData('tags');
-      return jsonResponse({
-        success: true,
-        data: mockData.data || [],
-      });
+    const url = new URL(request.url);
+    const includeUsage = url.searchParams.get('include_usage') === 'true';
+    const search = url.searchParams.get('search');
+
+    let query = 'SELECT * FROM tags';
+    const bindings: any[] = [];
+
+    if (search) {
+      query += ' WHERE name LIKE ? OR slug LIKE ?';
+      const searchTerm = `%${search}%`;
+      bindings.push(searchTerm, searchTerm);
+    }
+
+    query += ' ORDER BY name ASC';
+
+    const results = await env.DB.prepare(query).bind(...bindings).all();
+
+    // Get usage counts if requested
+    if (includeUsage && results.results) {
+      for (const tag of results.results) {
+        const blogCount = await env.DB.prepare(
+          'SELECT COUNT(*) as count FROM blog_tags WHERE tag_id = ?'
+        ).bind(tag.id).first();
+
+        const workCount = await env.DB.prepare(
+          'SELECT COUNT(*) as count FROM work_tags WHERE tag_id = ?'
+        ).bind(tag.id).first();
+
+        // Count projects using this tag
+        const projectsResult = await env.DB.prepare('SELECT tags FROM projects').all();
+        let projectCount = 0;
+        for (const project of projectsResult.results || []) {
+          if (project.tags) {
+            try {
+              const tags = JSON.parse(project.tags);
+              if (Array.isArray(tags) && tags.includes(tag.slug)) {
+                projectCount++;
+              }
+            } catch (e) {
+              // Ignore parse errors
+            }
+          }
+        }
+
+        tag.usage = {
+          blogs: blogCount?.count || 0,
+          works: workCount?.count || 0,
+          projects: projectCount,
+          total: (blogCount?.count || 0) + (workCount?.count || 0) + projectCount,
+        };
+      }
     }
 
     return jsonResponse({

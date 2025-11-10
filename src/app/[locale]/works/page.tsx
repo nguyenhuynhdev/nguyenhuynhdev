@@ -17,7 +17,7 @@ export default async function WorksPage({
 
   return (
     <div className="flex flex-col min-h-screen">
-      <WorksSection t={t.works} />
+      <WorksSection t={t.works} locale={locale} />
     </div>
   );
 }

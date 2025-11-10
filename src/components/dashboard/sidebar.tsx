@@ -14,6 +14,7 @@ import {
   Users,
   LogOut,
   Menu,
+  Tags,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -31,7 +32,9 @@ import { useState } from 'react';
 const navigation = [
   { name: 'Overview', href: '/dashboard', icon: LayoutDashboard, roles: ['admin', 'editor', 'viewer'] },
   { name: 'Blogs', href: '/dashboard/blogs', icon: FileText, roles: ['admin', 'editor', 'viewer'] },
+  { name: 'Works', href: '/dashboard/works', icon: FolderKanban, roles: ['admin', 'editor', 'viewer'] },
   { name: 'Projects', href: '/dashboard/projects', icon: FolderKanban, roles: ['admin', 'editor', 'viewer'] },
+  { name: 'Tags', href: '/dashboard/tags', icon: Tags, roles: ['admin', 'editor'] },
   { name: 'Media', href: '/dashboard/media', icon: Image, roles: ['admin', 'editor', 'viewer'] },
   { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3, roles: ['admin', 'editor'] },
   { name: 'Users', href: '/dashboard/users', icon: Users, roles: ['admin'] },
@@ -98,7 +101,7 @@ export function Sidebar() {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/dashboard/settings">Profile Settings</Link>
+              <Link href="/dashboard/profile">Profile Settings</Link>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={logout}>
               <LogOut className="mr-2 h-4 w-4" />

@@ -174,7 +174,7 @@ export default function BlogsPage() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => router.push(`/dashboard/blogs/${blog.id}/edit`)}
+                            onClick={() => router.push(`/dashboard/blogs/edit?post_id=${blog.id}`)}
                           >
                             <Edit className="h-4 w-4" />
                           </Button>

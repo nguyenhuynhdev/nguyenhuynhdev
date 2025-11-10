@@ -1,42 +1,12 @@
-var __create = Object.create;
 var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-var __esm = (fn, res) => function __init() {
-  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-};
-var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-};
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
 
-// ../node_modules/unenv/dist/runtime/_internal/utils.mjs
+// node_modules/unenv/dist/runtime/_internal/utils.mjs
 // @__NO_SIDE_EFFECTS__
 function createNotImplementedError(name) {
   return new Error(`[unenv] ${name} is not implemented yet!`);
 }
+__name(createNotImplementedError, "createNotImplementedError");
 // @__NO_SIDE_EFFECTS__
 function notImplemented(name) {
   const fn = /* @__PURE__ */ __name(() => {
@@ -44,6 +14,7 @@ function notImplemented(name) {
   }, "fn");
   return Object.assign(fn, { __unenv__: true });
 }
+__name(notImplemented, "notImplemented");
 // @__NO_SIDE_EFFECTS__
 function notImplementedClass(name) {
   return class {
@@ -53,20 +24,1013 @@ function notImplementedClass(name) {
     }
   };
 }
+__name(notImplementedClass, "notImplementedClass");
+
+// node_modules/unenv/dist/runtime/node/internal/perf_hooks/performance.mjs
+var _timeOrigin = globalThis.performance?.timeOrigin ?? Date.now();
+var _performanceNow = globalThis.performance?.now ? globalThis.performance.now.bind(globalThis.performance) : () => Date.now() - _timeOrigin;
+var nodeTiming = {
+  name: "node",
+  entryType: "node",
+  startTime: 0,
+  duration: 0,
+  nodeStart: 0,
+  v8Start: 0,
+  bootstrapComplete: 0,
+  environment: 0,
+  loopStart: 0,
+  loopExit: 0,
+  idleTime: 0,
+  uvMetricsInfo: {
+    loopCount: 0,
+    events: 0,
+    eventsWaiting: 0
+  },
+  detail: void 0,
+  toJSON() {
+    return this;
+  }
+};
+var PerformanceEntry = class {
+  static {
+    __name(this, "PerformanceEntry");
+  }
+  __unenv__ = true;
+  detail;
+  entryType = "event";
+  name;
+  startTime;
+  constructor(name, options) {
+    this.name = name;
+    this.startTime = options?.startTime || _performanceNow();
+    this.detail = options?.detail;
+  }
+  get duration() {
+    return _performanceNow() - this.startTime;
+  }
+  toJSON() {
+    return {
+      name: this.name,
+      entryType: this.entryType,
+      startTime: this.startTime,
+      duration: this.duration,
+      detail: this.detail
+    };
+  }
+};
+var PerformanceMark = class PerformanceMark2 extends PerformanceEntry {
+  static {
+    __name(this, "PerformanceMark");
+  }
+  entryType = "mark";
+  constructor() {
+    super(...arguments);
+  }
+  get duration() {
+    return 0;
+  }
+};
+var PerformanceMeasure = class extends PerformanceEntry {
+  static {
+    __name(this, "PerformanceMeasure");
+  }
+  entryType = "measure";
+};
+var PerformanceResourceTiming = class extends PerformanceEntry {
+  static {
+    __name(this, "PerformanceResourceTiming");
+  }
+  entryType = "resource";
+  serverTiming = [];
+  connectEnd = 0;
+  connectStart = 0;
+  decodedBodySize = 0;
+  domainLookupEnd = 0;
+  domainLookupStart = 0;
+  encodedBodySize = 0;
+  fetchStart = 0;
+  initiatorType = "";
+  name = "";
+  nextHopProtocol = "";
+  redirectEnd = 0;
+  redirectStart = 0;
+  requestStart = 0;
+  responseEnd = 0;
+  responseStart = 0;
+  secureConnectionStart = 0;
+  startTime = 0;
+  transferSize = 0;
+  workerStart = 0;
+  responseStatus = 0;
+};
+var PerformanceObserverEntryList = class {
+  static {
+    __name(this, "PerformanceObserverEntryList");
+  }
+  __unenv__ = true;
+  getEntries() {
+    return [];
+  }
+  getEntriesByName(_name, _type) {
+    return [];
+  }
+  getEntriesByType(type) {
+    return [];
+  }
+};
+var Performance = class {
+  static {
+    __name(this, "Performance");
+  }
+  __unenv__ = true;
+  timeOrigin = _timeOrigin;
+  eventCounts = /* @__PURE__ */ new Map();
+  _entries = [];
+  _resourceTimingBufferSize = 0;
+  navigation = void 0;
+  timing = void 0;
+  timerify(_fn, _options) {
+    throw createNotImplementedError("Performance.timerify");
+  }
+  get nodeTiming() {
+    return nodeTiming;
+  }
+  eventLoopUtilization() {
+    return {};
+  }
+  markResourceTiming() {
+    return new PerformanceResourceTiming("");
+  }
+  onresourcetimingbufferfull = null;
+  now() {
+    if (this.timeOrigin === _timeOrigin) {
+      return _performanceNow();
+    }
+    return Date.now() - this.timeOrigin;
+  }
+  clearMarks(markName) {
+    this._entries = markName ? this._entries.filter((e) => e.name !== markName) : this._entries.filter((e) => e.entryType !== "mark");
+  }
+  clearMeasures(measureName) {
+    this._entries = measureName ? this._entries.filter((e) => e.name !== measureName) : this._entries.filter((e) => e.entryType !== "measure");
+  }
+  clearResourceTimings() {
+    this._entries = this._entries.filter((e) => e.entryType !== "resource" || e.entryType !== "navigation");
+  }
+  getEntries() {
+    return this._entries;
+  }
+  getEntriesByName(name, type) {
+    return this._entries.filter((e) => e.name === name && (!type || e.entryType === type));
+  }
+  getEntriesByType(type) {
+    return this._entries.filter((e) => e.entryType === type);
+  }
+  mark(name, options) {
+    const entry = new PerformanceMark(name, options);
+    this._entries.push(entry);
+    return entry;
+  }
+  measure(measureName, startOrMeasureOptions, endMark) {
+    let start;
+    let end;
+    if (typeof startOrMeasureOptions === "string") {
+      start = this.getEntriesByName(startOrMeasureOptions, "mark")[0]?.startTime;
+      end = this.getEntriesByName(endMark, "mark")[0]?.startTime;
+    } else {
+      start = Number.parseFloat(startOrMeasureOptions?.start) || this.now();
+      end = Number.parseFloat(startOrMeasureOptions?.end) || this.now();
+    }
+    const entry = new PerformanceMeasure(measureName, {
+      startTime: start,
+      detail: {
+        start,
+        end
+      }
+    });
+    this._entries.push(entry);
+    return entry;
+  }
+  setResourceTimingBufferSize(maxSize) {
+    this._resourceTimingBufferSize = maxSize;
+  }
+  addEventListener(type, listener, options) {
+    throw createNotImplementedError("Performance.addEventListener");
+  }
+  removeEventListener(type, listener, options) {
+    throw createNotImplementedError("Performance.removeEventListener");
+  }
+  dispatchEvent(event) {
+    throw createNotImplementedError("Performance.dispatchEvent");
+  }
+  toJSON() {
+    return this;
+  }
+};
+var PerformanceObserver = class {
+  static {
+    __name(this, "PerformanceObserver");
+  }
+  __unenv__ = true;
+  static supportedEntryTypes = [];
+  _callback = null;
+  constructor(callback) {
+    this._callback = callback;
+  }
+  takeRecords() {
+    return [];
+  }
+  disconnect() {
+    throw createNotImplementedError("PerformanceObserver.disconnect");
+  }
+  observe(options) {
+    throw createNotImplementedError("PerformanceObserver.observe");
+  }
+  bind(fn) {
+    return fn;
+  }
+  runInAsyncScope(fn, thisArg, ...args) {
+    return fn.call(thisArg, ...args);
+  }
+  asyncId() {
+    return 0;
+  }
+  triggerAsyncId() {
+    return 0;
+  }
+  emitDestroy() {
+    return this;
+  }
+};
+var performance = globalThis.performance && "addEventListener" in globalThis.performance ? globalThis.performance : new Performance();
+
+// node_modules/@cloudflare/unenv-preset/dist/runtime/polyfill/performance.mjs
+globalThis.performance = performance;
+globalThis.Performance = Performance;
+globalThis.PerformanceEntry = PerformanceEntry;
+globalThis.PerformanceMark = PerformanceMark;
+globalThis.PerformanceMeasure = PerformanceMeasure;
+globalThis.PerformanceObserver = PerformanceObserver;
+globalThis.PerformanceObserverEntryList = PerformanceObserverEntryList;
+globalThis.PerformanceResourceTiming = PerformanceResourceTiming;
+
+// node_modules/unenv/dist/runtime/node/console.mjs
+import { Writable } from "node:stream";
+
+// node_modules/unenv/dist/runtime/mock/noop.mjs
+var noop_default = Object.assign(() => {
+}, { __unenv__: true });
+
+// node_modules/unenv/dist/runtime/node/console.mjs
+var _console = globalThis.console;
+var _ignoreErrors = true;
+var _stderr = new Writable();
+var _stdout = new Writable();
+var log = _console?.log ?? noop_default;
+var info = _console?.info ?? log;
+var trace = _console?.trace ?? info;
+var debug = _console?.debug ?? log;
+var table = _console?.table ?? log;
+var error = _console?.error ?? log;
+var warn = _console?.warn ?? error;
+var createTask = _console?.createTask ?? /* @__PURE__ */ notImplemented("console.createTask");
+var clear = _console?.clear ?? noop_default;
+var count = _console?.count ?? noop_default;
+var countReset = _console?.countReset ?? noop_default;
+var dir = _console?.dir ?? noop_default;
+var dirxml = _console?.dirxml ?? noop_default;
+var group = _console?.group ?? noop_default;
+var groupEnd = _console?.groupEnd ?? noop_default;
+var groupCollapsed = _console?.groupCollapsed ?? noop_default;
+var profile = _console?.profile ?? noop_default;
+var profileEnd = _console?.profileEnd ?? noop_default;
+var time = _console?.time ?? noop_default;
+var timeEnd = _console?.timeEnd ?? noop_default;
+var timeLog = _console?.timeLog ?? noop_default;
+var timeStamp = _console?.timeStamp ?? noop_default;
+var Console = _console?.Console ?? /* @__PURE__ */ notImplementedClass("console.Console");
+var _times = /* @__PURE__ */ new Map();
+var _stdoutErrorHandler = noop_default;
+var _stderrErrorHandler = noop_default;
+
+// node_modules/@cloudflare/unenv-preset/dist/runtime/node/console.mjs
+var workerdConsole = globalThis["console"];
+var {
+  assert,
+  clear: clear2,
+  // @ts-expect-error undocumented public API
+  context,
+  count: count2,
+  countReset: countReset2,
+  // @ts-expect-error undocumented public API
+  createTask: createTask2,
+  debug: debug2,
+  dir: dir2,
+  dirxml: dirxml2,
+  error: error2,
+  group: group2,
+  groupCollapsed: groupCollapsed2,
+  groupEnd: groupEnd2,
+  info: info2,
+  log: log2,
+  profile: profile2,
+  profileEnd: profileEnd2,
+  table: table2,
+  time: time2,
+  timeEnd: timeEnd2,
+  timeLog: timeLog2,
+  timeStamp: timeStamp2,
+  trace: trace2,
+  warn: warn2
+} = workerdConsole;
+Object.assign(workerdConsole, {
+  Console,
+  _ignoreErrors,
+  _stderr,
+  _stderrErrorHandler,
+  _stdout,
+  _stdoutErrorHandler,
+  _times
+});
+var console_default = workerdConsole;
+
+// node_modules/wrangler/_virtual_unenv_global_polyfill-@cloudflare-unenv-preset-node-console
+globalThis.console = console_default;
+
+// node_modules/unenv/dist/runtime/node/internal/process/hrtime.mjs
+var hrtime = /* @__PURE__ */ Object.assign(/* @__PURE__ */ __name(function hrtime2(startTime) {
+  const now = Date.now();
+  const seconds = Math.trunc(now / 1e3);
+  const nanos = now % 1e3 * 1e6;
+  if (startTime) {
+    let diffSeconds = seconds - startTime[0];
+    let diffNanos = nanos - startTime[0];
+    if (diffNanos < 0) {
+      diffSeconds = diffSeconds - 1;
+      diffNanos = 1e9 + diffNanos;
+    }
+    return [diffSeconds, diffNanos];
+  }
+  return [seconds, nanos];
+}, "hrtime"), { bigint: /* @__PURE__ */ __name(function bigint() {
+  return BigInt(Date.now() * 1e6);
+}, "bigint") });
+
+// node_modules/unenv/dist/runtime/node/internal/process/process.mjs
+import { EventEmitter } from "node:events";
+
+// node_modules/unenv/dist/runtime/node/internal/tty/read-stream.mjs
+var ReadStream = class {
+  static {
+    __name(this, "ReadStream");
+  }
+  fd;
+  isRaw = false;
+  isTTY = false;
+  constructor(fd) {
+    this.fd = fd;
+  }
+  setRawMode(mode) {
+    this.isRaw = mode;
+    return this;
+  }
+};
+
+// node_modules/unenv/dist/runtime/node/internal/tty/write-stream.mjs
+var WriteStream = class {
+  static {
+    __name(this, "WriteStream");
+  }
+  fd;
+  columns = 80;
+  rows = 24;
+  isTTY = false;
+  constructor(fd) {
+    this.fd = fd;
+  }
+  clearLine(dir4, callback) {
+    callback && callback();
+    return false;
+  }
+  clearScreenDown(callback) {
+    callback && callback();
+    return false;
+  }
+  cursorTo(x, y, callback) {
+    callback && typeof callback === "function" && callback();
+    return false;
+  }
+  moveCursor(dx, dy, callback) {
+    callback && callback();
+    return false;
+  }
+  getColorDepth(env3) {
+    return 1;
+  }
+  hasColors(count4, env3) {
+    return false;
+  }
+  getWindowSize() {
+    return [this.columns, this.rows];
+  }
+  write(str, encoding, cb) {
+    if (str instanceof Uint8Array) {
+      str = new TextDecoder().decode(str);
+    }
+    try {
+      console.log(str);
+    } catch {
+    }
+    cb && typeof cb === "function" && cb();
+    return false;
+  }
+};
+
+// node_modules/unenv/dist/runtime/node/internal/process/node-version.mjs
+var NODE_VERSION = "22.14.0";
+
+// node_modules/unenv/dist/runtime/node/internal/process/process.mjs
+var Process = class _Process extends EventEmitter {
+  static {
+    __name(this, "Process");
+  }
+  env;
+  hrtime;
+  nextTick;
+  constructor(impl) {
+    super();
+    this.env = impl.env;
+    this.hrtime = impl.hrtime;
+    this.nextTick = impl.nextTick;
+    for (const prop of [...Object.getOwnPropertyNames(_Process.prototype), ...Object.getOwnPropertyNames(EventEmitter.prototype)]) {
+      const value = this[prop];
+      if (typeof value === "function") {
+        this[prop] = value.bind(this);
+      }
+    }
+  }
+  // --- event emitter ---
+  emitWarning(warning, type, code) {
+    console.warn(`${code ? `[${code}] ` : ""}${type ? `${type}: ` : ""}${warning}`);
+  }
+  emit(...args) {
+    return super.emit(...args);
+  }
+  listeners(eventName) {
+    return super.listeners(eventName);
+  }
+  // --- stdio (lazy initializers) ---
+  #stdin;
+  #stdout;
+  #stderr;
+  get stdin() {
+    return this.#stdin ??= new ReadStream(0);
+  }
+  get stdout() {
+    return this.#stdout ??= new WriteStream(1);
+  }
+  get stderr() {
+    return this.#stderr ??= new WriteStream(2);
+  }
+  // --- cwd ---
+  #cwd = "/";
+  chdir(cwd3) {
+    this.#cwd = cwd3;
+  }
+  cwd() {
+    return this.#cwd;
+  }
+  // --- dummy props and getters ---
+  arch = "";
+  platform = "";
+  argv = [];
+  argv0 = "";
+  execArgv = [];
+  execPath = "";
+  title = "";
+  pid = 200;
+  ppid = 100;
+  get version() {
+    return `v${NODE_VERSION}`;
+  }
+  get versions() {
+    return { node: NODE_VERSION };
+  }
+  get allowedNodeEnvironmentFlags() {
+    return /* @__PURE__ */ new Set();
+  }
+  get sourceMapsEnabled() {
+    return false;
+  }
+  get debugPort() {
+    return 0;
+  }
+  get throwDeprecation() {
+    return false;
+  }
+  get traceDeprecation() {
+    return false;
+  }
+  get features() {
+    return {};
+  }
+  get release() {
+    return {};
+  }
+  get connected() {
+    return false;
+  }
+  get config() {
+    return {};
+  }
+  get moduleLoadList() {
+    return [];
+  }
+  constrainedMemory() {
+    return 0;
+  }
+  availableMemory() {
+    return 0;
+  }
+  uptime() {
+    return 0;
+  }
+  resourceUsage() {
+    return {};
+  }
+  // --- noop methods ---
+  ref() {
+  }
+  unref() {
+  }
+  // --- unimplemented methods ---
+  umask() {
+    throw createNotImplementedError("process.umask");
+  }
+  getBuiltinModule() {
+    return void 0;
+  }
+  getActiveResourcesInfo() {
+    throw createNotImplementedError("process.getActiveResourcesInfo");
+  }
+  exit() {
+    throw createNotImplementedError("process.exit");
+  }
+  reallyExit() {
+    throw createNotImplementedError("process.reallyExit");
+  }
+  kill() {
+    throw createNotImplementedError("process.kill");
+  }
+  abort() {
+    throw createNotImplementedError("process.abort");
+  }
+  dlopen() {
+    throw createNotImplementedError("process.dlopen");
+  }
+  setSourceMapsEnabled() {
+    throw createNotImplementedError("process.setSourceMapsEnabled");
+  }
+  loadEnvFile() {
+    throw createNotImplementedError("process.loadEnvFile");
+  }
+  disconnect() {
+    throw createNotImplementedError("process.disconnect");
+  }
+  cpuUsage() {
+    throw createNotImplementedError("process.cpuUsage");
+  }
+  setUncaughtExceptionCaptureCallback() {
+    throw createNotImplementedError("process.setUncaughtExceptionCaptureCallback");
+  }
+  hasUncaughtExceptionCaptureCallback() {
+    throw createNotImplementedError("process.hasUncaughtExceptionCaptureCallback");
+  }
+  initgroups() {
+    throw createNotImplementedError("process.initgroups");
+  }
+  openStdin() {
+    throw createNotImplementedError("process.openStdin");
+  }
+  assert() {
+    throw createNotImplementedError("process.assert");
+  }
+  binding() {
+    throw createNotImplementedError("process.binding");
+  }
+  // --- attached interfaces ---
+  permission = { has: /* @__PURE__ */ notImplemented("process.permission.has") };
+  report = {
+    directory: "",
+    filename: "",
+    signal: "SIGUSR2",
+    compact: false,
+    reportOnFatalError: false,
+    reportOnSignal: false,
+    reportOnUncaughtException: false,
+    getReport: /* @__PURE__ */ notImplemented("process.report.getReport"),
+    writeReport: /* @__PURE__ */ notImplemented("process.report.writeReport")
+  };
+  finalization = {
+    register: /* @__PURE__ */ notImplemented("process.finalization.register"),
+    unregister: /* @__PURE__ */ notImplemented("process.finalization.unregister"),
+    registerBeforeExit: /* @__PURE__ */ notImplemented("process.finalization.registerBeforeExit")
+  };
+  memoryUsage = Object.assign(() => ({
+    arrayBuffers: 0,
+    rss: 0,
+    external: 0,
+    heapTotal: 0,
+    heapUsed: 0
+  }), { rss: /* @__PURE__ */ __name(() => 0, "rss") });
+  // --- undefined props ---
+  mainModule = void 0;
+  domain = void 0;
+  // optional
+  send = void 0;
+  exitCode = void 0;
+  channel = void 0;
+  getegid = void 0;
+  geteuid = void 0;
+  getgid = void 0;
+  getgroups = void 0;
+  getuid = void 0;
+  setegid = void 0;
+  seteuid = void 0;
+  setgid = void 0;
+  setgroups = void 0;
+  setuid = void 0;
+  // internals
+  _events = void 0;
+  _eventsCount = void 0;
+  _exiting = void 0;
+  _maxListeners = void 0;
+  _debugEnd = void 0;
+  _debugProcess = void 0;
+  _fatalException = void 0;
+  _getActiveHandles = void 0;
+  _getActiveRequests = void 0;
+  _kill = void 0;
+  _preload_modules = void 0;
+  _rawDebug = void 0;
+  _startProfilerIdleNotifier = void 0;
+  _stopProfilerIdleNotifier = void 0;
+  _tickCallback = void 0;
+  _disconnect = void 0;
+  _handleQueue = void 0;
+  _pendingMessage = void 0;
+  _channel = void 0;
+  _send = void 0;
+  _linkedBinding = void 0;
+};
+
+// node_modules/@cloudflare/unenv-preset/dist/runtime/node/process.mjs
+var globalProcess = globalThis["process"];
+var getBuiltinModule = globalProcess.getBuiltinModule;
+var workerdProcess = getBuiltinModule("node:process");
+var isWorkerdProcessV2 = globalThis.Cloudflare.compatibilityFlags.enable_nodejs_process_v2;
+var unenvProcess = new Process({
+  env: globalProcess.env,
+  // `hrtime` is only available from workerd process v2
+  hrtime: isWorkerdProcessV2 ? workerdProcess.hrtime : hrtime,
+  // `nextTick` is available from workerd process v1
+  nextTick: workerdProcess.nextTick
+});
+var { exit, features, platform } = workerdProcess;
+var {
+  // Always implemented by workerd
+  env,
+  // Only implemented in workerd v2
+  hrtime: hrtime3,
+  // Always implemented by workerd
+  nextTick
+} = unenvProcess;
+var {
+  _channel,
+  _disconnect,
+  _events,
+  _eventsCount,
+  _handleQueue,
+  _maxListeners,
+  _pendingMessage,
+  _send,
+  assert: assert2,
+  disconnect,
+  mainModule
+} = unenvProcess;
+var {
+  // @ts-expect-error `_debugEnd` is missing typings
+  _debugEnd,
+  // @ts-expect-error `_debugProcess` is missing typings
+  _debugProcess,
+  // @ts-expect-error `_exiting` is missing typings
+  _exiting,
+  // @ts-expect-error `_fatalException` is missing typings
+  _fatalException,
+  // @ts-expect-error `_getActiveHandles` is missing typings
+  _getActiveHandles,
+  // @ts-expect-error `_getActiveRequests` is missing typings
+  _getActiveRequests,
+  // @ts-expect-error `_kill` is missing typings
+  _kill,
+  // @ts-expect-error `_linkedBinding` is missing typings
+  _linkedBinding,
+  // @ts-expect-error `_preload_modules` is missing typings
+  _preload_modules,
+  // @ts-expect-error `_rawDebug` is missing typings
+  _rawDebug,
+  // @ts-expect-error `_startProfilerIdleNotifier` is missing typings
+  _startProfilerIdleNotifier,
+  // @ts-expect-error `_stopProfilerIdleNotifier` is missing typings
+  _stopProfilerIdleNotifier,
+  // @ts-expect-error `_tickCallback` is missing typings
+  _tickCallback,
+  abort,
+  addListener,
+  allowedNodeEnvironmentFlags,
+  arch,
+  argv,
+  argv0,
+  availableMemory,
+  // @ts-expect-error `binding` is missing typings
+  binding,
+  channel,
+  chdir,
+  config,
+  connected,
+  constrainedMemory,
+  cpuUsage,
+  cwd,
+  debugPort,
+  dlopen,
+  // @ts-expect-error `domain` is missing typings
+  domain,
+  emit,
+  emitWarning,
+  eventNames,
+  execArgv,
+  execPath,
+  exitCode,
+  finalization,
+  getActiveResourcesInfo,
+  getegid,
+  geteuid,
+  getgid,
+  getgroups,
+  getMaxListeners,
+  getuid,
+  hasUncaughtExceptionCaptureCallback,
+  // @ts-expect-error `initgroups` is missing typings
+  initgroups,
+  kill,
+  listenerCount,
+  listeners,
+  loadEnvFile,
+  memoryUsage,
+  // @ts-expect-error `moduleLoadList` is missing typings
+  moduleLoadList,
+  off,
+  on,
+  once,
+  // @ts-expect-error `openStdin` is missing typings
+  openStdin,
+  permission,
+  pid,
+  ppid,
+  prependListener,
+  prependOnceListener,
+  rawListeners,
+  // @ts-expect-error `reallyExit` is missing typings
+  reallyExit,
+  ref,
+  release,
+  removeAllListeners,
+  removeListener,
+  report,
+  resourceUsage,
+  send,
+  setegid,
+  seteuid,
+  setgid,
+  setgroups,
+  setMaxListeners,
+  setSourceMapsEnabled,
+  setuid,
+  setUncaughtExceptionCaptureCallback,
+  sourceMapsEnabled,
+  stderr,
+  stdin,
+  stdout,
+  throwDeprecation,
+  title,
+  traceDeprecation,
+  umask,
+  unref,
+  uptime,
+  version,
+  versions
+} = isWorkerdProcessV2 ? workerdProcess : unenvProcess;
+var _process = {
+  abort,
+  addListener,
+  allowedNodeEnvironmentFlags,
+  hasUncaughtExceptionCaptureCallback,
+  setUncaughtExceptionCaptureCallback,
+  loadEnvFile,
+  sourceMapsEnabled,
+  arch,
+  argv,
+  argv0,
+  chdir,
+  config,
+  connected,
+  constrainedMemory,
+  availableMemory,
+  cpuUsage,
+  cwd,
+  debugPort,
+  dlopen,
+  disconnect,
+  emit,
+  emitWarning,
+  env,
+  eventNames,
+  execArgv,
+  execPath,
+  exit,
+  finalization,
+  features,
+  getBuiltinModule,
+  getActiveResourcesInfo,
+  getMaxListeners,
+  hrtime: hrtime3,
+  kill,
+  listeners,
+  listenerCount,
+  memoryUsage,
+  nextTick,
+  on,
+  off,
+  once,
+  pid,
+  platform,
+  ppid,
+  prependListener,
+  prependOnceListener,
+  rawListeners,
+  release,
+  removeAllListeners,
+  removeListener,
+  report,
+  resourceUsage,
+  setMaxListeners,
+  setSourceMapsEnabled,
+  stderr,
+  stdin,
+  stdout,
+  title,
+  throwDeprecation,
+  traceDeprecation,
+  umask,
+  uptime,
+  version,
+  versions,
+  // @ts-expect-error old API
+  domain,
+  initgroups,
+  moduleLoadList,
+  reallyExit,
+  openStdin,
+  assert: assert2,
+  binding,
+  send,
+  exitCode,
+  channel,
+  getegid,
+  geteuid,
+  getgid,
+  getgroups,
+  getuid,
+  setegid,
+  seteuid,
+  setgid,
+  setgroups,
+  setuid,
+  permission,
+  mainModule,
+  _events,
+  _eventsCount,
+  _exiting,
+  _maxListeners,
+  _debugEnd,
+  _debugProcess,
+  _fatalException,
+  _getActiveHandles,
+  _getActiveRequests,
+  _kill,
+  _preload_modules,
+  _rawDebug,
+  _startProfilerIdleNotifier,
+  _stopProfilerIdleNotifier,
+  _tickCallback,
+  _disconnect,
+  _handleQueue,
+  _pendingMessage,
+  _channel,
+  _send,
+  _linkedBinding
+};
+var process_default = _process;
+
+// node_modules/wrangler/_virtual_unenv_global_polyfill-@cloudflare-unenv-preset-node-process
+globalThis.process = process_default;
+
+// .wrangler/tmp/pages-ECSBH5/functionsWorker-0.7592947546883193.mjs
+import { Writable as Writable2 } from "node:stream";
+import { EventEmitter as EventEmitter2 } from "node:events";
+import libDefault from "buffer";
+import libDefault2 from "stream";
+import libDefault3 from "util";
+import libDefault4 from "crypto";
+import nodeCrypto from "crypto";
+var __create = Object.create;
+var __defProp2 = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __name2 = /* @__PURE__ */ __name((target, value) => __defProp2(target, "name", { value, configurable: true }), "__name");
+var __esm = /* @__PURE__ */ __name((fn, res) => /* @__PURE__ */ __name(function __init() {
+  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+}, "__init"), "__esm");
+var __commonJS = /* @__PURE__ */ __name((cb, mod) => /* @__PURE__ */ __name(function __require() {
+  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+}, "__require"), "__commonJS");
+var __export = /* @__PURE__ */ __name((target, all) => {
+  for (var name in all)
+    __defProp2(target, name, { get: all[name], enumerable: true });
+}, "__export");
+var __copyProps = /* @__PURE__ */ __name((to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp2(to, key, { get: /* @__PURE__ */ __name(() => from[key], "get"), enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+}, "__copyProps");
+var __toESM = /* @__PURE__ */ __name((mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp2(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+)), "__toESM");
+// @__NO_SIDE_EFFECTS__
+function createNotImplementedError2(name) {
+  return new Error(`[unenv] ${name} is not implemented yet!`);
+}
+__name(createNotImplementedError2, "createNotImplementedError");
+// @__NO_SIDE_EFFECTS__
+function notImplemented2(name) {
+  const fn = /* @__PURE__ */ __name2(() => {
+    throw /* @__PURE__ */ createNotImplementedError2(name);
+  }, "fn");
+  return Object.assign(fn, { __unenv__: true });
+}
+__name(notImplemented2, "notImplemented");
+// @__NO_SIDE_EFFECTS__
+function notImplementedClass2(name) {
+  return class {
+    __unenv__ = true;
+    constructor() {
+      throw new Error(`[unenv] ${name} is not implemented yet!`);
+    }
+  };
+}
+__name(notImplementedClass2, "notImplementedClass");
 var init_utils = __esm({
   "../node_modules/unenv/dist/runtime/_internal/utils.mjs"() {
     init_functionsRoutes_0_6656645675734922();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(createNotImplementedError, "createNotImplementedError");
-    __name(notImplemented, "notImplemented");
-    __name(notImplementedClass, "notImplementedClass");
+    __name2(createNotImplementedError2, "createNotImplementedError");
+    __name2(notImplemented2, "notImplemented");
+    __name2(notImplementedClass2, "notImplementedClass");
   }
 });
-
-// ../node_modules/unenv/dist/runtime/node/internal/perf_hooks/performance.mjs
-var _timeOrigin, _performanceNow, nodeTiming, PerformanceEntry, PerformanceMark, PerformanceMeasure, PerformanceResourceTiming, PerformanceObserverEntryList, Performance, PerformanceObserver, performance;
+var _timeOrigin2;
+var _performanceNow2;
+var nodeTiming2;
+var PerformanceEntry2;
+var PerformanceMark3;
+var PerformanceMeasure2;
+var PerformanceResourceTiming2;
+var PerformanceObserverEntryList2;
+var Performance2;
+var PerformanceObserver2;
+var performance2;
 var init_performance = __esm({
   "../node_modules/unenv/dist/runtime/node/internal/perf_hooks/performance.mjs"() {
     init_functionsRoutes_0_6656645675734922();
@@ -74,9 +1038,9 @@ var init_performance = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     init_utils();
-    _timeOrigin = globalThis.performance?.timeOrigin ?? Date.now();
-    _performanceNow = globalThis.performance?.now ? globalThis.performance.now.bind(globalThis.performance) : () => Date.now() - _timeOrigin;
-    nodeTiming = {
+    _timeOrigin2 = globalThis.performance?.timeOrigin ?? Date.now();
+    _performanceNow2 = globalThis.performance?.now ? globalThis.performance.now.bind(globalThis.performance) : () => Date.now() - _timeOrigin2;
+    nodeTiming2 = {
       name: "node",
       entryType: "node",
       startTime: 0,
@@ -98,9 +1062,12 @@ var init_performance = __esm({
         return this;
       }
     };
-    PerformanceEntry = class {
+    PerformanceEntry2 = class {
       static {
         __name(this, "PerformanceEntry");
+      }
+      static {
+        __name2(this, "PerformanceEntry");
       }
       __unenv__ = true;
       detail;
@@ -109,11 +1076,11 @@ var init_performance = __esm({
       startTime;
       constructor(name, options) {
         this.name = name;
-        this.startTime = options?.startTime || _performanceNow();
+        this.startTime = options?.startTime || _performanceNow2();
         this.detail = options?.detail;
       }
       get duration() {
-        return _performanceNow() - this.startTime;
+        return _performanceNow2() - this.startTime;
       }
       toJSON() {
         return {
@@ -125,9 +1092,12 @@ var init_performance = __esm({
         };
       }
     };
-    PerformanceMark = class PerformanceMark2 extends PerformanceEntry {
+    PerformanceMark3 = class PerformanceMark2 extends PerformanceEntry2 {
       static {
-        __name(this, "PerformanceMark");
+        __name(this, "PerformanceMark2");
+      }
+      static {
+        __name2(this, "PerformanceMark");
       }
       entryType = "mark";
       constructor() {
@@ -137,15 +1107,21 @@ var init_performance = __esm({
         return 0;
       }
     };
-    PerformanceMeasure = class extends PerformanceEntry {
+    PerformanceMeasure2 = class extends PerformanceEntry2 {
       static {
         __name(this, "PerformanceMeasure");
       }
+      static {
+        __name2(this, "PerformanceMeasure");
+      }
       entryType = "measure";
     };
-    PerformanceResourceTiming = class extends PerformanceEntry {
+    PerformanceResourceTiming2 = class extends PerformanceEntry2 {
       static {
         __name(this, "PerformanceResourceTiming");
+      }
+      static {
+        __name2(this, "PerformanceResourceTiming");
       }
       entryType = "resource";
       serverTiming = [];
@@ -170,9 +1146,12 @@ var init_performance = __esm({
       workerStart = 0;
       responseStatus = 0;
     };
-    PerformanceObserverEntryList = class {
+    PerformanceObserverEntryList2 = class {
       static {
         __name(this, "PerformanceObserverEntryList");
+      }
+      static {
+        __name2(this, "PerformanceObserverEntryList");
       }
       __unenv__ = true;
       getEntries() {
@@ -185,33 +1164,36 @@ var init_performance = __esm({
         return [];
       }
     };
-    Performance = class {
+    Performance2 = class {
       static {
         __name(this, "Performance");
       }
+      static {
+        __name2(this, "Performance");
+      }
       __unenv__ = true;
-      timeOrigin = _timeOrigin;
+      timeOrigin = _timeOrigin2;
       eventCounts = /* @__PURE__ */ new Map();
       _entries = [];
       _resourceTimingBufferSize = 0;
       navigation = void 0;
       timing = void 0;
       timerify(_fn, _options) {
-        throw createNotImplementedError("Performance.timerify");
+        throw /* @__PURE__ */ createNotImplementedError2("Performance.timerify");
       }
       get nodeTiming() {
-        return nodeTiming;
+        return nodeTiming2;
       }
       eventLoopUtilization() {
         return {};
       }
       markResourceTiming() {
-        return new PerformanceResourceTiming("");
+        return new PerformanceResourceTiming2("");
       }
       onresourcetimingbufferfull = null;
       now() {
-        if (this.timeOrigin === _timeOrigin) {
-          return _performanceNow();
+        if (this.timeOrigin === _timeOrigin2) {
+          return _performanceNow2();
         }
         return Date.now() - this.timeOrigin;
       }
@@ -234,7 +1216,7 @@ var init_performance = __esm({
         return this._entries.filter((e) => e.entryType === type);
       }
       mark(name, options) {
-        const entry = new PerformanceMark(name, options);
+        const entry = new PerformanceMark3(name, options);
         this._entries.push(entry);
         return entry;
       }
@@ -248,7 +1230,7 @@ var init_performance = __esm({
           start = Number.parseFloat(startOrMeasureOptions?.start) || this.now();
           end = Number.parseFloat(startOrMeasureOptions?.end) || this.now();
         }
-        const entry = new PerformanceMeasure(measureName, {
+        const entry = new PerformanceMeasure2(measureName, {
           startTime: start,
           detail: {
             start,
@@ -262,21 +1244,24 @@ var init_performance = __esm({
         this._resourceTimingBufferSize = maxSize;
       }
       addEventListener(type, listener, options) {
-        throw createNotImplementedError("Performance.addEventListener");
+        throw /* @__PURE__ */ createNotImplementedError2("Performance.addEventListener");
       }
       removeEventListener(type, listener, options) {
-        throw createNotImplementedError("Performance.removeEventListener");
+        throw /* @__PURE__ */ createNotImplementedError2("Performance.removeEventListener");
       }
       dispatchEvent(event) {
-        throw createNotImplementedError("Performance.dispatchEvent");
+        throw /* @__PURE__ */ createNotImplementedError2("Performance.dispatchEvent");
       }
       toJSON() {
         return this;
       }
     };
-    PerformanceObserver = class {
+    PerformanceObserver2 = class {
       static {
         __name(this, "PerformanceObserver");
+      }
+      static {
+        __name2(this, "PerformanceObserver");
       }
       __unenv__ = true;
       static supportedEntryTypes = [];
@@ -288,10 +1273,10 @@ var init_performance = __esm({
         return [];
       }
       disconnect() {
-        throw createNotImplementedError("PerformanceObserver.disconnect");
+        throw /* @__PURE__ */ createNotImplementedError2("PerformanceObserver.disconnect");
       }
       observe(options) {
-        throw createNotImplementedError("PerformanceObserver.observe");
+        throw /* @__PURE__ */ createNotImplementedError2("PerformanceObserver.observe");
       }
       bind(fn) {
         return fn;
@@ -309,11 +1294,9 @@ var init_performance = __esm({
         return this;
       }
     };
-    performance = globalThis.performance && "addEventListener" in globalThis.performance ? globalThis.performance : new Performance();
+    performance2 = globalThis.performance && "addEventListener" in globalThis.performance ? globalThis.performance : new Performance2();
   }
 });
-
-// ../node_modules/unenv/dist/runtime/node/perf_hooks.mjs
 var init_perf_hooks = __esm({
   "../node_modules/unenv/dist/runtime/node/perf_hooks.mjs"() {
     init_functionsRoutes_0_6656645675734922();
@@ -323,38 +1306,60 @@ var init_perf_hooks = __esm({
     init_performance();
   }
 });
-
-// ../node_modules/@cloudflare/unenv-preset/dist/runtime/polyfill/performance.mjs
 var init_performance2 = __esm({
   "../node_modules/@cloudflare/unenv-preset/dist/runtime/polyfill/performance.mjs"() {
     init_perf_hooks();
-    globalThis.performance = performance;
-    globalThis.Performance = Performance;
-    globalThis.PerformanceEntry = PerformanceEntry;
-    globalThis.PerformanceMark = PerformanceMark;
-    globalThis.PerformanceMeasure = PerformanceMeasure;
-    globalThis.PerformanceObserver = PerformanceObserver;
-    globalThis.PerformanceObserverEntryList = PerformanceObserverEntryList;
-    globalThis.PerformanceResourceTiming = PerformanceResourceTiming;
+    globalThis.performance = performance2;
+    globalThis.Performance = Performance2;
+    globalThis.PerformanceEntry = PerformanceEntry2;
+    globalThis.PerformanceMark = PerformanceMark3;
+    globalThis.PerformanceMeasure = PerformanceMeasure2;
+    globalThis.PerformanceObserver = PerformanceObserver2;
+    globalThis.PerformanceObserverEntryList = PerformanceObserverEntryList2;
+    globalThis.PerformanceResourceTiming = PerformanceResourceTiming2;
   }
 });
-
-// ../node_modules/unenv/dist/runtime/mock/noop.mjs
-var noop_default;
+var noop_default2;
 var init_noop = __esm({
   "../node_modules/unenv/dist/runtime/mock/noop.mjs"() {
     init_functionsRoutes_0_6656645675734922();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    noop_default = Object.assign(() => {
+    noop_default2 = Object.assign(() => {
     }, { __unenv__: true });
   }
 });
-
-// ../node_modules/unenv/dist/runtime/node/console.mjs
-import { Writable } from "node:stream";
-var _console, _ignoreErrors, _stderr, _stdout, log, info, trace, debug, table, error, warn, createTask, clear, count, countReset, dir, dirxml, group, groupEnd, groupCollapsed, profile, profileEnd, time, timeEnd, timeLog, timeStamp, Console, _times, _stdoutErrorHandler, _stderrErrorHandler;
+var _console2;
+var _ignoreErrors2;
+var _stderr2;
+var _stdout2;
+var log3;
+var info3;
+var trace3;
+var debug3;
+var table3;
+var error3;
+var warn3;
+var createTask3;
+var clear3;
+var count3;
+var countReset3;
+var dir3;
+var dirxml3;
+var group3;
+var groupEnd3;
+var groupCollapsed3;
+var profile3;
+var profileEnd3;
+var time3;
+var timeEnd3;
+var timeLog3;
+var timeStamp3;
+var Console2;
+var _times2;
+var _stdoutErrorHandler2;
+var _stderrErrorHandler2;
 var init_console = __esm({
   "../node_modules/unenv/dist/runtime/node/console.mjs"() {
     init_functionsRoutes_0_6656645675734922();
@@ -363,41 +1368,64 @@ var init_console = __esm({
     init_performance2();
     init_noop();
     init_utils();
-    _console = globalThis.console;
-    _ignoreErrors = true;
-    _stderr = new Writable();
-    _stdout = new Writable();
-    log = _console?.log ?? noop_default;
-    info = _console?.info ?? log;
-    trace = _console?.trace ?? info;
-    debug = _console?.debug ?? log;
-    table = _console?.table ?? log;
-    error = _console?.error ?? log;
-    warn = _console?.warn ?? error;
-    createTask = _console?.createTask ?? /* @__PURE__ */ notImplemented("console.createTask");
-    clear = _console?.clear ?? noop_default;
-    count = _console?.count ?? noop_default;
-    countReset = _console?.countReset ?? noop_default;
-    dir = _console?.dir ?? noop_default;
-    dirxml = _console?.dirxml ?? noop_default;
-    group = _console?.group ?? noop_default;
-    groupEnd = _console?.groupEnd ?? noop_default;
-    groupCollapsed = _console?.groupCollapsed ?? noop_default;
-    profile = _console?.profile ?? noop_default;
-    profileEnd = _console?.profileEnd ?? noop_default;
-    time = _console?.time ?? noop_default;
-    timeEnd = _console?.timeEnd ?? noop_default;
-    timeLog = _console?.timeLog ?? noop_default;
-    timeStamp = _console?.timeStamp ?? noop_default;
-    Console = _console?.Console ?? /* @__PURE__ */ notImplementedClass("console.Console");
-    _times = /* @__PURE__ */ new Map();
-    _stdoutErrorHandler = noop_default;
-    _stderrErrorHandler = noop_default;
+    _console2 = globalThis.console;
+    _ignoreErrors2 = true;
+    _stderr2 = new Writable2();
+    _stdout2 = new Writable2();
+    log3 = _console2?.log ?? noop_default2;
+    info3 = _console2?.info ?? log3;
+    trace3 = _console2?.trace ?? info3;
+    debug3 = _console2?.debug ?? log3;
+    table3 = _console2?.table ?? log3;
+    error3 = _console2?.error ?? log3;
+    warn3 = _console2?.warn ?? error3;
+    createTask3 = _console2?.createTask ?? /* @__PURE__ */ notImplemented2("console.createTask");
+    clear3 = _console2?.clear ?? noop_default2;
+    count3 = _console2?.count ?? noop_default2;
+    countReset3 = _console2?.countReset ?? noop_default2;
+    dir3 = _console2?.dir ?? noop_default2;
+    dirxml3 = _console2?.dirxml ?? noop_default2;
+    group3 = _console2?.group ?? noop_default2;
+    groupEnd3 = _console2?.groupEnd ?? noop_default2;
+    groupCollapsed3 = _console2?.groupCollapsed ?? noop_default2;
+    profile3 = _console2?.profile ?? noop_default2;
+    profileEnd3 = _console2?.profileEnd ?? noop_default2;
+    time3 = _console2?.time ?? noop_default2;
+    timeEnd3 = _console2?.timeEnd ?? noop_default2;
+    timeLog3 = _console2?.timeLog ?? noop_default2;
+    timeStamp3 = _console2?.timeStamp ?? noop_default2;
+    Console2 = _console2?.Console ?? /* @__PURE__ */ notImplementedClass2("console.Console");
+    _times2 = /* @__PURE__ */ new Map();
+    _stdoutErrorHandler2 = noop_default2;
+    _stderrErrorHandler2 = noop_default2;
   }
 });
-
-// ../node_modules/@cloudflare/unenv-preset/dist/runtime/node/console.mjs
-var workerdConsole, assert, clear2, context, count2, countReset2, createTask2, debug2, dir2, dirxml2, error2, group2, groupCollapsed2, groupEnd2, info2, log2, profile2, profileEnd2, table2, time2, timeEnd2, timeLog2, timeStamp2, trace2, warn2, console_default;
+var workerdConsole2;
+var assert3;
+var clear22;
+var context2;
+var count22;
+var countReset22;
+var createTask22;
+var debug22;
+var dir22;
+var dirxml22;
+var error22;
+var group22;
+var groupCollapsed22;
+var groupEnd22;
+var info22;
+var log22;
+var profile22;
+var profileEnd22;
+var table22;
+var time22;
+var timeEnd22;
+var timeLog22;
+var timeStamp22;
+var trace22;
+var warn22;
+var console_default2;
 var init_console2 = __esm({
   "../node_modules/@cloudflare/unenv-preset/dist/runtime/node/console.mjs"() {
     init_functionsRoutes_0_6656645675734922();
@@ -405,69 +1433,65 @@ var init_console2 = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     init_console();
-    workerdConsole = globalThis["console"];
+    workerdConsole2 = globalThis["console"];
     ({
-      assert,
-      clear: clear2,
+      assert: assert3,
+      clear: clear22,
       context: (
         // @ts-expect-error undocumented public API
-        context
+        context2
       ),
-      count: count2,
-      countReset: countReset2,
+      count: count22,
+      countReset: countReset22,
       createTask: (
         // @ts-expect-error undocumented public API
-        createTask2
+        createTask22
       ),
-      debug: debug2,
-      dir: dir2,
-      dirxml: dirxml2,
-      error: error2,
-      group: group2,
-      groupCollapsed: groupCollapsed2,
-      groupEnd: groupEnd2,
-      info: info2,
-      log: log2,
-      profile: profile2,
-      profileEnd: profileEnd2,
-      table: table2,
-      time: time2,
-      timeEnd: timeEnd2,
-      timeLog: timeLog2,
-      timeStamp: timeStamp2,
-      trace: trace2,
-      warn: warn2
-    } = workerdConsole);
-    Object.assign(workerdConsole, {
-      Console,
-      _ignoreErrors,
-      _stderr,
-      _stderrErrorHandler,
-      _stdout,
-      _stdoutErrorHandler,
-      _times
+      debug: debug22,
+      dir: dir22,
+      dirxml: dirxml22,
+      error: error22,
+      group: group22,
+      groupCollapsed: groupCollapsed22,
+      groupEnd: groupEnd22,
+      info: info22,
+      log: log22,
+      profile: profile22,
+      profileEnd: profileEnd22,
+      table: table22,
+      time: time22,
+      timeEnd: timeEnd22,
+      timeLog: timeLog22,
+      timeStamp: timeStamp22,
+      trace: trace22,
+      warn: warn22
+    } = workerdConsole2);
+    Object.assign(workerdConsole2, {
+      Console: Console2,
+      _ignoreErrors: _ignoreErrors2,
+      _stderr: _stderr2,
+      _stderrErrorHandler: _stderrErrorHandler2,
+      _stdout: _stdout2,
+      _stdoutErrorHandler: _stdoutErrorHandler2,
+      _times: _times2
     });
-    console_default = workerdConsole;
+    console_default2 = workerdConsole2;
   }
 });
-
-// ../node_modules/wrangler/_virtual_unenv_global_polyfill-@cloudflare-unenv-preset-node-console
 var init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console = __esm({
   "../node_modules/wrangler/_virtual_unenv_global_polyfill-@cloudflare-unenv-preset-node-console"() {
     init_console2();
-    globalThis.console = console_default;
+    globalThis.console = console_default2;
   }
 });
-
-// ../node_modules/unenv/dist/runtime/node/internal/process/hrtime.mjs
-var hrtime;
+var hrtime4;
 var init_hrtime = __esm({
   "../node_modules/unenv/dist/runtime/node/internal/process/hrtime.mjs"() {
     init_functionsRoutes_0_6656645675734922();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    hrtime = /* @__PURE__ */ Object.assign(/* @__PURE__ */ __name(function hrtime2(startTime) {
+    hrtime4 = /* @__PURE__ */ Object.assign(/* @__PURE__ */ __name2(/* @__PURE__ */ __name(function hrtime22(startTime) {
       const now = Date.now();
       const seconds = Math.trunc(now / 1e3);
       const nanos = now % 1e3 * 1e6;
@@ -481,23 +1505,24 @@ var init_hrtime = __esm({
         return [diffSeconds, diffNanos];
       }
       return [seconds, nanos];
-    }, "hrtime"), { bigint: /* @__PURE__ */ __name(function bigint() {
+    }, "hrtime2"), "hrtime"), { bigint: /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function bigint2() {
       return BigInt(Date.now() * 1e6);
-    }, "bigint") });
+    }, "bigint"), "bigint") });
   }
 });
-
-// ../node_modules/unenv/dist/runtime/node/internal/tty/read-stream.mjs
-var ReadStream;
+var ReadStream2;
 var init_read_stream = __esm({
   "../node_modules/unenv/dist/runtime/node/internal/tty/read-stream.mjs"() {
     init_functionsRoutes_0_6656645675734922();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    ReadStream = class {
+    ReadStream2 = class {
       static {
         __name(this, "ReadStream");
+      }
+      static {
+        __name2(this, "ReadStream");
       }
       fd;
       isRaw = false;
@@ -512,18 +1537,19 @@ var init_read_stream = __esm({
     };
   }
 });
-
-// ../node_modules/unenv/dist/runtime/node/internal/tty/write-stream.mjs
-var WriteStream;
+var WriteStream2;
 var init_write_stream = __esm({
   "../node_modules/unenv/dist/runtime/node/internal/tty/write-stream.mjs"() {
     init_functionsRoutes_0_6656645675734922();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    WriteStream = class {
+    WriteStream2 = class {
       static {
         __name(this, "WriteStream");
+      }
+      static {
+        __name2(this, "WriteStream");
       }
       fd;
       columns = 80;
@@ -532,7 +1558,7 @@ var init_write_stream = __esm({
       constructor(fd) {
         this.fd = fd;
       }
-      clearLine(dir3, callback) {
+      clearLine(dir32, callback) {
         callback && callback();
         return false;
       }
@@ -548,10 +1574,10 @@ var init_write_stream = __esm({
         callback && callback();
         return false;
       }
-      getColorDepth(env2) {
+      getColorDepth(env22) {
         return 1;
       }
-      hasColors(count3, env2) {
+      hasColors(count32, env22) {
         return false;
       }
       getWindowSize() {
@@ -571,8 +1597,6 @@ var init_write_stream = __esm({
     };
   }
 });
-
-// ../node_modules/unenv/dist/runtime/node/tty.mjs
 var init_tty = __esm({
   "../node_modules/unenv/dist/runtime/node/tty.mjs"() {
     init_functionsRoutes_0_6656645675734922();
@@ -583,22 +1607,17 @@ var init_tty = __esm({
     init_write_stream();
   }
 });
-
-// ../node_modules/unenv/dist/runtime/node/internal/process/node-version.mjs
-var NODE_VERSION;
+var NODE_VERSION2;
 var init_node_version = __esm({
   "../node_modules/unenv/dist/runtime/node/internal/process/node-version.mjs"() {
     init_functionsRoutes_0_6656645675734922();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    NODE_VERSION = "22.14.0";
+    NODE_VERSION2 = "22.14.0";
   }
 });
-
-// ../node_modules/unenv/dist/runtime/node/internal/process/process.mjs
-import { EventEmitter } from "node:events";
-var Process;
+var Process2;
 var init_process = __esm({
   "../node_modules/unenv/dist/runtime/node/internal/process/process.mjs"() {
     init_functionsRoutes_0_6656645675734922();
@@ -608,9 +1627,12 @@ var init_process = __esm({
     init_tty();
     init_utils();
     init_node_version();
-    Process = class _Process extends EventEmitter {
+    Process2 = class _Process extends EventEmitter2 {
       static {
-        __name(this, "Process");
+        __name(this, "_Process");
+      }
+      static {
+        __name2(this, "Process");
       }
       env;
       hrtime;
@@ -620,7 +1642,7 @@ var init_process = __esm({
         this.env = impl.env;
         this.hrtime = impl.hrtime;
         this.nextTick = impl.nextTick;
-        for (const prop of [...Object.getOwnPropertyNames(_Process.prototype), ...Object.getOwnPropertyNames(EventEmitter.prototype)]) {
+        for (const prop of [...Object.getOwnPropertyNames(_Process.prototype), ...Object.getOwnPropertyNames(EventEmitter2.prototype)]) {
           const value = this[prop];
           if (typeof value === "function") {
             this[prop] = value.bind(this);
@@ -642,18 +1664,18 @@ var init_process = __esm({
       #stdout;
       #stderr;
       get stdin() {
-        return this.#stdin ??= new ReadStream(0);
+        return this.#stdin ??= new ReadStream2(0);
       }
       get stdout() {
-        return this.#stdout ??= new WriteStream(1);
+        return this.#stdout ??= new WriteStream2(1);
       }
       get stderr() {
-        return this.#stderr ??= new WriteStream(2);
+        return this.#stderr ??= new WriteStream2(2);
       }
       // --- cwd ---
       #cwd = "/";
-      chdir(cwd2) {
-        this.#cwd = cwd2;
+      chdir(cwd22) {
+        this.#cwd = cwd22;
       }
       cwd() {
         return this.#cwd;
@@ -669,10 +1691,10 @@ var init_process = __esm({
       pid = 200;
       ppid = 100;
       get version() {
-        return `v${NODE_VERSION}`;
+        return `v${NODE_VERSION2}`;
       }
       get versions() {
-        return { node: NODE_VERSION };
+        return { node: NODE_VERSION2 };
       }
       get allowedNodeEnvironmentFlags() {
         return /* @__PURE__ */ new Set();
@@ -723,61 +1745,61 @@ var init_process = __esm({
       }
       // --- unimplemented methods ---
       umask() {
-        throw createNotImplementedError("process.umask");
+        throw /* @__PURE__ */ createNotImplementedError2("process.umask");
       }
       getBuiltinModule() {
         return void 0;
       }
       getActiveResourcesInfo() {
-        throw createNotImplementedError("process.getActiveResourcesInfo");
+        throw /* @__PURE__ */ createNotImplementedError2("process.getActiveResourcesInfo");
       }
       exit() {
-        throw createNotImplementedError("process.exit");
+        throw /* @__PURE__ */ createNotImplementedError2("process.exit");
       }
       reallyExit() {
-        throw createNotImplementedError("process.reallyExit");
+        throw /* @__PURE__ */ createNotImplementedError2("process.reallyExit");
       }
       kill() {
-        throw createNotImplementedError("process.kill");
+        throw /* @__PURE__ */ createNotImplementedError2("process.kill");
       }
       abort() {
-        throw createNotImplementedError("process.abort");
+        throw /* @__PURE__ */ createNotImplementedError2("process.abort");
       }
       dlopen() {
-        throw createNotImplementedError("process.dlopen");
+        throw /* @__PURE__ */ createNotImplementedError2("process.dlopen");
       }
       setSourceMapsEnabled() {
-        throw createNotImplementedError("process.setSourceMapsEnabled");
+        throw /* @__PURE__ */ createNotImplementedError2("process.setSourceMapsEnabled");
       }
       loadEnvFile() {
-        throw createNotImplementedError("process.loadEnvFile");
+        throw /* @__PURE__ */ createNotImplementedError2("process.loadEnvFile");
       }
       disconnect() {
-        throw createNotImplementedError("process.disconnect");
+        throw /* @__PURE__ */ createNotImplementedError2("process.disconnect");
       }
       cpuUsage() {
-        throw createNotImplementedError("process.cpuUsage");
+        throw /* @__PURE__ */ createNotImplementedError2("process.cpuUsage");
       }
       setUncaughtExceptionCaptureCallback() {
-        throw createNotImplementedError("process.setUncaughtExceptionCaptureCallback");
+        throw /* @__PURE__ */ createNotImplementedError2("process.setUncaughtExceptionCaptureCallback");
       }
       hasUncaughtExceptionCaptureCallback() {
-        throw createNotImplementedError("process.hasUncaughtExceptionCaptureCallback");
+        throw /* @__PURE__ */ createNotImplementedError2("process.hasUncaughtExceptionCaptureCallback");
       }
       initgroups() {
-        throw createNotImplementedError("process.initgroups");
+        throw /* @__PURE__ */ createNotImplementedError2("process.initgroups");
       }
       openStdin() {
-        throw createNotImplementedError("process.openStdin");
+        throw /* @__PURE__ */ createNotImplementedError2("process.openStdin");
       }
       assert() {
-        throw createNotImplementedError("process.assert");
+        throw /* @__PURE__ */ createNotImplementedError2("process.assert");
       }
       binding() {
-        throw createNotImplementedError("process.binding");
+        throw /* @__PURE__ */ createNotImplementedError2("process.binding");
       }
       // --- attached interfaces ---
-      permission = { has: /* @__PURE__ */ notImplemented("process.permission.has") };
+      permission = { has: /* @__PURE__ */ notImplemented2("process.permission.has") };
       report = {
         directory: "",
         filename: "",
@@ -786,13 +1808,13 @@ var init_process = __esm({
         reportOnFatalError: false,
         reportOnSignal: false,
         reportOnUncaughtException: false,
-        getReport: /* @__PURE__ */ notImplemented("process.report.getReport"),
-        writeReport: /* @__PURE__ */ notImplemented("process.report.writeReport")
+        getReport: /* @__PURE__ */ notImplemented2("process.report.getReport"),
+        writeReport: /* @__PURE__ */ notImplemented2("process.report.writeReport")
       };
       finalization = {
-        register: /* @__PURE__ */ notImplemented("process.finalization.register"),
-        unregister: /* @__PURE__ */ notImplemented("process.finalization.unregister"),
-        registerBeforeExit: /* @__PURE__ */ notImplemented("process.finalization.registerBeforeExit")
+        register: /* @__PURE__ */ notImplemented2("process.finalization.register"),
+        unregister: /* @__PURE__ */ notImplemented2("process.finalization.unregister"),
+        registerBeforeExit: /* @__PURE__ */ notImplemented2("process.finalization.registerBeforeExit")
       };
       memoryUsage = Object.assign(() => ({
         arrayBuffers: 0,
@@ -800,7 +1822,7 @@ var init_process = __esm({
         external: 0,
         heapTotal: 0,
         heapUsed: 0
-      }), { rss: /* @__PURE__ */ __name(() => 0, "rss") });
+      }), { rss: /* @__PURE__ */ __name2(() => 0, "rss") });
       // --- undefined props ---
       mainModule = void 0;
       domain = void 0;
@@ -843,9 +1865,121 @@ var init_process = __esm({
     };
   }
 });
-
-// ../node_modules/@cloudflare/unenv-preset/dist/runtime/node/process.mjs
-var globalProcess, getBuiltinModule, workerdProcess, isWorkerdProcessV2, unenvProcess, exit, features, platform, env, hrtime3, nextTick, _channel, _disconnect, _events, _eventsCount, _handleQueue, _maxListeners, _pendingMessage, _send, assert2, disconnect, mainModule, _debugEnd, _debugProcess, _exiting, _fatalException, _getActiveHandles, _getActiveRequests, _kill, _linkedBinding, _preload_modules, _rawDebug, _startProfilerIdleNotifier, _stopProfilerIdleNotifier, _tickCallback, abort, addListener, allowedNodeEnvironmentFlags, arch, argv, argv0, availableMemory, binding, channel, chdir, config, connected, constrainedMemory, cpuUsage, cwd, debugPort, dlopen, domain, emit, emitWarning, eventNames, execArgv, execPath, exitCode, finalization, getActiveResourcesInfo, getegid, geteuid, getgid, getgroups, getMaxListeners, getuid, hasUncaughtExceptionCaptureCallback, initgroups, kill, listenerCount, listeners, loadEnvFile, memoryUsage, moduleLoadList, off, on, once, openStdin, permission, pid, ppid, prependListener, prependOnceListener, rawListeners, reallyExit, ref, release, removeAllListeners, removeListener, report, resourceUsage, send, setegid, seteuid, setgid, setgroups, setMaxListeners, setSourceMapsEnabled, setuid, setUncaughtExceptionCaptureCallback, sourceMapsEnabled, stderr, stdin, stdout, throwDeprecation, title, traceDeprecation, umask, unref, uptime, version, versions, _process, process_default;
+var globalProcess2;
+var getBuiltinModule2;
+var workerdProcess2;
+var isWorkerdProcessV22;
+var unenvProcess2;
+var exit2;
+var features2;
+var platform2;
+var env2;
+var hrtime32;
+var nextTick2;
+var _channel2;
+var _disconnect2;
+var _events2;
+var _eventsCount2;
+var _handleQueue2;
+var _maxListeners2;
+var _pendingMessage2;
+var _send2;
+var assert22;
+var disconnect2;
+var mainModule2;
+var _debugEnd2;
+var _debugProcess2;
+var _exiting2;
+var _fatalException2;
+var _getActiveHandles2;
+var _getActiveRequests2;
+var _kill2;
+var _linkedBinding2;
+var _preload_modules2;
+var _rawDebug2;
+var _startProfilerIdleNotifier2;
+var _stopProfilerIdleNotifier2;
+var _tickCallback2;
+var abort2;
+var addListener2;
+var allowedNodeEnvironmentFlags2;
+var arch2;
+var argv2;
+var argv02;
+var availableMemory2;
+var binding2;
+var channel2;
+var chdir2;
+var config2;
+var connected2;
+var constrainedMemory2;
+var cpuUsage2;
+var cwd2;
+var debugPort2;
+var dlopen2;
+var domain2;
+var emit2;
+var emitWarning2;
+var eventNames2;
+var execArgv2;
+var execPath2;
+var exitCode2;
+var finalization2;
+var getActiveResourcesInfo2;
+var getegid2;
+var geteuid2;
+var getgid2;
+var getgroups2;
+var getMaxListeners2;
+var getuid2;
+var hasUncaughtExceptionCaptureCallback2;
+var initgroups2;
+var kill2;
+var listenerCount2;
+var listeners2;
+var loadEnvFile2;
+var memoryUsage2;
+var moduleLoadList2;
+var off2;
+var on2;
+var once2;
+var openStdin2;
+var permission2;
+var pid2;
+var ppid2;
+var prependListener2;
+var prependOnceListener2;
+var rawListeners2;
+var reallyExit2;
+var ref2;
+var release2;
+var removeAllListeners2;
+var removeListener2;
+var report2;
+var resourceUsage2;
+var send2;
+var setegid2;
+var seteuid2;
+var setgid2;
+var setgroups2;
+var setMaxListeners2;
+var setSourceMapsEnabled2;
+var setuid2;
+var setUncaughtExceptionCaptureCallback2;
+var sourceMapsEnabled2;
+var stderr2;
+var stdin2;
+var stdout2;
+var throwDeprecation2;
+var title2;
+var traceDeprecation2;
+var umask2;
+var unref2;
+var uptime2;
+var version2;
+var versions2;
+var _process2;
+var process_default2;
 var init_process2 = __esm({
   "../node_modules/@cloudflare/unenv-preset/dist/runtime/node/process.mjs"() {
     init_functionsRoutes_0_6656645675734922();
@@ -854,319 +1988,314 @@ var init_process2 = __esm({
     init_performance2();
     init_hrtime();
     init_process();
-    globalProcess = globalThis["process"];
-    getBuiltinModule = globalProcess.getBuiltinModule;
-    workerdProcess = getBuiltinModule("node:process");
-    isWorkerdProcessV2 = globalThis.Cloudflare.compatibilityFlags.enable_nodejs_process_v2;
-    unenvProcess = new Process({
-      env: globalProcess.env,
+    globalProcess2 = globalThis["process"];
+    getBuiltinModule2 = globalProcess2.getBuiltinModule;
+    workerdProcess2 = getBuiltinModule2("node:process");
+    isWorkerdProcessV22 = globalThis.Cloudflare.compatibilityFlags.enable_nodejs_process_v2;
+    unenvProcess2 = new Process2({
+      env: globalProcess2.env,
       // `hrtime` is only available from workerd process v2
-      hrtime: isWorkerdProcessV2 ? workerdProcess.hrtime : hrtime,
+      hrtime: isWorkerdProcessV22 ? workerdProcess2.hrtime : hrtime4,
       // `nextTick` is available from workerd process v1
-      nextTick: workerdProcess.nextTick
+      nextTick: workerdProcess2.nextTick
     });
-    ({ exit, features, platform } = workerdProcess);
+    ({ exit: exit2, features: features2, platform: platform2 } = workerdProcess2);
     ({
       env: (
         // Always implemented by workerd
-        env
+        env2
       ),
       hrtime: (
         // Only implemented in workerd v2
-        hrtime3
+        hrtime32
       ),
       nextTick: (
         // Always implemented by workerd
-        nextTick
+        nextTick2
       )
-    } = unenvProcess);
+    } = unenvProcess2);
     ({
-      _channel,
-      _disconnect,
-      _events,
-      _eventsCount,
-      _handleQueue,
-      _maxListeners,
-      _pendingMessage,
-      _send,
-      assert: assert2,
-      disconnect,
-      mainModule
-    } = unenvProcess);
+      _channel: _channel2,
+      _disconnect: _disconnect2,
+      _events: _events2,
+      _eventsCount: _eventsCount2,
+      _handleQueue: _handleQueue2,
+      _maxListeners: _maxListeners2,
+      _pendingMessage: _pendingMessage2,
+      _send: _send2,
+      assert: assert22,
+      disconnect: disconnect2,
+      mainModule: mainModule2
+    } = unenvProcess2);
     ({
       _debugEnd: (
         // @ts-expect-error `_debugEnd` is missing typings
-        _debugEnd
+        _debugEnd2
       ),
       _debugProcess: (
         // @ts-expect-error `_debugProcess` is missing typings
-        _debugProcess
+        _debugProcess2
       ),
       _exiting: (
         // @ts-expect-error `_exiting` is missing typings
-        _exiting
+        _exiting2
       ),
       _fatalException: (
         // @ts-expect-error `_fatalException` is missing typings
-        _fatalException
+        _fatalException2
       ),
       _getActiveHandles: (
         // @ts-expect-error `_getActiveHandles` is missing typings
-        _getActiveHandles
+        _getActiveHandles2
       ),
       _getActiveRequests: (
         // @ts-expect-error `_getActiveRequests` is missing typings
-        _getActiveRequests
+        _getActiveRequests2
       ),
       _kill: (
         // @ts-expect-error `_kill` is missing typings
-        _kill
+        _kill2
       ),
       _linkedBinding: (
         // @ts-expect-error `_linkedBinding` is missing typings
-        _linkedBinding
+        _linkedBinding2
       ),
       _preload_modules: (
         // @ts-expect-error `_preload_modules` is missing typings
-        _preload_modules
+        _preload_modules2
       ),
       _rawDebug: (
         // @ts-expect-error `_rawDebug` is missing typings
-        _rawDebug
+        _rawDebug2
       ),
       _startProfilerIdleNotifier: (
         // @ts-expect-error `_startProfilerIdleNotifier` is missing typings
-        _startProfilerIdleNotifier
+        _startProfilerIdleNotifier2
       ),
       _stopProfilerIdleNotifier: (
         // @ts-expect-error `_stopProfilerIdleNotifier` is missing typings
-        _stopProfilerIdleNotifier
+        _stopProfilerIdleNotifier2
       ),
       _tickCallback: (
         // @ts-expect-error `_tickCallback` is missing typings
-        _tickCallback
+        _tickCallback2
       ),
-      abort,
-      addListener,
-      allowedNodeEnvironmentFlags,
-      arch,
-      argv,
-      argv0,
-      availableMemory,
+      abort: abort2,
+      addListener: addListener2,
+      allowedNodeEnvironmentFlags: allowedNodeEnvironmentFlags2,
+      arch: arch2,
+      argv: argv2,
+      argv0: argv02,
+      availableMemory: availableMemory2,
       binding: (
         // @ts-expect-error `binding` is missing typings
-        binding
+        binding2
       ),
-      channel,
-      chdir,
-      config,
-      connected,
-      constrainedMemory,
-      cpuUsage,
-      cwd,
-      debugPort,
-      dlopen,
+      channel: channel2,
+      chdir: chdir2,
+      config: config2,
+      connected: connected2,
+      constrainedMemory: constrainedMemory2,
+      cpuUsage: cpuUsage2,
+      cwd: cwd2,
+      debugPort: debugPort2,
+      dlopen: dlopen2,
       domain: (
         // @ts-expect-error `domain` is missing typings
-        domain
+        domain2
       ),
-      emit,
-      emitWarning,
-      eventNames,
-      execArgv,
-      execPath,
-      exitCode,
-      finalization,
-      getActiveResourcesInfo,
-      getegid,
-      geteuid,
-      getgid,
-      getgroups,
-      getMaxListeners,
-      getuid,
-      hasUncaughtExceptionCaptureCallback,
+      emit: emit2,
+      emitWarning: emitWarning2,
+      eventNames: eventNames2,
+      execArgv: execArgv2,
+      execPath: execPath2,
+      exitCode: exitCode2,
+      finalization: finalization2,
+      getActiveResourcesInfo: getActiveResourcesInfo2,
+      getegid: getegid2,
+      geteuid: geteuid2,
+      getgid: getgid2,
+      getgroups: getgroups2,
+      getMaxListeners: getMaxListeners2,
+      getuid: getuid2,
+      hasUncaughtExceptionCaptureCallback: hasUncaughtExceptionCaptureCallback2,
       initgroups: (
         // @ts-expect-error `initgroups` is missing typings
-        initgroups
+        initgroups2
       ),
-      kill,
-      listenerCount,
-      listeners,
-      loadEnvFile,
-      memoryUsage,
+      kill: kill2,
+      listenerCount: listenerCount2,
+      listeners: listeners2,
+      loadEnvFile: loadEnvFile2,
+      memoryUsage: memoryUsage2,
       moduleLoadList: (
         // @ts-expect-error `moduleLoadList` is missing typings
-        moduleLoadList
+        moduleLoadList2
       ),
-      off,
-      on,
-      once,
+      off: off2,
+      on: on2,
+      once: once2,
       openStdin: (
         // @ts-expect-error `openStdin` is missing typings
-        openStdin
+        openStdin2
       ),
-      permission,
-      pid,
-      ppid,
-      prependListener,
-      prependOnceListener,
-      rawListeners,
+      permission: permission2,
+      pid: pid2,
+      ppid: ppid2,
+      prependListener: prependListener2,
+      prependOnceListener: prependOnceListener2,
+      rawListeners: rawListeners2,
       reallyExit: (
         // @ts-expect-error `reallyExit` is missing typings
-        reallyExit
+        reallyExit2
       ),
-      ref,
-      release,
-      removeAllListeners,
-      removeListener,
-      report,
-      resourceUsage,
-      send,
-      setegid,
-      seteuid,
-      setgid,
-      setgroups,
-      setMaxListeners,
-      setSourceMapsEnabled,
-      setuid,
-      setUncaughtExceptionCaptureCallback,
-      sourceMapsEnabled,
-      stderr,
-      stdin,
-      stdout,
-      throwDeprecation,
-      title,
-      traceDeprecation,
-      umask,
-      unref,
-      uptime,
-      version,
-      versions
-    } = isWorkerdProcessV2 ? workerdProcess : unenvProcess);
-    _process = {
-      abort,
-      addListener,
-      allowedNodeEnvironmentFlags,
-      hasUncaughtExceptionCaptureCallback,
-      setUncaughtExceptionCaptureCallback,
-      loadEnvFile,
-      sourceMapsEnabled,
-      arch,
-      argv,
-      argv0,
-      chdir,
-      config,
-      connected,
-      constrainedMemory,
-      availableMemory,
-      cpuUsage,
-      cwd,
-      debugPort,
-      dlopen,
-      disconnect,
-      emit,
-      emitWarning,
-      env,
-      eventNames,
-      execArgv,
-      execPath,
-      exit,
-      finalization,
-      features,
-      getBuiltinModule,
-      getActiveResourcesInfo,
-      getMaxListeners,
-      hrtime: hrtime3,
-      kill,
-      listeners,
-      listenerCount,
-      memoryUsage,
-      nextTick,
-      on,
-      off,
-      once,
-      pid,
-      platform,
-      ppid,
-      prependListener,
-      prependOnceListener,
-      rawListeners,
-      release,
-      removeAllListeners,
-      removeListener,
-      report,
-      resourceUsage,
-      setMaxListeners,
-      setSourceMapsEnabled,
-      stderr,
-      stdin,
-      stdout,
-      title,
-      throwDeprecation,
-      traceDeprecation,
-      umask,
-      uptime,
-      version,
-      versions,
+      ref: ref2,
+      release: release2,
+      removeAllListeners: removeAllListeners2,
+      removeListener: removeListener2,
+      report: report2,
+      resourceUsage: resourceUsage2,
+      send: send2,
+      setegid: setegid2,
+      seteuid: seteuid2,
+      setgid: setgid2,
+      setgroups: setgroups2,
+      setMaxListeners: setMaxListeners2,
+      setSourceMapsEnabled: setSourceMapsEnabled2,
+      setuid: setuid2,
+      setUncaughtExceptionCaptureCallback: setUncaughtExceptionCaptureCallback2,
+      sourceMapsEnabled: sourceMapsEnabled2,
+      stderr: stderr2,
+      stdin: stdin2,
+      stdout: stdout2,
+      throwDeprecation: throwDeprecation2,
+      title: title2,
+      traceDeprecation: traceDeprecation2,
+      umask: umask2,
+      unref: unref2,
+      uptime: uptime2,
+      version: version2,
+      versions: versions2
+    } = isWorkerdProcessV22 ? workerdProcess2 : unenvProcess2);
+    _process2 = {
+      abort: abort2,
+      addListener: addListener2,
+      allowedNodeEnvironmentFlags: allowedNodeEnvironmentFlags2,
+      hasUncaughtExceptionCaptureCallback: hasUncaughtExceptionCaptureCallback2,
+      setUncaughtExceptionCaptureCallback: setUncaughtExceptionCaptureCallback2,
+      loadEnvFile: loadEnvFile2,
+      sourceMapsEnabled: sourceMapsEnabled2,
+      arch: arch2,
+      argv: argv2,
+      argv0: argv02,
+      chdir: chdir2,
+      config: config2,
+      connected: connected2,
+      constrainedMemory: constrainedMemory2,
+      availableMemory: availableMemory2,
+      cpuUsage: cpuUsage2,
+      cwd: cwd2,
+      debugPort: debugPort2,
+      dlopen: dlopen2,
+      disconnect: disconnect2,
+      emit: emit2,
+      emitWarning: emitWarning2,
+      env: env2,
+      eventNames: eventNames2,
+      execArgv: execArgv2,
+      execPath: execPath2,
+      exit: exit2,
+      finalization: finalization2,
+      features: features2,
+      getBuiltinModule: getBuiltinModule2,
+      getActiveResourcesInfo: getActiveResourcesInfo2,
+      getMaxListeners: getMaxListeners2,
+      hrtime: hrtime32,
+      kill: kill2,
+      listeners: listeners2,
+      listenerCount: listenerCount2,
+      memoryUsage: memoryUsage2,
+      nextTick: nextTick2,
+      on: on2,
+      off: off2,
+      once: once2,
+      pid: pid2,
+      platform: platform2,
+      ppid: ppid2,
+      prependListener: prependListener2,
+      prependOnceListener: prependOnceListener2,
+      rawListeners: rawListeners2,
+      release: release2,
+      removeAllListeners: removeAllListeners2,
+      removeListener: removeListener2,
+      report: report2,
+      resourceUsage: resourceUsage2,
+      setMaxListeners: setMaxListeners2,
+      setSourceMapsEnabled: setSourceMapsEnabled2,
+      stderr: stderr2,
+      stdin: stdin2,
+      stdout: stdout2,
+      title: title2,
+      throwDeprecation: throwDeprecation2,
+      traceDeprecation: traceDeprecation2,
+      umask: umask2,
+      uptime: uptime2,
+      version: version2,
+      versions: versions2,
       // @ts-expect-error old API
-      domain,
-      initgroups,
-      moduleLoadList,
-      reallyExit,
-      openStdin,
-      assert: assert2,
-      binding,
-      send,
-      exitCode,
-      channel,
-      getegid,
-      geteuid,
-      getgid,
-      getgroups,
-      getuid,
-      setegid,
-      seteuid,
-      setgid,
-      setgroups,
-      setuid,
-      permission,
-      mainModule,
-      _events,
-      _eventsCount,
-      _exiting,
-      _maxListeners,
-      _debugEnd,
-      _debugProcess,
-      _fatalException,
-      _getActiveHandles,
-      _getActiveRequests,
-      _kill,
-      _preload_modules,
-      _rawDebug,
-      _startProfilerIdleNotifier,
-      _stopProfilerIdleNotifier,
-      _tickCallback,
-      _disconnect,
-      _handleQueue,
-      _pendingMessage,
-      _channel,
-      _send,
-      _linkedBinding
+      domain: domain2,
+      initgroups: initgroups2,
+      moduleLoadList: moduleLoadList2,
+      reallyExit: reallyExit2,
+      openStdin: openStdin2,
+      assert: assert22,
+      binding: binding2,
+      send: send2,
+      exitCode: exitCode2,
+      channel: channel2,
+      getegid: getegid2,
+      geteuid: geteuid2,
+      getgid: getgid2,
+      getgroups: getgroups2,
+      getuid: getuid2,
+      setegid: setegid2,
+      seteuid: seteuid2,
+      setgid: setgid2,
+      setgroups: setgroups2,
+      setuid: setuid2,
+      permission: permission2,
+      mainModule: mainModule2,
+      _events: _events2,
+      _eventsCount: _eventsCount2,
+      _exiting: _exiting2,
+      _maxListeners: _maxListeners2,
+      _debugEnd: _debugEnd2,
+      _debugProcess: _debugProcess2,
+      _fatalException: _fatalException2,
+      _getActiveHandles: _getActiveHandles2,
+      _getActiveRequests: _getActiveRequests2,
+      _kill: _kill2,
+      _preload_modules: _preload_modules2,
+      _rawDebug: _rawDebug2,
+      _startProfilerIdleNotifier: _startProfilerIdleNotifier2,
+      _stopProfilerIdleNotifier: _stopProfilerIdleNotifier2,
+      _tickCallback: _tickCallback2,
+      _disconnect: _disconnect2,
+      _handleQueue: _handleQueue2,
+      _pendingMessage: _pendingMessage2,
+      _channel: _channel2,
+      _send: _send2,
+      _linkedBinding: _linkedBinding2
     };
-    process_default = _process;
+    process_default2 = _process2;
   }
 });
-
-// ../node_modules/wrangler/_virtual_unenv_global_polyfill-@cloudflare-unenv-preset-node-process
 var init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process = __esm({
   "../node_modules/wrangler/_virtual_unenv_global_polyfill-@cloudflare-unenv-preset-node-process"() {
     init_process2();
-    globalThis.process = process_default;
+    globalThis.process = process_default2;
   }
 });
-
-// node-built-in-modules:buffer
-import libDefault from "buffer";
 var require_buffer = __commonJS({
   "node-built-in-modules:buffer"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -1176,8 +2305,6 @@ var require_buffer = __commonJS({
     module.exports = libDefault;
   }
 });
-
-// ../node_modules/safe-buffer/index.js
 var require_safe_buffer = __commonJS({
   "../node_modules/safe-buffer/index.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -1192,6 +2319,7 @@ var require_safe_buffer = __commonJS({
       }
     }
     __name(copyProps, "copyProps");
+    __name2(copyProps, "copyProps");
     if (Buffer2.from && Buffer2.alloc && Buffer2.allocUnsafe && Buffer2.allocUnsafeSlow) {
       module.exports = buffer;
     } else {
@@ -1202,6 +2330,7 @@ var require_safe_buffer = __commonJS({
       return Buffer2(arg, encodingOrOffset, length);
     }
     __name(SafeBuffer, "SafeBuffer");
+    __name2(SafeBuffer, "SafeBuffer");
     SafeBuffer.prototype = Object.create(Buffer2.prototype);
     copyProps(Buffer2, SafeBuffer);
     SafeBuffer.from = function(arg, encodingOrOffset, length) {
@@ -1240,9 +2369,6 @@ var require_safe_buffer = __commonJS({
     };
   }
 });
-
-// node-built-in-modules:stream
-import libDefault2 from "stream";
 var require_stream = __commonJS({
   "node-built-in-modules:stream"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -1252,9 +2378,6 @@ var require_stream = __commonJS({
     module.exports = libDefault2;
   }
 });
-
-// node-built-in-modules:util
-import libDefault3 from "util";
 var require_util = __commonJS({
   "node-built-in-modules:util"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -1264,8 +2387,6 @@ var require_util = __commonJS({
     module.exports = libDefault3;
   }
 });
-
-// ../node_modules/jws/lib/data-stream.js
 var require_data_stream = __commonJS({
   "../node_modules/jws/lib/data-stream.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -1301,25 +2422,23 @@ var require_data_stream = __commonJS({
       throw new TypeError("Unexpected data type (" + typeof data + ")");
     }
     __name(DataStream, "DataStream");
+    __name2(DataStream, "DataStream");
     util.inherits(DataStream, Stream);
-    DataStream.prototype.write = /* @__PURE__ */ __name(function write(data) {
+    DataStream.prototype.write = /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function write(data) {
       this.buffer = Buffer2.concat([this.buffer, Buffer2.from(data)]);
       this.emit("data", data);
-    }, "write");
-    DataStream.prototype.end = /* @__PURE__ */ __name(function end(data) {
+    }, "write"), "write");
+    DataStream.prototype.end = /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function end(data) {
       if (data)
         this.write(data);
       this.emit("end", data);
       this.emit("close");
       this.writable = false;
       this.readable = false;
-    }, "end");
+    }, "end"), "end");
     module.exports = DataStream;
   }
 });
-
-// node-built-in-modules:crypto
-import libDefault4 from "crypto";
 var require_crypto = __commonJS({
   "node-built-in-modules:crypto"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -1329,8 +2448,6 @@ var require_crypto = __commonJS({
     module.exports = libDefault4;
   }
 });
-
-// ../node_modules/ecdsa-sig-formatter/src/param-bytes-for-alg.js
 var require_param_bytes_for_alg = __commonJS({
   "../node_modules/ecdsa-sig-formatter/src/param-bytes-for-alg.js"(exports, module) {
     "use strict";
@@ -1343,6 +2460,7 @@ var require_param_bytes_for_alg = __commonJS({
       return result;
     }
     __name(getParamSize, "getParamSize");
+    __name2(getParamSize, "getParamSize");
     var paramBytesForAlg = {
       ES256: getParamSize(256),
       ES384: getParamSize(384),
@@ -1356,11 +2474,10 @@ var require_param_bytes_for_alg = __commonJS({
       throw new Error('Unknown algorithm "' + alg + '"');
     }
     __name(getParamBytesForAlg, "getParamBytesForAlg");
+    __name2(getParamBytesForAlg, "getParamBytesForAlg");
     module.exports = getParamBytesForAlg;
   }
 });
-
-// ../node_modules/ecdsa-sig-formatter/src/ecdsa-sig-formatter.js
 var require_ecdsa_sig_formatter = __commonJS({
   "../node_modules/ecdsa-sig-formatter/src/ecdsa-sig-formatter.js"(exports, module) {
     "use strict";
@@ -1381,6 +2498,7 @@ var require_ecdsa_sig_formatter = __commonJS({
       return base64.replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
     }
     __name(base64Url, "base64Url");
+    __name2(base64Url, "base64Url");
     function signatureAsBuffer(signature) {
       if (Buffer2.isBuffer(signature)) {
         return signature;
@@ -1390,6 +2508,7 @@ var require_ecdsa_sig_formatter = __commonJS({
       throw new TypeError("ECDSA signature must be a Base64 string or a Buffer");
     }
     __name(signatureAsBuffer, "signatureAsBuffer");
+    __name2(signatureAsBuffer, "signatureAsBuffer");
     function derToJose(signature, alg) {
       signature = signatureAsBuffer(signature);
       var paramBytes = getParamBytesForAlg(alg);
@@ -1449,6 +2568,7 @@ var require_ecdsa_sig_formatter = __commonJS({
       return dst;
     }
     __name(derToJose, "derToJose");
+    __name2(derToJose, "derToJose");
     function countPadding(buf, start, stop) {
       var padding = 0;
       while (start + padding < stop && buf[start + padding] === 0) {
@@ -1461,6 +2581,7 @@ var require_ecdsa_sig_formatter = __commonJS({
       return padding;
     }
     __name(countPadding, "countPadding");
+    __name2(countPadding, "countPadding");
     function joseToDer(signature, alg) {
       signature = signatureAsBuffer(signature);
       var paramBytes = getParamBytesForAlg(alg);
@@ -1502,14 +2623,13 @@ var require_ecdsa_sig_formatter = __commonJS({
       return dst;
     }
     __name(joseToDer, "joseToDer");
+    __name2(joseToDer, "joseToDer");
     module.exports = {
       derToJose,
       joseToDer
     };
   }
 });
-
-// ../node_modules/buffer-equal-constant-time/index.js
 var require_buffer_equal_constant_time = __commonJS({
   "../node_modules/buffer-equal-constant-time/index.js"(exports, module) {
     "use strict";
@@ -1534,10 +2654,11 @@ var require_buffer_equal_constant_time = __commonJS({
       return c === 0;
     }
     __name(bufferEq, "bufferEq");
+    __name2(bufferEq, "bufferEq");
     bufferEq.install = function() {
-      Buffer2.prototype.equal = SlowBuffer.prototype.equal = /* @__PURE__ */ __name(function equal(that) {
+      Buffer2.prototype.equal = SlowBuffer.prototype.equal = /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function equal(that) {
         return bufferEq(this, that);
-      }, "equal");
+      }, "equal"), "equal");
     };
     var origBufEqual = Buffer2.prototype.equal;
     var origSlowBufEqual = SlowBuffer.prototype.equal;
@@ -1547,8 +2668,6 @@ var require_buffer_equal_constant_time = __commonJS({
     };
   }
 });
-
-// ../node_modules/jwa/index.js
 var require_jwa = __commonJS({
   "../node_modules/jwa/index.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -1592,6 +2711,7 @@ var require_jwa = __commonJS({
       }
     }
     __name(checkIsPublicKey, "checkIsPublicKey");
+    __name2(checkIsPublicKey, "checkIsPublicKey");
     function checkIsPrivateKey(key) {
       if (Buffer2.isBuffer(key)) {
         return;
@@ -1605,6 +2725,7 @@ var require_jwa = __commonJS({
       throw typeError(MSG_INVALID_SIGNER_KEY);
     }
     __name(checkIsPrivateKey, "checkIsPrivateKey");
+    __name2(checkIsPrivateKey, "checkIsPrivateKey");
     function checkIsSecretKey(key) {
       if (Buffer2.isBuffer(key)) {
         return;
@@ -1626,10 +2747,12 @@ var require_jwa = __commonJS({
       }
     }
     __name(checkIsSecretKey, "checkIsSecretKey");
+    __name2(checkIsSecretKey, "checkIsSecretKey");
     function fromBase64(base64) {
       return base64.replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
     }
     __name(fromBase64, "fromBase64");
+    __name2(fromBase64, "fromBase64");
     function toBase64(base64url) {
       base64url = base64url.toString();
       var padding = 4 - base64url.length % 4;
@@ -1641,74 +2764,82 @@ var require_jwa = __commonJS({
       return base64url.replace(/\-/g, "+").replace(/_/g, "/");
     }
     __name(toBase64, "toBase64");
+    __name2(toBase64, "toBase64");
     function typeError(template) {
       var args = [].slice.call(arguments, 1);
       var errMsg = util.format.bind(util, template).apply(null, args);
       return new TypeError(errMsg);
     }
     __name(typeError, "typeError");
+    __name2(typeError, "typeError");
     function bufferOrString(obj) {
       return Buffer2.isBuffer(obj) || typeof obj === "string";
     }
     __name(bufferOrString, "bufferOrString");
+    __name2(bufferOrString, "bufferOrString");
     function normalizeInput(thing) {
       if (!bufferOrString(thing))
         thing = JSON.stringify(thing);
       return thing;
     }
     __name(normalizeInput, "normalizeInput");
+    __name2(normalizeInput, "normalizeInput");
     function createHmacSigner(bits) {
-      return /* @__PURE__ */ __name(function sign(thing, secret) {
+      return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function sign(thing, secret) {
         checkIsSecretKey(secret);
         thing = normalizeInput(thing);
         var hmac = crypto2.createHmac("sha" + bits, secret);
         var sig = (hmac.update(thing), hmac.digest("base64"));
         return fromBase64(sig);
-      }, "sign");
+      }, "sign"), "sign");
     }
     __name(createHmacSigner, "createHmacSigner");
+    __name2(createHmacSigner, "createHmacSigner");
     var bufferEqual;
-    var timingSafeEqual = "timingSafeEqual" in crypto2 ? /* @__PURE__ */ __name(function timingSafeEqual2(a, b) {
+    var timingSafeEqual = "timingSafeEqual" in crypto2 ? /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function timingSafeEqual2(a, b) {
       if (a.byteLength !== b.byteLength) {
         return false;
       }
       return crypto2.timingSafeEqual(a, b);
-    }, "timingSafeEqual") : /* @__PURE__ */ __name(function timingSafeEqual2(a, b) {
+    }, "timingSafeEqual2"), "timingSafeEqual") : /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function timingSafeEqual2(a, b) {
       if (!bufferEqual) {
         bufferEqual = require_buffer_equal_constant_time();
       }
       return bufferEqual(a, b);
-    }, "timingSafeEqual");
+    }, "timingSafeEqual2"), "timingSafeEqual");
     function createHmacVerifier(bits) {
-      return /* @__PURE__ */ __name(function verify(thing, signature, secret) {
+      return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function verify(thing, signature, secret) {
         var computedSig = createHmacSigner(bits)(thing, secret);
         return timingSafeEqual(Buffer2.from(signature), Buffer2.from(computedSig));
-      }, "verify");
+      }, "verify"), "verify");
     }
     __name(createHmacVerifier, "createHmacVerifier");
+    __name2(createHmacVerifier, "createHmacVerifier");
     function createKeySigner(bits) {
-      return /* @__PURE__ */ __name(function sign(thing, privateKey) {
+      return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function sign(thing, privateKey) {
         checkIsPrivateKey(privateKey);
         thing = normalizeInput(thing);
         var signer = crypto2.createSign("RSA-SHA" + bits);
         var sig = (signer.update(thing), signer.sign(privateKey, "base64"));
         return fromBase64(sig);
-      }, "sign");
+      }, "sign"), "sign");
     }
     __name(createKeySigner, "createKeySigner");
+    __name2(createKeySigner, "createKeySigner");
     function createKeyVerifier(bits) {
-      return /* @__PURE__ */ __name(function verify(thing, signature, publicKey) {
+      return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function verify(thing, signature, publicKey) {
         checkIsPublicKey(publicKey);
         thing = normalizeInput(thing);
         signature = toBase64(signature);
         var verifier = crypto2.createVerify("RSA-SHA" + bits);
         verifier.update(thing);
         return verifier.verify(publicKey, signature, "base64");
-      }, "verify");
+      }, "verify"), "verify");
     }
     __name(createKeyVerifier, "createKeyVerifier");
+    __name2(createKeyVerifier, "createKeyVerifier");
     function createPSSKeySigner(bits) {
-      return /* @__PURE__ */ __name(function sign(thing, privateKey) {
+      return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function sign(thing, privateKey) {
         checkIsPrivateKey(privateKey);
         thing = normalizeInput(thing);
         var signer = crypto2.createSign("RSA-SHA" + bits);
@@ -1718,11 +2849,12 @@ var require_jwa = __commonJS({
           saltLength: crypto2.constants.RSA_PSS_SALTLEN_DIGEST
         }, "base64"));
         return fromBase64(sig);
-      }, "sign");
+      }, "sign"), "sign");
     }
     __name(createPSSKeySigner, "createPSSKeySigner");
+    __name2(createPSSKeySigner, "createPSSKeySigner");
     function createPSSKeyVerifier(bits) {
-      return /* @__PURE__ */ __name(function verify(thing, signature, publicKey) {
+      return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function verify(thing, signature, publicKey) {
         checkIsPublicKey(publicKey);
         thing = normalizeInput(thing);
         signature = toBase64(signature);
@@ -1733,40 +2865,45 @@ var require_jwa = __commonJS({
           padding: crypto2.constants.RSA_PKCS1_PSS_PADDING,
           saltLength: crypto2.constants.RSA_PSS_SALTLEN_DIGEST
         }, signature, "base64");
-      }, "verify");
+      }, "verify"), "verify");
     }
     __name(createPSSKeyVerifier, "createPSSKeyVerifier");
+    __name2(createPSSKeyVerifier, "createPSSKeyVerifier");
     function createECDSASigner(bits) {
       var inner = createKeySigner(bits);
-      return /* @__PURE__ */ __name(function sign() {
+      return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function sign() {
         var signature = inner.apply(null, arguments);
         signature = formatEcdsa.derToJose(signature, "ES" + bits);
         return signature;
-      }, "sign");
+      }, "sign"), "sign");
     }
     __name(createECDSASigner, "createECDSASigner");
+    __name2(createECDSASigner, "createECDSASigner");
     function createECDSAVerifer(bits) {
       var inner = createKeyVerifier(bits);
-      return /* @__PURE__ */ __name(function verify(thing, signature, publicKey) {
+      return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function verify(thing, signature, publicKey) {
         signature = formatEcdsa.joseToDer(signature, "ES" + bits).toString("base64");
         var result = inner(thing, signature, publicKey);
         return result;
-      }, "verify");
+      }, "verify"), "verify");
     }
     __name(createECDSAVerifer, "createECDSAVerifer");
+    __name2(createECDSAVerifer, "createECDSAVerifer");
     function createNoneSigner() {
-      return /* @__PURE__ */ __name(function sign() {
+      return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function sign() {
         return "";
-      }, "sign");
+      }, "sign"), "sign");
     }
     __name(createNoneSigner, "createNoneSigner");
+    __name2(createNoneSigner, "createNoneSigner");
     function createNoneVerifier() {
-      return /* @__PURE__ */ __name(function verify(thing, signature) {
+      return /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function verify(thing, signature) {
         return signature === "";
-      }, "verify");
+      }, "verify"), "verify");
     }
     __name(createNoneVerifier, "createNoneVerifier");
-    module.exports = /* @__PURE__ */ __name(function jwa(algorithm) {
+    __name2(createNoneVerifier, "createNoneVerifier");
+    module.exports = /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function jwa(algorithm) {
       var signerFactories = {
         hs: createHmacSigner,
         rs: createKeySigner,
@@ -1790,11 +2927,9 @@ var require_jwa = __commonJS({
         sign: signerFactories[algo](bits),
         verify: verifierFactories[algo](bits)
       };
-    }, "jwa");
+    }, "jwa"), "jwa");
   }
 });
-
-// ../node_modules/jws/lib/tostring.js
 var require_tostring = __commonJS({
   "../node_modules/jws/lib/tostring.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -1802,17 +2937,15 @@ var require_tostring = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var Buffer2 = require_buffer().Buffer;
-    module.exports = /* @__PURE__ */ __name(function toString(obj) {
+    module.exports = /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function toString(obj) {
       if (typeof obj === "string")
         return obj;
       if (typeof obj === "number" || Buffer2.isBuffer(obj))
         return obj.toString();
       return JSON.stringify(obj);
-    }, "toString");
+    }, "toString"), "toString");
   }
 });
-
-// ../node_modules/jws/lib/sign-stream.js
 var require_sign_stream = __commonJS({
   "../node_modules/jws/lib/sign-stream.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -1829,6 +2962,7 @@ var require_sign_stream = __commonJS({
       return Buffer2.from(string, encoding).toString("base64").replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
     }
     __name(base64url, "base64url");
+    __name2(base64url, "base64url");
     function jwsSecuredInput(header, payload, encoding) {
       encoding = encoding || "utf8";
       var encodedHeader = base64url(toString(header), "binary");
@@ -1836,6 +2970,7 @@ var require_sign_stream = __commonJS({
       return util.format("%s.%s", encodedHeader, encodedPayload);
     }
     __name(jwsSecuredInput, "jwsSecuredInput");
+    __name2(jwsSecuredInput, "jwsSecuredInput");
     function jwsSign(opts) {
       var header = opts.header;
       var payload = opts.payload;
@@ -1847,6 +2982,7 @@ var require_sign_stream = __commonJS({
       return util.format("%s.%s", securedInput, signature);
     }
     __name(jwsSign, "jwsSign");
+    __name2(jwsSign, "jwsSign");
     function SignStream(opts) {
       var secret = opts.secret || opts.privateKey || opts.key;
       var secretStream = new DataStream(secret);
@@ -1865,8 +3001,9 @@ var require_sign_stream = __commonJS({
       }.bind(this));
     }
     __name(SignStream, "SignStream");
+    __name2(SignStream, "SignStream");
     util.inherits(SignStream, Stream);
-    SignStream.prototype.sign = /* @__PURE__ */ __name(function sign() {
+    SignStream.prototype.sign = /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function sign() {
       try {
         var signature = jwsSign({
           header: this.header,
@@ -1884,13 +3021,11 @@ var require_sign_stream = __commonJS({
         this.emit("error", e);
         this.emit("close");
       }
-    }, "sign");
+    }, "sign"), "sign");
     SignStream.sign = jwsSign;
     module.exports = SignStream;
   }
 });
-
-// ../node_modules/jws/lib/verify-stream.js
 var require_verify_stream = __commonJS({
   "../node_modules/jws/lib/verify-stream.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -1908,6 +3043,7 @@ var require_verify_stream = __commonJS({
       return Object.prototype.toString.call(thing) === "[object Object]";
     }
     __name(isObject, "isObject");
+    __name2(isObject, "isObject");
     function safeJsonParse(thing) {
       if (isObject(thing))
         return thing;
@@ -1918,29 +3054,35 @@ var require_verify_stream = __commonJS({
       }
     }
     __name(safeJsonParse, "safeJsonParse");
+    __name2(safeJsonParse, "safeJsonParse");
     function headerFromJWS(jwsSig) {
       var encodedHeader = jwsSig.split(".", 1)[0];
       return safeJsonParse(Buffer2.from(encodedHeader, "base64").toString("binary"));
     }
     __name(headerFromJWS, "headerFromJWS");
+    __name2(headerFromJWS, "headerFromJWS");
     function securedInputFromJWS(jwsSig) {
       return jwsSig.split(".", 2).join(".");
     }
     __name(securedInputFromJWS, "securedInputFromJWS");
+    __name2(securedInputFromJWS, "securedInputFromJWS");
     function signatureFromJWS(jwsSig) {
       return jwsSig.split(".")[2];
     }
     __name(signatureFromJWS, "signatureFromJWS");
+    __name2(signatureFromJWS, "signatureFromJWS");
     function payloadFromJWS(jwsSig, encoding) {
       encoding = encoding || "utf8";
       var payload = jwsSig.split(".")[1];
       return Buffer2.from(payload, "base64").toString(encoding);
     }
     __name(payloadFromJWS, "payloadFromJWS");
+    __name2(payloadFromJWS, "payloadFromJWS");
     function isValidJws(string) {
       return JWS_REGEX.test(string) && !!headerFromJWS(string);
     }
     __name(isValidJws, "isValidJws");
+    __name2(isValidJws, "isValidJws");
     function jwsVerify(jwsSig, algorithm, secretOrKey) {
       if (!algorithm) {
         var err = new Error("Missing algorithm parameter for jws.verify");
@@ -1954,6 +3096,7 @@ var require_verify_stream = __commonJS({
       return algo.verify(securedInput, signature, secretOrKey);
     }
     __name(jwsVerify, "jwsVerify");
+    __name2(jwsVerify, "jwsVerify");
     function jwsDecode(jwsSig, opts) {
       opts = opts || {};
       jwsSig = toString(jwsSig);
@@ -1972,6 +3115,7 @@ var require_verify_stream = __commonJS({
       };
     }
     __name(jwsDecode, "jwsDecode");
+    __name2(jwsDecode, "jwsDecode");
     function VerifyStream(opts) {
       opts = opts || {};
       var secretOrKey = opts.secret || opts.publicKey || opts.key;
@@ -1991,8 +3135,9 @@ var require_verify_stream = __commonJS({
       }.bind(this));
     }
     __name(VerifyStream, "VerifyStream");
+    __name2(VerifyStream, "VerifyStream");
     util.inherits(VerifyStream, Stream);
-    VerifyStream.prototype.verify = /* @__PURE__ */ __name(function verify() {
+    VerifyStream.prototype.verify = /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function verify() {
       try {
         var valid = jwsVerify(this.signature.buffer, this.algorithm, this.key.buffer);
         var obj = jwsDecode(this.signature.buffer, this.encoding);
@@ -2006,15 +3151,13 @@ var require_verify_stream = __commonJS({
         this.emit("error", e);
         this.emit("close");
       }
-    }, "verify");
+    }, "verify"), "verify");
     VerifyStream.decode = jwsDecode;
     VerifyStream.isValid = isValidJws;
     VerifyStream.verify = jwsVerify;
     module.exports = VerifyStream;
   }
 });
-
-// ../node_modules/jws/index.js
 var require_jws = __commonJS({
   "../node_modules/jws/index.js"(exports) {
     init_functionsRoutes_0_6656645675734922();
@@ -2042,16 +3185,14 @@ var require_jws = __commonJS({
     exports.verify = VerifyStream.verify;
     exports.decode = VerifyStream.decode;
     exports.isValid = VerifyStream.isValid;
-    exports.createSign = /* @__PURE__ */ __name(function createSign(opts) {
+    exports.createSign = /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function createSign(opts) {
       return new SignStream(opts);
-    }, "createSign");
-    exports.createVerify = /* @__PURE__ */ __name(function createVerify(opts) {
+    }, "createSign"), "createSign");
+    exports.createVerify = /* @__PURE__ */ __name2(/* @__PURE__ */ __name(function createVerify(opts) {
       return new VerifyStream(opts);
-    }, "createVerify");
+    }, "createVerify"), "createVerify");
   }
 });
-
-// ../node_modules/jsonwebtoken/decode.js
 var require_decode = __commonJS({
   "../node_modules/jsonwebtoken/decode.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -2086,30 +3227,26 @@ var require_decode = __commonJS({
     };
   }
 });
-
-// ../node_modules/jsonwebtoken/lib/JsonWebTokenError.js
 var require_JsonWebTokenError = __commonJS({
   "../node_modules/jsonwebtoken/lib/JsonWebTokenError.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    var JsonWebTokenError = /* @__PURE__ */ __name(function(message, error3) {
+    var JsonWebTokenError = /* @__PURE__ */ __name2(function(message, error32) {
       Error.call(this, message);
       if (Error.captureStackTrace) {
         Error.captureStackTrace(this, this.constructor);
       }
       this.name = "JsonWebTokenError";
       this.message = message;
-      if (error3) this.inner = error3;
+      if (error32) this.inner = error32;
     }, "JsonWebTokenError");
     JsonWebTokenError.prototype = Object.create(Error.prototype);
     JsonWebTokenError.prototype.constructor = JsonWebTokenError;
     module.exports = JsonWebTokenError;
   }
 });
-
-// ../node_modules/jsonwebtoken/lib/NotBeforeError.js
 var require_NotBeforeError = __commonJS({
   "../node_modules/jsonwebtoken/lib/NotBeforeError.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -2117,7 +3254,7 @@ var require_NotBeforeError = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var JsonWebTokenError = require_JsonWebTokenError();
-    var NotBeforeError = /* @__PURE__ */ __name(function(message, date) {
+    var NotBeforeError = /* @__PURE__ */ __name2(function(message, date) {
       JsonWebTokenError.call(this, message);
       this.name = "NotBeforeError";
       this.date = date;
@@ -2127,8 +3264,6 @@ var require_NotBeforeError = __commonJS({
     module.exports = NotBeforeError;
   }
 });
-
-// ../node_modules/jsonwebtoken/lib/TokenExpiredError.js
 var require_TokenExpiredError = __commonJS({
   "../node_modules/jsonwebtoken/lib/TokenExpiredError.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -2136,7 +3271,7 @@ var require_TokenExpiredError = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var JsonWebTokenError = require_JsonWebTokenError();
-    var TokenExpiredError = /* @__PURE__ */ __name(function(message, expiredAt) {
+    var TokenExpiredError = /* @__PURE__ */ __name2(function(message, expiredAt) {
       JsonWebTokenError.call(this, message);
       this.name = "TokenExpiredError";
       this.expiredAt = expiredAt;
@@ -2146,8 +3281,6 @@ var require_TokenExpiredError = __commonJS({
     module.exports = TokenExpiredError;
   }
 });
-
-// ../node_modules/ms/index.js
 var require_ms = __commonJS({
   "../node_modules/ms/index.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -2228,7 +3361,8 @@ var require_ms = __commonJS({
           return void 0;
       }
     }
-    __name(parse2, "parse");
+    __name(parse2, "parse2");
+    __name2(parse2, "parse");
     function fmtShort(ms) {
       var msAbs = Math.abs(ms);
       if (msAbs >= d) {
@@ -2246,6 +3380,7 @@ var require_ms = __commonJS({
       return ms + "ms";
     }
     __name(fmtShort, "fmtShort");
+    __name2(fmtShort, "fmtShort");
     function fmtLong(ms) {
       var msAbs = Math.abs(ms);
       if (msAbs >= d) {
@@ -2263,15 +3398,15 @@ var require_ms = __commonJS({
       return ms + " ms";
     }
     __name(fmtLong, "fmtLong");
+    __name2(fmtLong, "fmtLong");
     function plural(ms, msAbs, n, name) {
       var isPlural = msAbs >= n * 1.5;
       return Math.round(ms / n) + " " + name + (isPlural ? "s" : "");
     }
     __name(plural, "plural");
+    __name2(plural, "plural");
   }
 });
-
-// ../node_modules/jsonwebtoken/lib/timespan.js
 var require_timespan = __commonJS({
   "../node_modules/jsonwebtoken/lib/timespan.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -2279,24 +3414,22 @@ var require_timespan = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var ms = require_ms();
-    module.exports = function(time3, iat) {
+    module.exports = function(time32, iat) {
       var timestamp = iat || Math.floor(Date.now() / 1e3);
-      if (typeof time3 === "string") {
-        var milliseconds = ms(time3);
+      if (typeof time32 === "string") {
+        var milliseconds = ms(time32);
         if (typeof milliseconds === "undefined") {
           return;
         }
         return Math.floor(timestamp + milliseconds / 1e3);
-      } else if (typeof time3 === "number") {
-        return timestamp + time3;
+      } else if (typeof time32 === "number") {
+        return timestamp + time32;
       } else {
         return;
       }
     };
   }
 });
-
-// ../node_modules/semver/internal/constants.js
 var require_constants = __commonJS({
   "../node_modules/semver/internal/constants.js"(exports, module) {
     "use strict";
@@ -2331,8 +3464,6 @@ var require_constants = __commonJS({
     };
   }
 });
-
-// ../node_modules/semver/internal/debug.js
 var require_debug = __commonJS({
   "../node_modules/semver/internal/debug.js"(exports, module) {
     "use strict";
@@ -2340,13 +3471,11 @@ var require_debug = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    var debug3 = typeof process === "object" && process.env && process.env.NODE_DEBUG && /\bsemver\b/i.test(process.env.NODE_DEBUG) ? (...args) => console.error("SEMVER", ...args) : () => {
+    var debug32 = typeof process === "object" && process.env && process.env.NODE_DEBUG && /\bsemver\b/i.test(process.env.NODE_DEBUG) ? (...args) => console.error("SEMVER", ...args) : () => {
     };
-    module.exports = debug3;
+    module.exports = debug32;
   }
 });
-
-// ../node_modules/semver/internal/re.js
 var require_re = __commonJS({
   "../node_modules/semver/internal/re.js"(exports, module) {
     "use strict";
@@ -2359,7 +3488,7 @@ var require_re = __commonJS({
       MAX_SAFE_BUILD_LENGTH,
       MAX_LENGTH
     } = require_constants();
-    var debug3 = require_debug();
+    var debug32 = require_debug();
     exports = module.exports = {};
     var re = exports.re = [];
     var safeRe = exports.safeRe = [];
@@ -2373,16 +3502,16 @@ var require_re = __commonJS({
       ["\\d", MAX_LENGTH],
       [LETTERDASHNUMBER, MAX_SAFE_BUILD_LENGTH]
     ];
-    var makeSafeRegex = /* @__PURE__ */ __name((value) => {
+    var makeSafeRegex = /* @__PURE__ */ __name2((value) => {
       for (const [token, max] of safeRegexReplacements) {
         value = value.split(`${token}*`).join(`${token}{0,${max}}`).split(`${token}+`).join(`${token}{1,${max}}`);
       }
       return value;
     }, "makeSafeRegex");
-    var createToken = /* @__PURE__ */ __name((name, value, isGlobal) => {
+    var createToken = /* @__PURE__ */ __name2((name, value, isGlobal) => {
       const safe = makeSafeRegex(value);
       const index = R++;
-      debug3(name, index, value);
+      debug32(name, index, value);
       t[name] = index;
       src[index] = value;
       safeSrc[index] = safe;
@@ -2437,8 +3566,6 @@ var require_re = __commonJS({
     createToken("GTE0PRE", "^\\s*>=\\s*0\\.0\\.0-0\\s*$");
   }
 });
-
-// ../node_modules/semver/internal/parse-options.js
 var require_parse_options = __commonJS({
   "../node_modules/semver/internal/parse-options.js"(exports, module) {
     "use strict";
@@ -2448,7 +3575,7 @@ var require_parse_options = __commonJS({
     init_performance2();
     var looseOption = Object.freeze({ loose: true });
     var emptyOpts = Object.freeze({});
-    var parseOptions = /* @__PURE__ */ __name((options) => {
+    var parseOptions = /* @__PURE__ */ __name2((options) => {
       if (!options) {
         return emptyOpts;
       }
@@ -2460,8 +3587,6 @@ var require_parse_options = __commonJS({
     module.exports = parseOptions;
   }
 });
-
-// ../node_modules/semver/internal/identifiers.js
 var require_identifiers = __commonJS({
   "../node_modules/semver/internal/identifiers.js"(exports, module) {
     "use strict";
@@ -2470,7 +3595,7 @@ var require_identifiers = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var numeric = /^[0-9]+$/;
-    var compareIdentifiers = /* @__PURE__ */ __name((a, b) => {
+    var compareIdentifiers = /* @__PURE__ */ __name2((a, b) => {
       if (typeof a === "number" && typeof b === "number") {
         return a === b ? 0 : a < b ? -1 : 1;
       }
@@ -2482,15 +3607,13 @@ var require_identifiers = __commonJS({
       }
       return a === b ? 0 : anum && !bnum ? -1 : bnum && !anum ? 1 : a < b ? -1 : 1;
     }, "compareIdentifiers");
-    var rcompareIdentifiers = /* @__PURE__ */ __name((a, b) => compareIdentifiers(b, a), "rcompareIdentifiers");
+    var rcompareIdentifiers = /* @__PURE__ */ __name2((a, b) => compareIdentifiers(b, a), "rcompareIdentifiers");
     module.exports = {
       compareIdentifiers,
       rcompareIdentifiers
     };
   }
 });
-
-// ../node_modules/semver/classes/semver.js
 var require_semver = __commonJS({
   "../node_modules/semver/classes/semver.js"(exports, module) {
     "use strict";
@@ -2498,40 +3621,43 @@ var require_semver = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    var debug3 = require_debug();
+    var debug32 = require_debug();
     var { MAX_LENGTH, MAX_SAFE_INTEGER } = require_constants();
     var { safeRe: re, t } = require_re();
     var parseOptions = require_parse_options();
     var { compareIdentifiers } = require_identifiers();
     var SemVer = class _SemVer {
       static {
-        __name(this, "SemVer");
+        __name(this, "_SemVer");
       }
-      constructor(version2, options) {
+      static {
+        __name2(this, "SemVer");
+      }
+      constructor(version22, options) {
         options = parseOptions(options);
-        if (version2 instanceof _SemVer) {
-          if (version2.loose === !!options.loose && version2.includePrerelease === !!options.includePrerelease) {
-            return version2;
+        if (version22 instanceof _SemVer) {
+          if (version22.loose === !!options.loose && version22.includePrerelease === !!options.includePrerelease) {
+            return version22;
           } else {
-            version2 = version2.version;
+            version22 = version22.version;
           }
-        } else if (typeof version2 !== "string") {
-          throw new TypeError(`Invalid version. Must be a string. Got type "${typeof version2}".`);
+        } else if (typeof version22 !== "string") {
+          throw new TypeError(`Invalid version. Must be a string. Got type "${typeof version22}".`);
         }
-        if (version2.length > MAX_LENGTH) {
+        if (version22.length > MAX_LENGTH) {
           throw new TypeError(
             `version is longer than ${MAX_LENGTH} characters`
           );
         }
-        debug3("SemVer", version2, options);
+        debug32("SemVer", version22, options);
         this.options = options;
         this.loose = !!options.loose;
         this.includePrerelease = !!options.includePrerelease;
-        const m = version2.trim().match(options.loose ? re[t.LOOSE] : re[t.FULL]);
+        const m = version22.trim().match(options.loose ? re[t.LOOSE] : re[t.FULL]);
         if (!m) {
-          throw new TypeError(`Invalid Version: ${version2}`);
+          throw new TypeError(`Invalid Version: ${version22}`);
         }
-        this.raw = version2;
+        this.raw = version22;
         this.major = +m[1];
         this.minor = +m[2];
         this.patch = +m[3];
@@ -2571,7 +3697,7 @@ var require_semver = __commonJS({
         return this.version;
       }
       compare(other) {
-        debug3("SemVer.compare", this.version, this.options, other);
+        debug32("SemVer.compare", this.version, this.options, other);
         if (!(other instanceof _SemVer)) {
           if (typeof other === "string" && other === this.version) {
             return 0;
@@ -2622,7 +3748,7 @@ var require_semver = __commonJS({
         do {
           const a = this.prerelease[i];
           const b = other.prerelease[i];
-          debug3("prerelease compare", i, a, b);
+          debug32("prerelease compare", i, a, b);
           if (a === void 0 && b === void 0) {
             return 0;
           } else if (b === void 0) {
@@ -2644,7 +3770,7 @@ var require_semver = __commonJS({
         do {
           const a = this.build[i];
           const b = other.build[i];
-          debug3("build compare", i, a, b);
+          debug32("build compare", i, a, b);
           if (a === void 0 && b === void 0) {
             return 0;
           } else if (b === void 0) {
@@ -2660,8 +3786,8 @@ var require_semver = __commonJS({
       }
       // preminor will bump the version up to the next minor release, and immediately
       // down to pre-release. premajor and prepatch work the same way.
-      inc(release2, identifier, identifierBase) {
-        if (release2.startsWith("pre")) {
+      inc(release22, identifier, identifierBase) {
+        if (release22.startsWith("pre")) {
           if (!identifier && identifierBase === false) {
             throw new Error("invalid increment argument: identifier is empty");
           }
@@ -2672,7 +3798,7 @@ var require_semver = __commonJS({
             }
           }
         }
-        switch (release2) {
+        switch (release22) {
           case "premajor":
             this.prerelease.length = 0;
             this.patch = 0;
@@ -2763,7 +3889,7 @@ var require_semver = __commonJS({
             break;
           }
           default:
-            throw new Error(`invalid increment argument: ${release2}`);
+            throw new Error(`invalid increment argument: ${release22}`);
         }
         this.raw = this.format();
         if (this.build.length) {
@@ -2775,8 +3901,6 @@ var require_semver = __commonJS({
     module.exports = SemVer;
   }
 });
-
-// ../node_modules/semver/functions/parse.js
 var require_parse = __commonJS({
   "../node_modules/semver/functions/parse.js"(exports, module) {
     "use strict";
@@ -2785,12 +3909,12 @@ var require_parse = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var SemVer = require_semver();
-    var parse2 = /* @__PURE__ */ __name((version2, options, throwErrors = false) => {
-      if (version2 instanceof SemVer) {
-        return version2;
+    var parse2 = /* @__PURE__ */ __name2((version22, options, throwErrors = false) => {
+      if (version22 instanceof SemVer) {
+        return version22;
       }
       try {
-        return new SemVer(version2, options);
+        return new SemVer(version22, options);
       } catch (er) {
         if (!throwErrors) {
           return null;
@@ -2801,8 +3925,6 @@ var require_parse = __commonJS({
     module.exports = parse2;
   }
 });
-
-// ../node_modules/semver/functions/valid.js
 var require_valid = __commonJS({
   "../node_modules/semver/functions/valid.js"(exports, module) {
     "use strict";
@@ -2811,15 +3933,13 @@ var require_valid = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var parse2 = require_parse();
-    var valid = /* @__PURE__ */ __name((version2, options) => {
-      const v = parse2(version2, options);
+    var valid = /* @__PURE__ */ __name2((version22, options) => {
+      const v = parse2(version22, options);
       return v ? v.version : null;
     }, "valid");
     module.exports = valid;
   }
 });
-
-// ../node_modules/semver/functions/clean.js
 var require_clean = __commonJS({
   "../node_modules/semver/functions/clean.js"(exports, module) {
     "use strict";
@@ -2828,15 +3948,13 @@ var require_clean = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var parse2 = require_parse();
-    var clean = /* @__PURE__ */ __name((version2, options) => {
-      const s = parse2(version2.trim().replace(/^[=v]+/, ""), options);
+    var clean = /* @__PURE__ */ __name2((version22, options) => {
+      const s = parse2(version22.trim().replace(/^[=v]+/, ""), options);
       return s ? s.version : null;
     }, "clean");
     module.exports = clean;
   }
 });
-
-// ../node_modules/semver/functions/inc.js
 var require_inc = __commonJS({
   "../node_modules/semver/functions/inc.js"(exports, module) {
     "use strict";
@@ -2845,7 +3963,7 @@ var require_inc = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var SemVer = require_semver();
-    var inc = /* @__PURE__ */ __name((version2, release2, options, identifier, identifierBase) => {
+    var inc = /* @__PURE__ */ __name2((version22, release22, options, identifier, identifierBase) => {
       if (typeof options === "string") {
         identifierBase = identifier;
         identifier = options;
@@ -2853,9 +3971,9 @@ var require_inc = __commonJS({
       }
       try {
         return new SemVer(
-          version2 instanceof SemVer ? version2.version : version2,
+          version22 instanceof SemVer ? version22.version : version22,
           options
-        ).inc(release2, identifier, identifierBase).version;
+        ).inc(release22, identifier, identifierBase).version;
       } catch (er) {
         return null;
       }
@@ -2863,8 +3981,6 @@ var require_inc = __commonJS({
     module.exports = inc;
   }
 });
-
-// ../node_modules/semver/functions/diff.js
 var require_diff = __commonJS({
   "../node_modules/semver/functions/diff.js"(exports, module) {
     "use strict";
@@ -2873,9 +3989,9 @@ var require_diff = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var parse2 = require_parse();
-    var diff = /* @__PURE__ */ __name((version1, version2) => {
+    var diff = /* @__PURE__ */ __name2((version1, version22) => {
       const v1 = parse2(version1, null, true);
-      const v2 = parse2(version2, null, true);
+      const v2 = parse2(version22, null, true);
       const comparison = v1.compare(v2);
       if (comparison === 0) {
         return null;
@@ -2911,8 +4027,6 @@ var require_diff = __commonJS({
     module.exports = diff;
   }
 });
-
-// ../node_modules/semver/functions/major.js
 var require_major = __commonJS({
   "../node_modules/semver/functions/major.js"(exports, module) {
     "use strict";
@@ -2921,12 +4035,10 @@ var require_major = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var SemVer = require_semver();
-    var major = /* @__PURE__ */ __name((a, loose) => new SemVer(a, loose).major, "major");
+    var major = /* @__PURE__ */ __name2((a, loose) => new SemVer(a, loose).major, "major");
     module.exports = major;
   }
 });
-
-// ../node_modules/semver/functions/minor.js
 var require_minor = __commonJS({
   "../node_modules/semver/functions/minor.js"(exports, module) {
     "use strict";
@@ -2935,12 +4047,10 @@ var require_minor = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var SemVer = require_semver();
-    var minor = /* @__PURE__ */ __name((a, loose) => new SemVer(a, loose).minor, "minor");
+    var minor = /* @__PURE__ */ __name2((a, loose) => new SemVer(a, loose).minor, "minor");
     module.exports = minor;
   }
 });
-
-// ../node_modules/semver/functions/patch.js
 var require_patch = __commonJS({
   "../node_modules/semver/functions/patch.js"(exports, module) {
     "use strict";
@@ -2949,12 +4059,10 @@ var require_patch = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var SemVer = require_semver();
-    var patch = /* @__PURE__ */ __name((a, loose) => new SemVer(a, loose).patch, "patch");
+    var patch = /* @__PURE__ */ __name2((a, loose) => new SemVer(a, loose).patch, "patch");
     module.exports = patch;
   }
 });
-
-// ../node_modules/semver/functions/prerelease.js
 var require_prerelease = __commonJS({
   "../node_modules/semver/functions/prerelease.js"(exports, module) {
     "use strict";
@@ -2963,15 +4071,13 @@ var require_prerelease = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var parse2 = require_parse();
-    var prerelease = /* @__PURE__ */ __name((version2, options) => {
-      const parsed = parse2(version2, options);
+    var prerelease = /* @__PURE__ */ __name2((version22, options) => {
+      const parsed = parse2(version22, options);
       return parsed && parsed.prerelease.length ? parsed.prerelease : null;
     }, "prerelease");
     module.exports = prerelease;
   }
 });
-
-// ../node_modules/semver/functions/compare.js
 var require_compare = __commonJS({
   "../node_modules/semver/functions/compare.js"(exports, module) {
     "use strict";
@@ -2980,12 +4086,10 @@ var require_compare = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var SemVer = require_semver();
-    var compare2 = /* @__PURE__ */ __name((a, b, loose) => new SemVer(a, loose).compare(new SemVer(b, loose)), "compare");
+    var compare2 = /* @__PURE__ */ __name2((a, b, loose) => new SemVer(a, loose).compare(new SemVer(b, loose)), "compare");
     module.exports = compare2;
   }
 });
-
-// ../node_modules/semver/functions/rcompare.js
 var require_rcompare = __commonJS({
   "../node_modules/semver/functions/rcompare.js"(exports, module) {
     "use strict";
@@ -2994,12 +4098,10 @@ var require_rcompare = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var compare2 = require_compare();
-    var rcompare = /* @__PURE__ */ __name((a, b, loose) => compare2(b, a, loose), "rcompare");
+    var rcompare = /* @__PURE__ */ __name2((a, b, loose) => compare2(b, a, loose), "rcompare");
     module.exports = rcompare;
   }
 });
-
-// ../node_modules/semver/functions/compare-loose.js
 var require_compare_loose = __commonJS({
   "../node_modules/semver/functions/compare-loose.js"(exports, module) {
     "use strict";
@@ -3008,12 +4110,10 @@ var require_compare_loose = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var compare2 = require_compare();
-    var compareLoose = /* @__PURE__ */ __name((a, b) => compare2(a, b, true), "compareLoose");
+    var compareLoose = /* @__PURE__ */ __name2((a, b) => compare2(a, b, true), "compareLoose");
     module.exports = compareLoose;
   }
 });
-
-// ../node_modules/semver/functions/compare-build.js
 var require_compare_build = __commonJS({
   "../node_modules/semver/functions/compare-build.js"(exports, module) {
     "use strict";
@@ -3022,7 +4122,7 @@ var require_compare_build = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var SemVer = require_semver();
-    var compareBuild = /* @__PURE__ */ __name((a, b, loose) => {
+    var compareBuild = /* @__PURE__ */ __name2((a, b, loose) => {
       const versionA = new SemVer(a, loose);
       const versionB = new SemVer(b, loose);
       return versionA.compare(versionB) || versionA.compareBuild(versionB);
@@ -3030,8 +4130,6 @@ var require_compare_build = __commonJS({
     module.exports = compareBuild;
   }
 });
-
-// ../node_modules/semver/functions/sort.js
 var require_sort = __commonJS({
   "../node_modules/semver/functions/sort.js"(exports, module) {
     "use strict";
@@ -3040,12 +4138,10 @@ var require_sort = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var compareBuild = require_compare_build();
-    var sort = /* @__PURE__ */ __name((list, loose) => list.sort((a, b) => compareBuild(a, b, loose)), "sort");
+    var sort = /* @__PURE__ */ __name2((list, loose) => list.sort((a, b) => compareBuild(a, b, loose)), "sort");
     module.exports = sort;
   }
 });
-
-// ../node_modules/semver/functions/rsort.js
 var require_rsort = __commonJS({
   "../node_modules/semver/functions/rsort.js"(exports, module) {
     "use strict";
@@ -3054,12 +4150,10 @@ var require_rsort = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var compareBuild = require_compare_build();
-    var rsort = /* @__PURE__ */ __name((list, loose) => list.sort((a, b) => compareBuild(b, a, loose)), "rsort");
+    var rsort = /* @__PURE__ */ __name2((list, loose) => list.sort((a, b) => compareBuild(b, a, loose)), "rsort");
     module.exports = rsort;
   }
 });
-
-// ../node_modules/semver/functions/gt.js
 var require_gt = __commonJS({
   "../node_modules/semver/functions/gt.js"(exports, module) {
     "use strict";
@@ -3068,12 +4162,10 @@ var require_gt = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var compare2 = require_compare();
-    var gt = /* @__PURE__ */ __name((a, b, loose) => compare2(a, b, loose) > 0, "gt");
+    var gt = /* @__PURE__ */ __name2((a, b, loose) => compare2(a, b, loose) > 0, "gt");
     module.exports = gt;
   }
 });
-
-// ../node_modules/semver/functions/lt.js
 var require_lt = __commonJS({
   "../node_modules/semver/functions/lt.js"(exports, module) {
     "use strict";
@@ -3082,12 +4174,10 @@ var require_lt = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var compare2 = require_compare();
-    var lt = /* @__PURE__ */ __name((a, b, loose) => compare2(a, b, loose) < 0, "lt");
+    var lt = /* @__PURE__ */ __name2((a, b, loose) => compare2(a, b, loose) < 0, "lt");
     module.exports = lt;
   }
 });
-
-// ../node_modules/semver/functions/eq.js
 var require_eq = __commonJS({
   "../node_modules/semver/functions/eq.js"(exports, module) {
     "use strict";
@@ -3096,12 +4186,10 @@ var require_eq = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var compare2 = require_compare();
-    var eq = /* @__PURE__ */ __name((a, b, loose) => compare2(a, b, loose) === 0, "eq");
+    var eq = /* @__PURE__ */ __name2((a, b, loose) => compare2(a, b, loose) === 0, "eq");
     module.exports = eq;
   }
 });
-
-// ../node_modules/semver/functions/neq.js
 var require_neq = __commonJS({
   "../node_modules/semver/functions/neq.js"(exports, module) {
     "use strict";
@@ -3110,12 +4198,10 @@ var require_neq = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var compare2 = require_compare();
-    var neq = /* @__PURE__ */ __name((a, b, loose) => compare2(a, b, loose) !== 0, "neq");
+    var neq = /* @__PURE__ */ __name2((a, b, loose) => compare2(a, b, loose) !== 0, "neq");
     module.exports = neq;
   }
 });
-
-// ../node_modules/semver/functions/gte.js
 var require_gte = __commonJS({
   "../node_modules/semver/functions/gte.js"(exports, module) {
     "use strict";
@@ -3124,12 +4210,10 @@ var require_gte = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var compare2 = require_compare();
-    var gte = /* @__PURE__ */ __name((a, b, loose) => compare2(a, b, loose) >= 0, "gte");
+    var gte = /* @__PURE__ */ __name2((a, b, loose) => compare2(a, b, loose) >= 0, "gte");
     module.exports = gte;
   }
 });
-
-// ../node_modules/semver/functions/lte.js
 var require_lte = __commonJS({
   "../node_modules/semver/functions/lte.js"(exports, module) {
     "use strict";
@@ -3138,12 +4222,10 @@ var require_lte = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var compare2 = require_compare();
-    var lte = /* @__PURE__ */ __name((a, b, loose) => compare2(a, b, loose) <= 0, "lte");
+    var lte = /* @__PURE__ */ __name2((a, b, loose) => compare2(a, b, loose) <= 0, "lte");
     module.exports = lte;
   }
 });
-
-// ../node_modules/semver/functions/cmp.js
 var require_cmp = __commonJS({
   "../node_modules/semver/functions/cmp.js"(exports, module) {
     "use strict";
@@ -3157,7 +4239,7 @@ var require_cmp = __commonJS({
     var gte = require_gte();
     var lt = require_lt();
     var lte = require_lte();
-    var cmp = /* @__PURE__ */ __name((a, op, b, loose) => {
+    var cmp = /* @__PURE__ */ __name2((a, op, b, loose) => {
       switch (op) {
         case "===":
           if (typeof a === "object") {
@@ -3196,8 +4278,6 @@ var require_cmp = __commonJS({
     module.exports = cmp;
   }
 });
-
-// ../node_modules/semver/functions/coerce.js
 var require_coerce = __commonJS({
   "../node_modules/semver/functions/coerce.js"(exports, module) {
     "use strict";
@@ -3208,24 +4288,24 @@ var require_coerce = __commonJS({
     var SemVer = require_semver();
     var parse2 = require_parse();
     var { safeRe: re, t } = require_re();
-    var coerce = /* @__PURE__ */ __name((version2, options) => {
-      if (version2 instanceof SemVer) {
-        return version2;
+    var coerce = /* @__PURE__ */ __name2((version22, options) => {
+      if (version22 instanceof SemVer) {
+        return version22;
       }
-      if (typeof version2 === "number") {
-        version2 = String(version2);
+      if (typeof version22 === "number") {
+        version22 = String(version22);
       }
-      if (typeof version2 !== "string") {
+      if (typeof version22 !== "string") {
         return null;
       }
       options = options || {};
       let match2 = null;
       if (!options.rtl) {
-        match2 = version2.match(options.includePrerelease ? re[t.COERCEFULL] : re[t.COERCE]);
+        match2 = version22.match(options.includePrerelease ? re[t.COERCEFULL] : re[t.COERCE]);
       } else {
         const coerceRtlRegex = options.includePrerelease ? re[t.COERCERTLFULL] : re[t.COERCERTL];
         let next;
-        while ((next = coerceRtlRegex.exec(version2)) && (!match2 || match2.index + match2[0].length !== version2.length)) {
+        while ((next = coerceRtlRegex.exec(version22)) && (!match2 || match2.index + match2[0].length !== version22.length)) {
           if (!match2 || next.index + next[0].length !== match2.index + match2[0].length) {
             match2 = next;
           }
@@ -3246,8 +4326,6 @@ var require_coerce = __commonJS({
     module.exports = coerce;
   }
 });
-
-// ../node_modules/semver/internal/lrucache.js
 var require_lrucache = __commonJS({
   "../node_modules/semver/internal/lrucache.js"(exports, module) {
     "use strict";
@@ -3258,6 +4336,9 @@ var require_lrucache = __commonJS({
     var LRUCache = class {
       static {
         __name(this, "LRUCache");
+      }
+      static {
+        __name2(this, "LRUCache");
       }
       constructor() {
         this.max = 1e3;
@@ -3291,8 +4372,6 @@ var require_lrucache = __commonJS({
     module.exports = LRUCache;
   }
 });
-
-// ../node_modules/semver/classes/range.js
 var require_range = __commonJS({
   "../node_modules/semver/classes/range.js"(exports, module) {
     "use strict";
@@ -3303,7 +4382,10 @@ var require_range = __commonJS({
     var SPACE_CHARACTERS = /\s+/g;
     var Range = class _Range {
       static {
-        __name(this, "Range");
+        __name(this, "_Range");
+      }
+      static {
+        __name2(this, "Range");
       }
       constructor(range, options) {
         options = parseOptions(options);
@@ -3378,21 +4460,21 @@ var require_range = __commonJS({
         const loose = this.options.loose;
         const hr = loose ? re[t.HYPHENRANGELOOSE] : re[t.HYPHENRANGE];
         range = range.replace(hr, hyphenReplace(this.options.includePrerelease));
-        debug3("hyphen replace", range);
+        debug32("hyphen replace", range);
         range = range.replace(re[t.COMPARATORTRIM], comparatorTrimReplace);
-        debug3("comparator trim", range);
+        debug32("comparator trim", range);
         range = range.replace(re[t.TILDETRIM], tildeTrimReplace);
-        debug3("tilde trim", range);
+        debug32("tilde trim", range);
         range = range.replace(re[t.CARETTRIM], caretTrimReplace);
-        debug3("caret trim", range);
+        debug32("caret trim", range);
         let rangeList = range.split(" ").map((comp) => parseComparator(comp, this.options)).join(" ").split(/\s+/).map((comp) => replaceGTE0(comp, this.options));
         if (loose) {
           rangeList = rangeList.filter((comp) => {
-            debug3("loose invalid filter", comp, this.options);
+            debug32("loose invalid filter", comp, this.options);
             return !!comp.match(re[t.COMPARATORLOOSE]);
           });
         }
-        debug3("range list", rangeList);
+        debug32("range list", rangeList);
         const rangeMap = /* @__PURE__ */ new Map();
         const comparators = rangeList.map((comp) => new Comparator(comp, this.options));
         for (const comp of comparators) {
@@ -3423,19 +4505,19 @@ var require_range = __commonJS({
         });
       }
       // if ANY of the sets match ALL of its comparators, then pass
-      test(version2) {
-        if (!version2) {
+      test(version22) {
+        if (!version22) {
           return false;
         }
-        if (typeof version2 === "string") {
+        if (typeof version22 === "string") {
           try {
-            version2 = new SemVer(version2, this.options);
+            version22 = new SemVer(version22, this.options);
           } catch (er) {
             return false;
           }
         }
         for (let i = 0; i < this.set.length; i++) {
-          if (testSet(this.set[i], version2, this.options)) {
+          if (testSet(this.set[i], version22, this.options)) {
             return true;
           }
         }
@@ -3447,7 +4529,7 @@ var require_range = __commonJS({
     var cache = new LRU();
     var parseOptions = require_parse_options();
     var Comparator = require_comparator();
-    var debug3 = require_debug();
+    var debug32 = require_debug();
     var SemVer = require_semver();
     var {
       safeRe: re,
@@ -3457,9 +4539,9 @@ var require_range = __commonJS({
       caretTrimReplace
     } = require_re();
     var { FLAG_INCLUDE_PRERELEASE, FLAG_LOOSE } = require_constants();
-    var isNullSet = /* @__PURE__ */ __name((c) => c.value === "<0.0.0-0", "isNullSet");
-    var isAny = /* @__PURE__ */ __name((c) => c.value === "", "isAny");
-    var isSatisfiable = /* @__PURE__ */ __name((comparators, options) => {
+    var isNullSet = /* @__PURE__ */ __name2((c) => c.value === "<0.0.0-0", "isNullSet");
+    var isAny = /* @__PURE__ */ __name2((c) => c.value === "", "isAny");
+    var isSatisfiable = /* @__PURE__ */ __name2((comparators, options) => {
       let result = true;
       const remainingComparators = comparators.slice();
       let testComparator = remainingComparators.pop();
@@ -3471,27 +4553,27 @@ var require_range = __commonJS({
       }
       return result;
     }, "isSatisfiable");
-    var parseComparator = /* @__PURE__ */ __name((comp, options) => {
+    var parseComparator = /* @__PURE__ */ __name2((comp, options) => {
       comp = comp.replace(re[t.BUILD], "");
-      debug3("comp", comp, options);
+      debug32("comp", comp, options);
       comp = replaceCarets(comp, options);
-      debug3("caret", comp);
+      debug32("caret", comp);
       comp = replaceTildes(comp, options);
-      debug3("tildes", comp);
+      debug32("tildes", comp);
       comp = replaceXRanges(comp, options);
-      debug3("xrange", comp);
+      debug32("xrange", comp);
       comp = replaceStars(comp, options);
-      debug3("stars", comp);
+      debug32("stars", comp);
       return comp;
     }, "parseComparator");
-    var isX = /* @__PURE__ */ __name((id) => !id || id.toLowerCase() === "x" || id === "*", "isX");
-    var replaceTildes = /* @__PURE__ */ __name((comp, options) => {
+    var isX = /* @__PURE__ */ __name2((id) => !id || id.toLowerCase() === "x" || id === "*", "isX");
+    var replaceTildes = /* @__PURE__ */ __name2((comp, options) => {
       return comp.trim().split(/\s+/).map((c) => replaceTilde(c, options)).join(" ");
     }, "replaceTildes");
-    var replaceTilde = /* @__PURE__ */ __name((comp, options) => {
+    var replaceTilde = /* @__PURE__ */ __name2((comp, options) => {
       const r = options.loose ? re[t.TILDELOOSE] : re[t.TILDE];
       return comp.replace(r, (_, M, m, p, pr) => {
-        debug3("tilde", comp, _, M, m, p, pr);
+        debug32("tilde", comp, _, M, m, p, pr);
         let ret;
         if (isX(M)) {
           ret = "";
@@ -3500,24 +4582,24 @@ var require_range = __commonJS({
         } else if (isX(p)) {
           ret = `>=${M}.${m}.0 <${M}.${+m + 1}.0-0`;
         } else if (pr) {
-          debug3("replaceTilde pr", pr);
+          debug32("replaceTilde pr", pr);
           ret = `>=${M}.${m}.${p}-${pr} <${M}.${+m + 1}.0-0`;
         } else {
           ret = `>=${M}.${m}.${p} <${M}.${+m + 1}.0-0`;
         }
-        debug3("tilde return", ret);
+        debug32("tilde return", ret);
         return ret;
       });
     }, "replaceTilde");
-    var replaceCarets = /* @__PURE__ */ __name((comp, options) => {
+    var replaceCarets = /* @__PURE__ */ __name2((comp, options) => {
       return comp.trim().split(/\s+/).map((c) => replaceCaret(c, options)).join(" ");
     }, "replaceCarets");
-    var replaceCaret = /* @__PURE__ */ __name((comp, options) => {
-      debug3("caret", comp, options);
+    var replaceCaret = /* @__PURE__ */ __name2((comp, options) => {
+      debug32("caret", comp, options);
       const r = options.loose ? re[t.CARETLOOSE] : re[t.CARET];
       const z = options.includePrerelease ? "-0" : "";
       return comp.replace(r, (_, M, m, p, pr) => {
-        debug3("caret", comp, _, M, m, p, pr);
+        debug32("caret", comp, _, M, m, p, pr);
         let ret;
         if (isX(M)) {
           ret = "";
@@ -3530,7 +4612,7 @@ var require_range = __commonJS({
             ret = `>=${M}.${m}.0${z} <${+M + 1}.0.0-0`;
           }
         } else if (pr) {
-          debug3("replaceCaret pr", pr);
+          debug32("replaceCaret pr", pr);
           if (M === "0") {
             if (m === "0") {
               ret = `>=${M}.${m}.${p}-${pr} <${M}.${m}.${+p + 1}-0`;
@@ -3541,7 +4623,7 @@ var require_range = __commonJS({
             ret = `>=${M}.${m}.${p}-${pr} <${+M + 1}.0.0-0`;
           }
         } else {
-          debug3("no pr");
+          debug32("no pr");
           if (M === "0") {
             if (m === "0") {
               ret = `>=${M}.${m}.${p}${z} <${M}.${m}.${+p + 1}-0`;
@@ -3552,19 +4634,19 @@ var require_range = __commonJS({
             ret = `>=${M}.${m}.${p} <${+M + 1}.0.0-0`;
           }
         }
-        debug3("caret return", ret);
+        debug32("caret return", ret);
         return ret;
       });
     }, "replaceCaret");
-    var replaceXRanges = /* @__PURE__ */ __name((comp, options) => {
-      debug3("replaceXRanges", comp, options);
+    var replaceXRanges = /* @__PURE__ */ __name2((comp, options) => {
+      debug32("replaceXRanges", comp, options);
       return comp.split(/\s+/).map((c) => replaceXRange(c, options)).join(" ");
     }, "replaceXRanges");
-    var replaceXRange = /* @__PURE__ */ __name((comp, options) => {
+    var replaceXRange = /* @__PURE__ */ __name2((comp, options) => {
       comp = comp.trim();
       const r = options.loose ? re[t.XRANGELOOSE] : re[t.XRANGE];
       return comp.replace(r, (ret, gtlt, M, m, p, pr) => {
-        debug3("xRange", comp, ret, gtlt, M, m, p, pr);
+        debug32("xRange", comp, ret, gtlt, M, m, p, pr);
         const xM = isX(M);
         const xm = xM || isX(m);
         const xp = xm || isX(p);
@@ -3611,19 +4693,19 @@ var require_range = __commonJS({
         } else if (xp) {
           ret = `>=${M}.${m}.0${pr} <${M}.${+m + 1}.0-0`;
         }
-        debug3("xRange return", ret);
+        debug32("xRange return", ret);
         return ret;
       });
     }, "replaceXRange");
-    var replaceStars = /* @__PURE__ */ __name((comp, options) => {
-      debug3("replaceStars", comp, options);
+    var replaceStars = /* @__PURE__ */ __name2((comp, options) => {
+      debug32("replaceStars", comp, options);
       return comp.trim().replace(re[t.STAR], "");
     }, "replaceStars");
-    var replaceGTE0 = /* @__PURE__ */ __name((comp, options) => {
-      debug3("replaceGTE0", comp, options);
+    var replaceGTE0 = /* @__PURE__ */ __name2((comp, options) => {
+      debug32("replaceGTE0", comp, options);
       return comp.trim().replace(re[options.includePrerelease ? t.GTE0PRE : t.GTE0], "");
     }, "replaceGTE0");
-    var hyphenReplace = /* @__PURE__ */ __name((incPr) => ($0, from, fM, fm, fp, fpr, fb, to, tM, tm, tp, tpr) => {
+    var hyphenReplace = /* @__PURE__ */ __name2((incPr) => ($0, from, fM, fm, fp, fpr, fb, to, tM, tm, tp, tpr) => {
       if (isX(fM)) {
         from = "";
       } else if (isX(fm)) {
@@ -3650,21 +4732,21 @@ var require_range = __commonJS({
       }
       return `${from} ${to}`.trim();
     }, "hyphenReplace");
-    var testSet = /* @__PURE__ */ __name((set, version2, options) => {
+    var testSet = /* @__PURE__ */ __name2((set, version22, options) => {
       for (let i = 0; i < set.length; i++) {
-        if (!set[i].test(version2)) {
+        if (!set[i].test(version22)) {
           return false;
         }
       }
-      if (version2.prerelease.length && !options.includePrerelease) {
+      if (version22.prerelease.length && !options.includePrerelease) {
         for (let i = 0; i < set.length; i++) {
-          debug3(set[i].semver);
+          debug32(set[i].semver);
           if (set[i].semver === Comparator.ANY) {
             continue;
           }
           if (set[i].semver.prerelease.length > 0) {
             const allowed = set[i].semver;
-            if (allowed.major === version2.major && allowed.minor === version2.minor && allowed.patch === version2.patch) {
+            if (allowed.major === version22.major && allowed.minor === version22.minor && allowed.patch === version22.patch) {
               return true;
             }
           }
@@ -3675,8 +4757,6 @@ var require_range = __commonJS({
     }, "testSet");
   }
 });
-
-// ../node_modules/semver/classes/comparator.js
 var require_comparator = __commonJS({
   "../node_modules/semver/classes/comparator.js"(exports, module) {
     "use strict";
@@ -3687,7 +4767,10 @@ var require_comparator = __commonJS({
     var ANY = Symbol("SemVer ANY");
     var Comparator = class _Comparator {
       static {
-        __name(this, "Comparator");
+        __name(this, "_Comparator");
+      }
+      static {
+        __name2(this, "Comparator");
       }
       static get ANY() {
         return ANY;
@@ -3702,7 +4785,7 @@ var require_comparator = __commonJS({
           }
         }
         comp = comp.trim().split(/\s+/).join(" ");
-        debug3("comparator", comp, options);
+        debug32("comparator", comp, options);
         this.options = options;
         this.loose = !!options.loose;
         this.parse(comp);
@@ -3711,7 +4794,7 @@ var require_comparator = __commonJS({
         } else {
           this.value = this.operator + this.semver.version;
         }
-        debug3("comp", this);
+        debug32("comp", this);
       }
       parse(comp) {
         const r = this.options.loose ? re[t.COMPARATORLOOSE] : re[t.COMPARATOR];
@@ -3732,19 +4815,19 @@ var require_comparator = __commonJS({
       toString() {
         return this.value;
       }
-      test(version2) {
-        debug3("Comparator.test", version2, this.options.loose);
-        if (this.semver === ANY || version2 === ANY) {
+      test(version22) {
+        debug32("Comparator.test", version22, this.options.loose);
+        if (this.semver === ANY || version22 === ANY) {
           return true;
         }
-        if (typeof version2 === "string") {
+        if (typeof version22 === "string") {
           try {
-            version2 = new SemVer(version2, this.options);
+            version22 = new SemVer(version22, this.options);
           } catch (er) {
             return false;
           }
         }
-        return cmp(version2, this.operator, this.semver, this.options);
+        return cmp(version22, this.operator, this.semver, this.options);
       }
       intersects(comp, options) {
         if (!(comp instanceof _Comparator)) {
@@ -3790,13 +4873,11 @@ var require_comparator = __commonJS({
     var parseOptions = require_parse_options();
     var { safeRe: re, t } = require_re();
     var cmp = require_cmp();
-    var debug3 = require_debug();
+    var debug32 = require_debug();
     var SemVer = require_semver();
     var Range = require_range();
   }
 });
-
-// ../node_modules/semver/functions/satisfies.js
 var require_satisfies = __commonJS({
   "../node_modules/semver/functions/satisfies.js"(exports, module) {
     "use strict";
@@ -3805,19 +4886,17 @@ var require_satisfies = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var Range = require_range();
-    var satisfies = /* @__PURE__ */ __name((version2, range, options) => {
+    var satisfies = /* @__PURE__ */ __name2((version22, range, options) => {
       try {
         range = new Range(range, options);
       } catch (er) {
         return false;
       }
-      return range.test(version2);
+      return range.test(version22);
     }, "satisfies");
     module.exports = satisfies;
   }
 });
-
-// ../node_modules/semver/ranges/to-comparators.js
 var require_to_comparators = __commonJS({
   "../node_modules/semver/ranges/to-comparators.js"(exports, module) {
     "use strict";
@@ -3826,12 +4905,10 @@ var require_to_comparators = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var Range = require_range();
-    var toComparators = /* @__PURE__ */ __name((range, options) => new Range(range, options).set.map((comp) => comp.map((c) => c.value).join(" ").trim().split(" ")), "toComparators");
+    var toComparators = /* @__PURE__ */ __name2((range, options) => new Range(range, options).set.map((comp) => comp.map((c) => c.value).join(" ").trim().split(" ")), "toComparators");
     module.exports = toComparators;
   }
 });
-
-// ../node_modules/semver/ranges/max-satisfying.js
 var require_max_satisfying = __commonJS({
   "../node_modules/semver/ranges/max-satisfying.js"(exports, module) {
     "use strict";
@@ -3841,7 +4918,7 @@ var require_max_satisfying = __commonJS({
     init_performance2();
     var SemVer = require_semver();
     var Range = require_range();
-    var maxSatisfying = /* @__PURE__ */ __name((versions2, range, options) => {
+    var maxSatisfying = /* @__PURE__ */ __name2((versions22, range, options) => {
       let max = null;
       let maxSV = null;
       let rangeObj = null;
@@ -3850,7 +4927,7 @@ var require_max_satisfying = __commonJS({
       } catch (er) {
         return null;
       }
-      versions2.forEach((v) => {
+      versions22.forEach((v) => {
         if (rangeObj.test(v)) {
           if (!max || maxSV.compare(v) === -1) {
             max = v;
@@ -3863,8 +4940,6 @@ var require_max_satisfying = __commonJS({
     module.exports = maxSatisfying;
   }
 });
-
-// ../node_modules/semver/ranges/min-satisfying.js
 var require_min_satisfying = __commonJS({
   "../node_modules/semver/ranges/min-satisfying.js"(exports, module) {
     "use strict";
@@ -3874,7 +4949,7 @@ var require_min_satisfying = __commonJS({
     init_performance2();
     var SemVer = require_semver();
     var Range = require_range();
-    var minSatisfying = /* @__PURE__ */ __name((versions2, range, options) => {
+    var minSatisfying = /* @__PURE__ */ __name2((versions22, range, options) => {
       let min = null;
       let minSV = null;
       let rangeObj = null;
@@ -3883,7 +4958,7 @@ var require_min_satisfying = __commonJS({
       } catch (er) {
         return null;
       }
-      versions2.forEach((v) => {
+      versions22.forEach((v) => {
         if (rangeObj.test(v)) {
           if (!min || minSV.compare(v) === 1) {
             min = v;
@@ -3896,8 +4971,6 @@ var require_min_satisfying = __commonJS({
     module.exports = minSatisfying;
   }
 });
-
-// ../node_modules/semver/ranges/min-version.js
 var require_min_version = __commonJS({
   "../node_modules/semver/ranges/min-version.js"(exports, module) {
     "use strict";
@@ -3908,7 +4981,7 @@ var require_min_version = __commonJS({
     var SemVer = require_semver();
     var Range = require_range();
     var gt = require_gt();
-    var minVersion = /* @__PURE__ */ __name((range, loose) => {
+    var minVersion = /* @__PURE__ */ __name2((range, loose) => {
       range = new Range(range, loose);
       let minver = new SemVer("0.0.0");
       if (range.test(minver)) {
@@ -3959,8 +5032,6 @@ var require_min_version = __commonJS({
     module.exports = minVersion;
   }
 });
-
-// ../node_modules/semver/ranges/valid.js
 var require_valid2 = __commonJS({
   "../node_modules/semver/ranges/valid.js"(exports, module) {
     "use strict";
@@ -3969,7 +5040,7 @@ var require_valid2 = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var Range = require_range();
-    var validRange = /* @__PURE__ */ __name((range, options) => {
+    var validRange = /* @__PURE__ */ __name2((range, options) => {
       try {
         return new Range(range, options).range || "*";
       } catch (er) {
@@ -3979,8 +5050,6 @@ var require_valid2 = __commonJS({
     module.exports = validRange;
   }
 });
-
-// ../node_modules/semver/ranges/outside.js
 var require_outside = __commonJS({
   "../node_modules/semver/ranges/outside.js"(exports, module) {
     "use strict";
@@ -3997,8 +5066,8 @@ var require_outside = __commonJS({
     var lt = require_lt();
     var lte = require_lte();
     var gte = require_gte();
-    var outside = /* @__PURE__ */ __name((version2, range, hilo, options) => {
-      version2 = new SemVer(version2, options);
+    var outside = /* @__PURE__ */ __name2((version22, range, hilo, options) => {
+      version22 = new SemVer(version22, options);
       range = new Range(range, options);
       let gtfn, ltefn, ltfn, comp, ecomp;
       switch (hilo) {
@@ -4019,7 +5088,7 @@ var require_outside = __commonJS({
         default:
           throw new TypeError('Must provide a hilo val of "<" or ">"');
       }
-      if (satisfies(version2, range, options)) {
+      if (satisfies(version22, range, options)) {
         return false;
       }
       for (let i = 0; i < range.set.length; ++i) {
@@ -4041,9 +5110,9 @@ var require_outside = __commonJS({
         if (high.operator === comp || high.operator === ecomp) {
           return false;
         }
-        if ((!low.operator || low.operator === comp) && ltefn(version2, low.semver)) {
+        if ((!low.operator || low.operator === comp) && ltefn(version22, low.semver)) {
           return false;
-        } else if (low.operator === ecomp && ltfn(version2, low.semver)) {
+        } else if (low.operator === ecomp && ltfn(version22, low.semver)) {
           return false;
         }
       }
@@ -4052,8 +5121,6 @@ var require_outside = __commonJS({
     module.exports = outside;
   }
 });
-
-// ../node_modules/semver/ranges/gtr.js
 var require_gtr = __commonJS({
   "../node_modules/semver/ranges/gtr.js"(exports, module) {
     "use strict";
@@ -4062,12 +5129,10 @@ var require_gtr = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var outside = require_outside();
-    var gtr = /* @__PURE__ */ __name((version2, range, options) => outside(version2, range, ">", options), "gtr");
+    var gtr = /* @__PURE__ */ __name2((version22, range, options) => outside(version22, range, ">", options), "gtr");
     module.exports = gtr;
   }
 });
-
-// ../node_modules/semver/ranges/ltr.js
 var require_ltr = __commonJS({
   "../node_modules/semver/ranges/ltr.js"(exports, module) {
     "use strict";
@@ -4076,12 +5141,10 @@ var require_ltr = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var outside = require_outside();
-    var ltr = /* @__PURE__ */ __name((version2, range, options) => outside(version2, range, "<", options), "ltr");
+    var ltr = /* @__PURE__ */ __name2((version22, range, options) => outside(version22, range, "<", options), "ltr");
     module.exports = ltr;
   }
 });
-
-// ../node_modules/semver/ranges/intersects.js
 var require_intersects = __commonJS({
   "../node_modules/semver/ranges/intersects.js"(exports, module) {
     "use strict";
@@ -4090,7 +5153,7 @@ var require_intersects = __commonJS({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     var Range = require_range();
-    var intersects = /* @__PURE__ */ __name((r1, r2, options) => {
+    var intersects = /* @__PURE__ */ __name2((r1, r2, options) => {
       r1 = new Range(r1, options);
       r2 = new Range(r2, options);
       return r1.intersects(r2, options);
@@ -4098,8 +5161,6 @@ var require_intersects = __commonJS({
     module.exports = intersects;
   }
 });
-
-// ../node_modules/semver/ranges/simplify.js
 var require_simplify = __commonJS({
   "../node_modules/semver/ranges/simplify.js"(exports, module) {
     "use strict";
@@ -4109,17 +5170,17 @@ var require_simplify = __commonJS({
     init_performance2();
     var satisfies = require_satisfies();
     var compare2 = require_compare();
-    module.exports = (versions2, range, options) => {
+    module.exports = (versions22, range, options) => {
       const set = [];
       let first = null;
       let prev = null;
-      const v = versions2.sort((a, b) => compare2(a, b, options));
-      for (const version2 of v) {
-        const included = satisfies(version2, range, options);
+      const v = versions22.sort((a, b) => compare2(a, b, options));
+      for (const version22 of v) {
+        const included = satisfies(version22, range, options);
         if (included) {
-          prev = version2;
+          prev = version22;
           if (!first) {
-            first = version2;
+            first = version22;
           }
         } else {
           if (prev) {
@@ -4152,8 +5213,6 @@ var require_simplify = __commonJS({
     };
   }
 });
-
-// ../node_modules/semver/ranges/subset.js
 var require_subset = __commonJS({
   "../node_modules/semver/ranges/subset.js"(exports, module) {
     "use strict";
@@ -4166,7 +5225,7 @@ var require_subset = __commonJS({
     var { ANY } = Comparator;
     var satisfies = require_satisfies();
     var compare2 = require_compare();
-    var subset = /* @__PURE__ */ __name((sub, dom, options = {}) => {
+    var subset = /* @__PURE__ */ __name2((sub, dom, options = {}) => {
       if (sub === dom) {
         return true;
       }
@@ -4189,7 +5248,7 @@ var require_subset = __commonJS({
     }, "subset");
     var minimumVersionWithPreRelease = [new Comparator(">=0.0.0-0")];
     var minimumVersion = [new Comparator(">=0.0.0")];
-    var simpleSubset = /* @__PURE__ */ __name((sub, dom, options) => {
+    var simpleSubset = /* @__PURE__ */ __name2((sub, dom, options) => {
       if (sub === dom) {
         return true;
       }
@@ -4301,14 +5360,14 @@ var require_subset = __commonJS({
       }
       return true;
     }, "simpleSubset");
-    var higherGT = /* @__PURE__ */ __name((a, b, options) => {
+    var higherGT = /* @__PURE__ */ __name2((a, b, options) => {
       if (!a) {
         return b;
       }
       const comp = compare2(a.semver, b.semver, options);
       return comp > 0 ? a : comp < 0 ? b : b.operator === ">" && a.operator === ">=" ? b : a;
     }, "higherGT");
-    var lowerLT = /* @__PURE__ */ __name((a, b, options) => {
+    var lowerLT = /* @__PURE__ */ __name2((a, b, options) => {
       if (!a) {
         return b;
       }
@@ -4318,8 +5377,6 @@ var require_subset = __commonJS({
     module.exports = subset;
   }
 });
-
-// ../node_modules/semver/index.js
 var require_semver2 = __commonJS({
   "../node_modules/semver/index.js"(exports, module) {
     "use strict";
@@ -4417,8 +5474,6 @@ var require_semver2 = __commonJS({
     };
   }
 });
-
-// ../node_modules/jsonwebtoken/lib/asymmetricKeyDetailsSupported.js
 var require_asymmetricKeyDetailsSupported = __commonJS({
   "../node_modules/jsonwebtoken/lib/asymmetricKeyDetailsSupported.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -4429,8 +5484,6 @@ var require_asymmetricKeyDetailsSupported = __commonJS({
     module.exports = semver.satisfies(process.version, ">=15.7.0");
   }
 });
-
-// ../node_modules/jsonwebtoken/lib/rsaPssKeyDetailsSupported.js
 var require_rsaPssKeyDetailsSupported = __commonJS({
   "../node_modules/jsonwebtoken/lib/rsaPssKeyDetailsSupported.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -4441,8 +5494,6 @@ var require_rsaPssKeyDetailsSupported = __commonJS({
     module.exports = semver.satisfies(process.version, ">=16.9.0");
   }
 });
-
-// ../node_modules/jsonwebtoken/lib/validateAsymmetricKey.js
 var require_validateAsymmetricKey = __commonJS({
   "../node_modules/jsonwebtoken/lib/validateAsymmetricKey.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -4498,8 +5549,6 @@ var require_validateAsymmetricKey = __commonJS({
     };
   }
 });
-
-// ../node_modules/jsonwebtoken/lib/psSupported.js
 var require_psSupported = __commonJS({
   "../node_modules/jsonwebtoken/lib/psSupported.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -4510,8 +5559,6 @@ var require_psSupported = __commonJS({
     module.exports = semver.satisfies(process.version, "^6.12.0 || >=8.0.0");
   }
 });
-
-// ../node_modules/jsonwebtoken/verify.js
 var require_verify = __commonJS({
   "../node_modules/jsonwebtoken/verify.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -4548,7 +5595,7 @@ var require_verify = __commonJS({
       if (callback) {
         done = callback;
       } else {
-        done = /* @__PURE__ */ __name(function(err, data) {
+        done = /* @__PURE__ */ __name2(function(err, data) {
           if (err) throw err;
           return data;
         }, "done");
@@ -4590,7 +5637,7 @@ var require_verify = __commonJS({
         }
         getSecret = secretOrPublicKey;
       } else {
-        getSecret = /* @__PURE__ */ __name(function(header2, secretCallback) {
+        getSecret = /* @__PURE__ */ __name2(function(header2, secretCallback) {
           return secretCallback(null, secretOrPublicKey);
         }, "getSecret");
       }
@@ -4729,8 +5776,6 @@ var require_verify = __commonJS({
     };
   }
 });
-
-// ../node_modules/lodash.includes/index.js
 var require_lodash = __commonJS({
   "../node_modules/lodash.includes/index.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -4760,6 +5805,7 @@ var require_lodash = __commonJS({
       return result;
     }
     __name(arrayMap, "arrayMap");
+    __name2(arrayMap, "arrayMap");
     function baseFindIndex(array, predicate, fromIndex, fromRight) {
       var length = array.length, index = fromIndex + (fromRight ? 1 : -1);
       while (fromRight ? index-- : ++index < length) {
@@ -4770,6 +5816,7 @@ var require_lodash = __commonJS({
       return -1;
     }
     __name(baseFindIndex, "baseFindIndex");
+    __name2(baseFindIndex, "baseFindIndex");
     function baseIndexOf(array, value, fromIndex) {
       if (value !== value) {
         return baseFindIndex(array, baseIsNaN, fromIndex);
@@ -4783,10 +5830,12 @@ var require_lodash = __commonJS({
       return -1;
     }
     __name(baseIndexOf, "baseIndexOf");
+    __name2(baseIndexOf, "baseIndexOf");
     function baseIsNaN(value) {
       return value !== value;
     }
     __name(baseIsNaN, "baseIsNaN");
+    __name2(baseIsNaN, "baseIsNaN");
     function baseTimes(n, iteratee) {
       var index = -1, result = Array(n);
       while (++index < n) {
@@ -4795,18 +5844,21 @@ var require_lodash = __commonJS({
       return result;
     }
     __name(baseTimes, "baseTimes");
+    __name2(baseTimes, "baseTimes");
     function baseValues(object, props) {
       return arrayMap(props, function(key) {
         return object[key];
       });
     }
     __name(baseValues, "baseValues");
+    __name2(baseValues, "baseValues");
     function overArg(func, transform) {
       return function(arg) {
         return func(transform(arg));
       };
     }
     __name(overArg, "overArg");
+    __name2(overArg, "overArg");
     var objectProto = Object.prototype;
     var hasOwnProperty = objectProto.hasOwnProperty;
     var objectToString = objectProto.toString;
@@ -4824,6 +5876,7 @@ var require_lodash = __commonJS({
       return result;
     }
     __name(arrayLikeKeys, "arrayLikeKeys");
+    __name2(arrayLikeKeys, "arrayLikeKeys");
     function baseKeys(object) {
       if (!isPrototype(object)) {
         return nativeKeys(object);
@@ -4837,16 +5890,19 @@ var require_lodash = __commonJS({
       return result;
     }
     __name(baseKeys, "baseKeys");
+    __name2(baseKeys, "baseKeys");
     function isIndex(value, length) {
       length = length == null ? MAX_SAFE_INTEGER : length;
       return !!length && (typeof value == "number" || reIsUint.test(value)) && (value > -1 && value % 1 == 0 && value < length);
     }
     __name(isIndex, "isIndex");
+    __name2(isIndex, "isIndex");
     function isPrototype(value) {
       var Ctor = value && value.constructor, proto = typeof Ctor == "function" && Ctor.prototype || objectProto;
       return value === proto;
     }
     __name(isPrototype, "isPrototype");
+    __name2(isPrototype, "isPrototype");
     function includes(collection, value, fromIndex, guard) {
       collection = isArrayLike(collection) ? collection : values(collection);
       fromIndex = fromIndex && !guard ? toInteger(fromIndex) : 0;
@@ -4857,45 +5913,55 @@ var require_lodash = __commonJS({
       return isString(collection) ? fromIndex <= length && collection.indexOf(value, fromIndex) > -1 : !!length && baseIndexOf(collection, value, fromIndex) > -1;
     }
     __name(includes, "includes");
+    __name2(includes, "includes");
     function isArguments(value) {
       return isArrayLikeObject(value) && hasOwnProperty.call(value, "callee") && (!propertyIsEnumerable.call(value, "callee") || objectToString.call(value) == argsTag);
     }
     __name(isArguments, "isArguments");
+    __name2(isArguments, "isArguments");
     var isArray = Array.isArray;
     function isArrayLike(value) {
       return value != null && isLength(value.length) && !isFunction(value);
     }
     __name(isArrayLike, "isArrayLike");
+    __name2(isArrayLike, "isArrayLike");
     function isArrayLikeObject(value) {
       return isObjectLike(value) && isArrayLike(value);
     }
     __name(isArrayLikeObject, "isArrayLikeObject");
+    __name2(isArrayLikeObject, "isArrayLikeObject");
     function isFunction(value) {
       var tag = isObject(value) ? objectToString.call(value) : "";
       return tag == funcTag || tag == genTag;
     }
     __name(isFunction, "isFunction");
+    __name2(isFunction, "isFunction");
     function isLength(value) {
       return typeof value == "number" && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
     }
     __name(isLength, "isLength");
+    __name2(isLength, "isLength");
     function isObject(value) {
       var type = typeof value;
       return !!value && (type == "object" || type == "function");
     }
     __name(isObject, "isObject");
+    __name2(isObject, "isObject");
     function isObjectLike(value) {
       return !!value && typeof value == "object";
     }
     __name(isObjectLike, "isObjectLike");
+    __name2(isObjectLike, "isObjectLike");
     function isString(value) {
       return typeof value == "string" || !isArray(value) && isObjectLike(value) && objectToString.call(value) == stringTag;
     }
     __name(isString, "isString");
+    __name2(isString, "isString");
     function isSymbol(value) {
       return typeof value == "symbol" || isObjectLike(value) && objectToString.call(value) == symbolTag;
     }
     __name(isSymbol, "isSymbol");
+    __name2(isSymbol, "isSymbol");
     function toFinite(value) {
       if (!value) {
         return value === 0 ? value : 0;
@@ -4908,11 +5974,13 @@ var require_lodash = __commonJS({
       return value === value ? value : 0;
     }
     __name(toFinite, "toFinite");
+    __name2(toFinite, "toFinite");
     function toInteger(value) {
       var result = toFinite(value), remainder = result % 1;
       return result === result ? remainder ? result - remainder : result : 0;
     }
     __name(toInteger, "toInteger");
+    __name2(toInteger, "toInteger");
     function toNumber(value) {
       if (typeof value == "number") {
         return value;
@@ -4932,19 +6000,20 @@ var require_lodash = __commonJS({
       return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
     }
     __name(toNumber, "toNumber");
+    __name2(toNumber, "toNumber");
     function keys(object) {
       return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
     }
     __name(keys, "keys");
+    __name2(keys, "keys");
     function values(object) {
       return object ? baseValues(object, keys(object)) : [];
     }
     __name(values, "values");
+    __name2(values, "values");
     module.exports = includes;
   }
 });
-
-// ../node_modules/lodash.isboolean/index.js
 var require_lodash2 = __commonJS({
   "../node_modules/lodash.isboolean/index.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -4958,15 +6027,15 @@ var require_lodash2 = __commonJS({
       return value === true || value === false || isObjectLike(value) && objectToString.call(value) == boolTag;
     }
     __name(isBoolean, "isBoolean");
+    __name2(isBoolean, "isBoolean");
     function isObjectLike(value) {
       return !!value && typeof value == "object";
     }
     __name(isObjectLike, "isObjectLike");
+    __name2(isObjectLike, "isObjectLike");
     module.exports = isBoolean;
   }
 });
-
-// ../node_modules/lodash.isinteger/index.js
 var require_lodash3 = __commonJS({
   "../node_modules/lodash.isinteger/index.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -4988,19 +6057,23 @@ var require_lodash3 = __commonJS({
       return typeof value == "number" && value == toInteger(value);
     }
     __name(isInteger, "isInteger");
+    __name2(isInteger, "isInteger");
     function isObject(value) {
       var type = typeof value;
       return !!value && (type == "object" || type == "function");
     }
     __name(isObject, "isObject");
+    __name2(isObject, "isObject");
     function isObjectLike(value) {
       return !!value && typeof value == "object";
     }
     __name(isObjectLike, "isObjectLike");
+    __name2(isObjectLike, "isObjectLike");
     function isSymbol(value) {
       return typeof value == "symbol" || isObjectLike(value) && objectToString.call(value) == symbolTag;
     }
     __name(isSymbol, "isSymbol");
+    __name2(isSymbol, "isSymbol");
     function toFinite(value) {
       if (!value) {
         return value === 0 ? value : 0;
@@ -5013,11 +6086,13 @@ var require_lodash3 = __commonJS({
       return value === value ? value : 0;
     }
     __name(toFinite, "toFinite");
+    __name2(toFinite, "toFinite");
     function toInteger(value) {
       var result = toFinite(value), remainder = result % 1;
       return result === result ? remainder ? result - remainder : result : 0;
     }
     __name(toInteger, "toInteger");
+    __name2(toInteger, "toInteger");
     function toNumber(value) {
       if (typeof value == "number") {
         return value;
@@ -5037,11 +6112,10 @@ var require_lodash3 = __commonJS({
       return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
     }
     __name(toNumber, "toNumber");
+    __name2(toNumber, "toNumber");
     module.exports = isInteger;
   }
 });
-
-// ../node_modules/lodash.isnumber/index.js
 var require_lodash4 = __commonJS({
   "../node_modules/lodash.isnumber/index.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -5055,15 +6129,15 @@ var require_lodash4 = __commonJS({
       return !!value && typeof value == "object";
     }
     __name(isObjectLike, "isObjectLike");
+    __name2(isObjectLike, "isObjectLike");
     function isNumber(value) {
       return typeof value == "number" || isObjectLike(value) && objectToString.call(value) == numberTag;
     }
     __name(isNumber, "isNumber");
+    __name2(isNumber, "isNumber");
     module.exports = isNumber;
   }
 });
-
-// ../node_modules/lodash.isplainobject/index.js
 var require_lodash5 = __commonJS({
   "../node_modules/lodash.isplainobject/index.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -5082,12 +6156,14 @@ var require_lodash5 = __commonJS({
       return result;
     }
     __name(isHostObject, "isHostObject");
+    __name2(isHostObject, "isHostObject");
     function overArg(func, transform) {
       return function(arg) {
         return func(transform(arg));
       };
     }
     __name(overArg, "overArg");
+    __name2(overArg, "overArg");
     var funcProto = Function.prototype;
     var objectProto = Object.prototype;
     var funcToString = funcProto.toString;
@@ -5099,6 +6175,7 @@ var require_lodash5 = __commonJS({
       return !!value && typeof value == "object";
     }
     __name(isObjectLike, "isObjectLike");
+    __name2(isObjectLike, "isObjectLike");
     function isPlainObject(value) {
       if (!isObjectLike(value) || objectToString.call(value) != objectTag || isHostObject(value)) {
         return false;
@@ -5111,11 +6188,10 @@ var require_lodash5 = __commonJS({
       return typeof Ctor == "function" && Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString;
     }
     __name(isPlainObject, "isPlainObject");
+    __name2(isPlainObject, "isPlainObject");
     module.exports = isPlainObject;
   }
 });
-
-// ../node_modules/lodash.isstring/index.js
 var require_lodash6 = __commonJS({
   "../node_modules/lodash.isstring/index.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -5130,15 +6206,15 @@ var require_lodash6 = __commonJS({
       return !!value && typeof value == "object";
     }
     __name(isObjectLike, "isObjectLike");
+    __name2(isObjectLike, "isObjectLike");
     function isString(value) {
       return typeof value == "string" || !isArray(value) && isObjectLike(value) && objectToString.call(value) == stringTag;
     }
     __name(isString, "isString");
+    __name2(isString, "isString");
     module.exports = isString;
   }
 });
-
-// ../node_modules/lodash.once/index.js
 var require_lodash7 = __commonJS({
   "../node_modules/lodash.once/index.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -5174,23 +6250,28 @@ var require_lodash7 = __commonJS({
       };
     }
     __name(before, "before");
-    function once2(func) {
+    __name2(before, "before");
+    function once22(func) {
       return before(2, func);
     }
-    __name(once2, "once");
+    __name(once22, "once2");
+    __name2(once22, "once");
     function isObject(value) {
       var type = typeof value;
       return !!value && (type == "object" || type == "function");
     }
     __name(isObject, "isObject");
+    __name2(isObject, "isObject");
     function isObjectLike(value) {
       return !!value && typeof value == "object";
     }
     __name(isObjectLike, "isObjectLike");
+    __name2(isObjectLike, "isObjectLike");
     function isSymbol(value) {
       return typeof value == "symbol" || isObjectLike(value) && objectToString.call(value) == symbolTag;
     }
     __name(isSymbol, "isSymbol");
+    __name2(isSymbol, "isSymbol");
     function toFinite(value) {
       if (!value) {
         return value === 0 ? value : 0;
@@ -5203,11 +6284,13 @@ var require_lodash7 = __commonJS({
       return value === value ? value : 0;
     }
     __name(toFinite, "toFinite");
+    __name2(toFinite, "toFinite");
     function toInteger(value) {
       var result = toFinite(value), remainder = result % 1;
       return result === result ? remainder ? result - remainder : result : 0;
     }
     __name(toInteger, "toInteger");
+    __name2(toInteger, "toInteger");
     function toNumber(value) {
       if (typeof value == "number") {
         return value;
@@ -5227,11 +6310,10 @@ var require_lodash7 = __commonJS({
       return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
     }
     __name(toNumber, "toNumber");
-    module.exports = once2;
+    __name2(toNumber, "toNumber");
+    module.exports = once22;
   }
 });
-
-// ../node_modules/jsonwebtoken/sign.js
 var require_sign = __commonJS({
   "../node_modules/jsonwebtoken/sign.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -5248,20 +6330,20 @@ var require_sign = __commonJS({
     var isNumber = require_lodash4();
     var isPlainObject = require_lodash5();
     var isString = require_lodash6();
-    var once2 = require_lodash7();
+    var once22 = require_lodash7();
     var { KeyObject, createSecretKey, createPrivateKey } = require_crypto();
     var SUPPORTED_ALGS = ["RS256", "RS384", "RS512", "ES256", "ES384", "ES512", "HS256", "HS384", "HS512", "none"];
     if (PS_SUPPORTED) {
       SUPPORTED_ALGS.splice(3, 0, "PS256", "PS384", "PS512");
     }
     var sign_options_schema = {
-      expiresIn: { isValid: /* @__PURE__ */ __name(function(value) {
+      expiresIn: { isValid: /* @__PURE__ */ __name2(function(value) {
         return isInteger(value) || isString(value) && value;
       }, "isValid"), message: '"expiresIn" should be a number of seconds or string representing a timespan' },
-      notBefore: { isValid: /* @__PURE__ */ __name(function(value) {
+      notBefore: { isValid: /* @__PURE__ */ __name2(function(value) {
         return isInteger(value) || isString(value) && value;
       }, "isValid"), message: '"notBefore" should be a number of seconds or string representing a timespan' },
-      audience: { isValid: /* @__PURE__ */ __name(function(value) {
+      audience: { isValid: /* @__PURE__ */ __name2(function(value) {
         return isString(value) || Array.isArray(value);
       }, "isValid"), message: '"audience" must be a string or array' },
       algorithm: { isValid: includes.bind(null, SUPPORTED_ALGS), message: '"algorithm" must be a valid string enum value' },
@@ -5299,14 +6381,17 @@ var require_sign = __commonJS({
       });
     }
     __name(validate, "validate");
+    __name2(validate, "validate");
     function validateOptions(options) {
       return validate(sign_options_schema, false, options, "options");
     }
     __name(validateOptions, "validateOptions");
+    __name2(validateOptions, "validateOptions");
     function validatePayload(payload) {
       return validate(registered_claims_schema, true, payload, "payload");
     }
     __name(validatePayload, "validatePayload");
+    __name2(validatePayload, "validatePayload");
     var options_to_payload = {
       "audience": "aud",
       "issuer": "iss",
@@ -5342,6 +6427,7 @@ var require_sign = __commonJS({
         throw err;
       }
       __name(failure, "failure");
+      __name2(failure, "failure");
       if (!secretOrPrivateKey && options.algorithm !== "none") {
         return failure(new Error("secretOrPrivateKey must have a value"));
       }
@@ -5372,8 +6458,8 @@ var require_sign = __commonJS({
       } else if (isObjectPayload) {
         try {
           validatePayload(payload);
-        } catch (error3) {
-          return failure(error3);
+        } catch (error32) {
+          return failure(error32);
         }
         if (!options.mutatePayload) {
           payload = Object.assign({}, payload);
@@ -5394,14 +6480,14 @@ var require_sign = __commonJS({
       }
       try {
         validateOptions(options);
-      } catch (error3) {
-        return failure(error3);
+      } catch (error32) {
+        return failure(error32);
       }
       if (!options.allowInvalidAsymmetricKeyTypes) {
         try {
           validateAsymmetricKey(header.alg, secretOrPrivateKey);
-        } catch (error3) {
-          return failure(error3);
+        } catch (error32) {
+          return failure(error32);
         }
       }
       const timestamp = payload.iat || Math.floor(Date.now() / 1e3);
@@ -5441,7 +6527,7 @@ var require_sign = __commonJS({
       });
       const encoding = options.encoding || "utf8";
       if (typeof callback === "function") {
-        callback = callback && once2(callback);
+        callback = callback && once22(callback);
         jws.createSign({
           header,
           privateKey: secretOrPrivateKey,
@@ -5463,8 +6549,6 @@ var require_sign = __commonJS({
     };
   }
 });
-
-// ../node_modules/jsonwebtoken/index.js
 var require_jsonwebtoken = __commonJS({
   "../node_modules/jsonwebtoken/index.js"(exports, module) {
     init_functionsRoutes_0_6656645675734922();
@@ -5481,18 +6565,16 @@ var require_jsonwebtoken = __commonJS({
     };
   }
 });
-
-// api/_utils.ts
 var utils_exports = {};
 __export(utils_exports, {
-  addCorsHeaders: () => addCorsHeaders,
-  checkRole: () => checkRole,
-  corsHeaders: () => corsHeaders,
-  errorResponse: () => errorResponse,
-  extractToken: () => extractToken,
-  getAuthUser: () => getAuthUser,
-  jsonResponse: () => jsonResponse,
-  verifyToken: () => verifyToken
+  addCorsHeaders: /* @__PURE__ */ __name(() => addCorsHeaders, "addCorsHeaders"),
+  checkRole: /* @__PURE__ */ __name(() => checkRole, "checkRole"),
+  corsHeaders: /* @__PURE__ */ __name(() => corsHeaders, "corsHeaders"),
+  errorResponse: /* @__PURE__ */ __name(() => errorResponse, "errorResponse"),
+  extractToken: /* @__PURE__ */ __name(() => extractToken, "extractToken"),
+  getAuthUser: /* @__PURE__ */ __name(() => getAuthUser, "getAuthUser"),
+  jsonResponse: /* @__PURE__ */ __name(() => jsonResponse, "jsonResponse"),
+  verifyToken: /* @__PURE__ */ __name(() => verifyToken, "verifyToken")
 });
 function verifyToken(token) {
   try {
@@ -5501,6 +6583,7 @@ function verifyToken(token) {
     return null;
   }
 }
+__name(verifyToken, "verifyToken");
 function extractToken(request) {
   const authHeader = request.headers.get("Authorization");
   if (authHeader && authHeader.startsWith("Bearer ")) {
@@ -5519,15 +6602,18 @@ function extractToken(request) {
   }
   return null;
 }
+__name(extractToken, "extractToken");
 function getAuthUser(request) {
   const token = extractToken(request);
   if (!token) return null;
   return verifyToken(token);
 }
+__name(getAuthUser, "getAuthUser");
 function checkRole(user, allowedRoles) {
   if (!user) return false;
   return allowedRoles.includes(user.role);
 }
+__name(checkRole, "checkRole");
 function jsonResponse(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -5537,9 +6623,11 @@ function jsonResponse(data, status = 200) {
     }
   });
 }
+__name(jsonResponse, "jsonResponse");
 function errorResponse(message, status = 400) {
   return jsonResponse({ error: message }, status);
 }
+__name(errorResponse, "errorResponse");
 function addCorsHeaders(response) {
   const newHeaders = new Headers(response.headers);
   Object.entries(corsHeaders).forEach(([key, value]) => {
@@ -5551,7 +6639,10 @@ function addCorsHeaders(response) {
     headers: newHeaders
   });
 }
-var import_jsonwebtoken, JWT_SECRET, corsHeaders;
+__name(addCorsHeaders, "addCorsHeaders");
+var import_jsonwebtoken;
+var JWT_SECRET;
+var corsHeaders;
 var init_utils2 = __esm({
   "api/_utils.ts"() {
     "use strict";
@@ -5561,23 +6652,21 @@ var init_utils2 = __esm({
     init_performance2();
     import_jsonwebtoken = __toESM(require_jsonwebtoken());
     JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-production";
-    __name(verifyToken, "verifyToken");
-    __name(extractToken, "extractToken");
-    __name(getAuthUser, "getAuthUser");
-    __name(checkRole, "checkRole");
+    __name2(verifyToken, "verifyToken");
+    __name2(extractToken, "extractToken");
+    __name2(getAuthUser, "getAuthUser");
+    __name2(checkRole, "checkRole");
     corsHeaders = {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, Authorization",
       "Access-Control-Max-Age": "86400"
     };
-    __name(jsonResponse, "jsonResponse");
-    __name(errorResponse, "errorResponse");
-    __name(addCorsHeaders, "addCorsHeaders");
+    __name2(jsonResponse, "jsonResponse");
+    __name2(errorResponse, "errorResponse");
+    __name2(addCorsHeaders, "addCorsHeaders");
   }
 });
-
-// api/v1/blogs/slug/[slug].ts
 async function onRequestOptions() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
@@ -5585,10 +6674,177 @@ async function onRequestOptions() {
     headers: corsHeaders2
   });
 }
-async function onRequestGet({ env: env2, params }) {
+__name(onRequestOptions, "onRequestOptions");
+async function onRequestPut({ env: env22, request, params }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user) {
+      return errorResponse2("Unauthorized", 401);
+    }
+    const workId = parseInt(params.id);
+    const itemId = parseInt(params.itemId);
+    const body = await request.json();
+    const work = await env22.DB.prepare("SELECT * FROM works WHERE id = ?").bind(workId).first();
+    if (!work) {
+      return errorResponse2("Work not found", 404);
+    }
+    if (work.author_id !== user.userId && !checkRole2(user, ["admin"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const timelineItem = await env22.DB.prepare("SELECT * FROM timeline_items WHERE id = ? AND work_id = ?").bind(itemId, workId).first();
+    if (!timelineItem) {
+      return errorResponse2("Timeline item not found", 404);
+    }
+    const {
+      date_range_start,
+      date_range_end,
+      title: title22,
+      description,
+      tasks,
+      tech,
+      media,
+      display_order
+    } = body;
+    const updateFields = [];
+    const bindings = [];
+    if (date_range_start !== void 0) {
+      updateFields.push("date_range_start = ?");
+      bindings.push(date_range_start);
+    }
+    if (date_range_end !== void 0) {
+      updateFields.push("date_range_end = ?");
+      bindings.push(date_range_end);
+    }
+    if (title22 !== void 0) {
+      updateFields.push("title = ?");
+      bindings.push(title22);
+    }
+    if (description !== void 0) {
+      updateFields.push("description = ?");
+      bindings.push(description);
+    }
+    if (display_order !== void 0) {
+      updateFields.push("display_order = ?");
+      bindings.push(display_order);
+    }
+    bindings.push(itemId);
+    if (updateFields.length > 0) {
+      await env22.DB.prepare(
+        `UPDATE timeline_items SET ${updateFields.join(", ")} WHERE id = ?`
+      ).bind(...bindings).run();
+    }
+    if (tasks !== void 0) {
+      await env22.DB.prepare("DELETE FROM timeline_tasks WHERE timeline_item_id = ?").bind(itemId).run();
+      if (tasks.length > 0) {
+        for (let i = 0; i < tasks.length; i++) {
+          await env22.DB.prepare(
+            "INSERT INTO timeline_tasks (timeline_item_id, task, display_order) VALUES (?, ?, ?)"
+          ).bind(itemId, tasks[i], i).run();
+        }
+      }
+    }
+    if (tech !== void 0) {
+      await env22.DB.prepare("DELETE FROM timeline_tech WHERE timeline_item_id = ?").bind(itemId).run();
+      if (tech.length > 0) {
+        for (let i = 0; i < tech.length; i++) {
+          await env22.DB.prepare(
+            "INSERT INTO timeline_tech (timeline_item_id, tech_name, display_order) VALUES (?, ?, ?)"
+          ).bind(itemId, tech[i], i).run();
+        }
+      }
+    }
+    if (media !== void 0) {
+      await env22.DB.prepare("DELETE FROM timeline_media WHERE timeline_item_id = ?").bind(itemId).run();
+      if (media.length > 0) {
+        for (let i = 0; i < media.length; i++) {
+          await env22.DB.prepare(
+            "INSERT INTO timeline_media (timeline_item_id, image_id, display_order) VALUES (?, ?, ?)"
+          ).bind(itemId, media[i], i).run();
+        }
+      }
+    }
+    const updatedItem = await env22.DB.prepare("SELECT * FROM timeline_items WHERE id = ?").bind(itemId).first();
+    const tasksResult = await env22.DB.prepare(
+      `SELECT task FROM timeline_tasks WHERE timeline_item_id = ? ORDER BY display_order ASC`
+    ).bind(itemId).all();
+    updatedItem.tasks = tasksResult.results?.map((t) => t.task) || [];
+    const techResult = await env22.DB.prepare(
+      `SELECT tech_name FROM timeline_tech WHERE timeline_item_id = ? ORDER BY display_order ASC`
+    ).bind(itemId).all();
+    updatedItem.tech = techResult.results?.map((t) => t.tech_name) || [];
+    const mediaResult = await env22.DB.prepare(
+      `SELECT m.id, m.url, m.alt_text FROM timeline_media tm
+       INNER JOIN media m ON tm.image_id = m.id
+       WHERE tm.timeline_item_id = ?
+       ORDER BY tm.display_order ASC`
+    ).bind(itemId).all();
+    updatedItem.media = mediaResult.results || [];
+    return jsonResponse2({
+      success: true,
+      data: updatedItem
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestPut, "onRequestPut");
+async function onRequestDelete({ env: env22, request, params }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user) {
+      return errorResponse2("Unauthorized", 401);
+    }
+    const workId = parseInt(params.id);
+    const itemId = parseInt(params.itemId);
+    const work = await env22.DB.prepare("SELECT * FROM works WHERE id = ?").bind(workId).first();
+    if (!work) {
+      return errorResponse2("Work not found", 404);
+    }
+    if (work.author_id !== user.userId && !checkRole2(user, ["admin"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const timelineItem = await env22.DB.prepare("SELECT * FROM timeline_items WHERE id = ? AND work_id = ?").bind(itemId, workId).first();
+    if (!timelineItem) {
+      return errorResponse2("Timeline item not found", 404);
+    }
+    await env22.DB.prepare("DELETE FROM timeline_items WHERE id = ?").bind(itemId).run();
+    return jsonResponse2({
+      success: true,
+      message: "Timeline item deleted successfully"
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestDelete, "onRequestDelete");
+var init_itemId = __esm({
+  "api/v1/works/[id]/timeline/[itemId].ts"() {
+    "use strict";
+    init_functionsRoutes_0_6656645675734922();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
+    init_performance2();
+    __name2(onRequestOptions, "onRequestOptions");
+    __name2(onRequestPut, "onRequestPut");
+    __name2(onRequestDelete, "onRequestDelete");
+  }
+});
+async function onRequestOptions2() {
+  const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders2
+  });
+}
+__name(onRequestOptions2, "onRequestOptions2");
+async function onRequestGet({ env: env22, params }) {
   try {
     const { slug } = await params;
-    const blog = await env2.DB.prepare(
+    const blog = await env22.DB.prepare(
       `SELECT 
         b.*, u.name as author_name, u.avatar_url as author_avatar,
         c.id as category_id, c.name as category_name, c.slug as category_slug
@@ -5601,7 +6857,7 @@ async function onRequestGet({ env: env2, params }) {
     if (!blog) {
       return errorResponse2("Blog not found", 404);
     }
-    const tags = await env2.DB.prepare(
+    const tags = await env22.DB.prepare(
       `SELECT t.id, t.name, t.slug FROM tags t
        INNER JOIN blog_tags bt ON t.id = bt.tag_id
        WHERE bt.blog_id = ?`
@@ -5618,6 +6874,7 @@ async function onRequestGet({ env: env2, params }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
+__name(onRequestGet, "onRequestGet");
 var init_slug = __esm({
   "api/v1/blogs/slug/[slug].ts"() {
     "use strict";
@@ -5625,20 +6882,324 @@ var init_slug = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestOptions, "onRequestOptions");
-    __name(onRequestGet, "onRequestGet");
+    __name2(onRequestOptions2, "onRequestOptions");
+    __name2(onRequestGet, "onRequestGet");
   }
 });
-
-// api/v1/auth/forgot-password.ts
-async function onRequestOptions2() {
+async function onRequestOptions3() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
     status: 204,
     headers: corsHeaders2
   });
 }
-async function onRequestPost({ env: env2, request }) {
+__name(onRequestOptions3, "onRequestOptions3");
+async function onRequestGet2({ env: env22, request, params }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    const workId = parseInt(params.id);
+    const work = await env22.DB.prepare("SELECT * FROM works WHERE id = ?").bind(workId).first();
+    if (!work) {
+      return errorResponse2("Work not found", 404);
+    }
+    if (work.status !== "published" && (!user || work.author_id !== user.userId && !checkRole2(user, ["admin"]))) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const timeline = await env22.DB.prepare(
+      `SELECT * FROM timeline_items
+       WHERE work_id = ?
+       ORDER BY display_order ASC`
+    ).bind(workId).all();
+    for (const item of timeline.results) {
+      const tasks = await env22.DB.prepare(
+        `SELECT task FROM timeline_tasks WHERE timeline_item_id = ? ORDER BY display_order ASC`
+      ).bind(item.id).all();
+      item.tasks = tasks.results?.map((t) => t.task) || [];
+      const tech = await env22.DB.prepare(
+        `SELECT tech_name FROM timeline_tech WHERE timeline_item_id = ? ORDER BY display_order ASC`
+      ).bind(item.id).all();
+      item.tech = tech.results?.map((t) => t.tech_name) || [];
+      const media = await env22.DB.prepare(
+        `SELECT m.id, m.url, m.alt_text FROM timeline_media tm
+         INNER JOIN media m ON tm.image_id = m.id
+         WHERE tm.timeline_item_id = ?
+         ORDER BY tm.display_order ASC`
+      ).bind(item.id).all();
+      item.media = media.results || [];
+    }
+    return jsonResponse2({
+      success: true,
+      data: timeline.results || []
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestGet2, "onRequestGet2");
+async function onRequestPost({ env: env22, request, params }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user) {
+      return errorResponse2("Unauthorized", 401);
+    }
+    const workId = parseInt(params.id);
+    const body = await request.json();
+    const work = await env22.DB.prepare("SELECT * FROM works WHERE id = ?").bind(workId).first();
+    if (!work) {
+      return errorResponse2("Work not found", 404);
+    }
+    if (work.author_id !== user.userId && !checkRole2(user, ["admin"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const {
+      date_range_start,
+      date_range_end,
+      title: title22,
+      description,
+      tasks,
+      tech,
+      media,
+      display_order
+    } = body;
+    if (!title22) {
+      return errorResponse2("Title is required", 400);
+    }
+    const maxOrderResult = await env22.DB.prepare(
+      "SELECT MAX(display_order) as max_order FROM timeline_items WHERE work_id = ?"
+    ).bind(workId).first();
+    const nextOrder = display_order !== void 0 ? display_order : (maxOrderResult?.max_order || 0) + 1;
+    const insertResult = await env22.DB.prepare(
+      `INSERT INTO timeline_items (
+        work_id, date_range_start, date_range_end, title, description, display_order
+      ) VALUES (?, ?, ?, ?, ?, ?)`
+    ).bind(
+      workId,
+      date_range_start || null,
+      date_range_end || null,
+      title22,
+      description || null,
+      nextOrder
+    ).run();
+    const timelineItemId = insertResult.meta.last_row_id;
+    if (tasks && tasks.length > 0) {
+      for (let i = 0; i < tasks.length; i++) {
+        await env22.DB.prepare(
+          "INSERT INTO timeline_tasks (timeline_item_id, task, display_order) VALUES (?, ?, ?)"
+        ).bind(timelineItemId, tasks[i], i).run();
+      }
+    }
+    if (tech && tech.length > 0) {
+      for (let i = 0; i < tech.length; i++) {
+        await env22.DB.prepare(
+          "INSERT INTO timeline_tech (timeline_item_id, tech_name, display_order) VALUES (?, ?, ?)"
+        ).bind(timelineItemId, tech[i], i).run();
+      }
+    }
+    if (media && media.length > 0) {
+      for (let i = 0; i < media.length; i++) {
+        await env22.DB.prepare(
+          "INSERT INTO timeline_media (timeline_item_id, image_id, display_order) VALUES (?, ?, ?)"
+        ).bind(timelineItemId, media[i], i).run();
+      }
+    }
+    const timelineItem = await env22.DB.prepare("SELECT * FROM timeline_items WHERE id = ?").bind(timelineItemId).first();
+    const tasksResult = await env22.DB.prepare(
+      `SELECT task FROM timeline_tasks WHERE timeline_item_id = ? ORDER BY display_order ASC`
+    ).bind(timelineItemId).all();
+    timelineItem.tasks = tasksResult.results?.map((t) => t.task) || [];
+    const techResult = await env22.DB.prepare(
+      `SELECT tech_name FROM timeline_tech WHERE timeline_item_id = ? ORDER BY display_order ASC`
+    ).bind(timelineItemId).all();
+    timelineItem.tech = techResult.results?.map((t) => t.tech_name) || [];
+    const mediaResult = await env22.DB.prepare(
+      `SELECT m.id, m.url, m.alt_text FROM timeline_media tm
+       INNER JOIN media m ON tm.image_id = m.id
+       WHERE tm.timeline_item_id = ?
+       ORDER BY tm.display_order ASC`
+    ).bind(timelineItemId).all();
+    timelineItem.media = mediaResult.results || [];
+    return jsonResponse2({
+      success: true,
+      data: timelineItem
+    }, 201);
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestPost, "onRequestPost");
+async function onRequestPut2({ env: env22, request, params }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user) {
+      return errorResponse2("Unauthorized", 401);
+    }
+    const workId = parseInt(params.id);
+    const itemId = parseInt(params.itemId || request.url.split("/timeline/")[1]);
+    const body = await request.json();
+    const work = await env22.DB.prepare("SELECT * FROM works WHERE id = ?").bind(workId).first();
+    if (!work) {
+      return errorResponse2("Work not found", 404);
+    }
+    if (work.author_id !== user.userId && !checkRole2(user, ["admin"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const timelineItem = await env22.DB.prepare("SELECT * FROM timeline_items WHERE id = ? AND work_id = ?").bind(itemId, workId).first();
+    if (!timelineItem) {
+      return errorResponse2("Timeline item not found", 404);
+    }
+    const {
+      date_range_start,
+      date_range_end,
+      title: title22,
+      description,
+      tasks,
+      tech,
+      media,
+      display_order
+    } = body;
+    const updateFields = [];
+    const bindings = [];
+    if (date_range_start !== void 0) {
+      updateFields.push("date_range_start = ?");
+      bindings.push(date_range_start);
+    }
+    if (date_range_end !== void 0) {
+      updateFields.push("date_range_end = ?");
+      bindings.push(date_range_end);
+    }
+    if (title22 !== void 0) {
+      updateFields.push("title = ?");
+      bindings.push(title22);
+    }
+    if (description !== void 0) {
+      updateFields.push("description = ?");
+      bindings.push(description);
+    }
+    if (display_order !== void 0) {
+      updateFields.push("display_order = ?");
+      bindings.push(display_order);
+    }
+    bindings.push(itemId);
+    if (updateFields.length > 0) {
+      await env22.DB.prepare(
+        `UPDATE timeline_items SET ${updateFields.join(", ")} WHERE id = ?`
+      ).bind(...bindings).run();
+    }
+    if (tasks !== void 0) {
+      await env22.DB.prepare("DELETE FROM timeline_tasks WHERE timeline_item_id = ?").bind(itemId).run();
+      if (tasks.length > 0) {
+        for (let i = 0; i < tasks.length; i++) {
+          await env22.DB.prepare(
+            "INSERT INTO timeline_tasks (timeline_item_id, task, display_order) VALUES (?, ?, ?)"
+          ).bind(itemId, tasks[i], i).run();
+        }
+      }
+    }
+    if (tech !== void 0) {
+      await env22.DB.prepare("DELETE FROM timeline_tech WHERE timeline_item_id = ?").bind(itemId).run();
+      if (tech.length > 0) {
+        for (let i = 0; i < tech.length; i++) {
+          await env22.DB.prepare(
+            "INSERT INTO timeline_tech (timeline_item_id, tech_name, display_order) VALUES (?, ?, ?)"
+          ).bind(itemId, tech[i], i).run();
+        }
+      }
+    }
+    if (media !== void 0) {
+      await env22.DB.prepare("DELETE FROM timeline_media WHERE timeline_item_id = ?").bind(itemId).run();
+      if (media.length > 0) {
+        for (let i = 0; i < media.length; i++) {
+          await env22.DB.prepare(
+            "INSERT INTO timeline_media (timeline_item_id, image_id, display_order) VALUES (?, ?, ?)"
+          ).bind(itemId, media[i], i).run();
+        }
+      }
+    }
+    const updatedItem = await env22.DB.prepare("SELECT * FROM timeline_items WHERE id = ?").bind(itemId).first();
+    const tasksResult = await env22.DB.prepare(
+      `SELECT task FROM timeline_tasks WHERE timeline_item_id = ? ORDER BY display_order ASC`
+    ).bind(itemId).all();
+    updatedItem.tasks = tasksResult.results?.map((t) => t.task) || [];
+    const techResult = await env22.DB.prepare(
+      `SELECT tech_name FROM timeline_tech WHERE timeline_item_id = ? ORDER BY display_order ASC`
+    ).bind(itemId).all();
+    updatedItem.tech = techResult.results?.map((t) => t.tech_name) || [];
+    const mediaResult = await env22.DB.prepare(
+      `SELECT m.id, m.url, m.alt_text FROM timeline_media tm
+       INNER JOIN media m ON tm.image_id = m.id
+       WHERE tm.timeline_item_id = ?
+       ORDER BY tm.display_order ASC`
+    ).bind(itemId).all();
+    updatedItem.media = mediaResult.results || [];
+    return jsonResponse2({
+      success: true,
+      data: updatedItem
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestPut2, "onRequestPut2");
+async function onRequestDelete2({ env: env22, request, params }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user) {
+      return errorResponse2("Unauthorized", 401);
+    }
+    const workId = parseInt(params.id);
+    const itemId = parseInt(params.itemId || request.url.split("/timeline/")[1]);
+    const work = await env22.DB.prepare("SELECT * FROM works WHERE id = ?").bind(workId).first();
+    if (!work) {
+      return errorResponse2("Work not found", 404);
+    }
+    if (work.author_id !== user.userId && !checkRole2(user, ["admin"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const timelineItem = await env22.DB.prepare("SELECT * FROM timeline_items WHERE id = ? AND work_id = ?").bind(itemId, workId).first();
+    if (!timelineItem) {
+      return errorResponse2("Timeline item not found", 404);
+    }
+    await env22.DB.prepare("DELETE FROM timeline_items WHERE id = ?").bind(itemId).run();
+    return jsonResponse2({
+      success: true,
+      message: "Timeline item deleted successfully"
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestDelete2, "onRequestDelete2");
+var init_timeline = __esm({
+  "api/v1/works/[id]/timeline.ts"() {
+    "use strict";
+    init_functionsRoutes_0_6656645675734922();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
+    init_performance2();
+    __name2(onRequestOptions3, "onRequestOptions");
+    __name2(onRequestGet2, "onRequestGet");
+    __name2(onRequestPost, "onRequestPost");
+    __name2(onRequestPut2, "onRequestPut");
+    __name2(onRequestDelete2, "onRequestDelete");
+  }
+});
+async function onRequestOptions4() {
+  const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders2
+  });
+}
+__name(onRequestOptions4, "onRequestOptions4");
+async function onRequestPost2({ env: env22, request }) {
   try {
     const body = await request.json();
     const { email } = body;
@@ -5646,7 +7207,7 @@ async function onRequestPost({ env: env2, request }) {
     if (!email) {
       return errorResponse2("Email is required", 400);
     }
-    const user = await env2.DB.prepare("SELECT * FROM users WHERE email = ?").bind(email).first();
+    const user = await env22.DB.prepare("SELECT * FROM users WHERE email = ?").bind(email).first();
     if (user) {
       console.log(`Password reset requested for: ${email}`);
     }
@@ -5659,6 +7220,7 @@ async function onRequestPost({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
+__name(onRequestPost2, "onRequestPost2");
 var init_forgot_password = __esm({
   "api/v1/auth/forgot-password.ts"() {
     "use strict";
@@ -5666,13 +7228,10 @@ var init_forgot_password = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestOptions2, "onRequestOptions");
-    __name(onRequestPost, "onRequestPost");
+    __name2(onRequestOptions4, "onRequestOptions");
+    __name2(onRequestPost2, "onRequestPost");
   }
 });
-
-// ../node_modules/bcryptjs/index.js
-import nodeCrypto from "crypto";
 function randomBytes(len) {
   try {
     return crypto.getRandomValues(new Uint8Array(len));
@@ -5689,9 +7248,11 @@ function randomBytes(len) {
   }
   return randomFallback(len);
 }
+__name(randomBytes, "randomBytes");
 function setRandomFallback(random) {
   randomFallback = random;
 }
+__name(setRandomFallback, "setRandomFallback");
 function genSaltSync(rounds, seed_length) {
   rounds = rounds || GENSALT_DEFAULT_LOG2_ROUNDS;
   if (typeof rounds !== "number")
@@ -5708,6 +7269,7 @@ function genSaltSync(rounds, seed_length) {
   salt.push(base64_encode(randomBytes(BCRYPT_SALT_LEN), BCRYPT_SALT_LEN));
   return salt.join("");
 }
+__name(genSaltSync, "genSaltSync");
 function genSalt(rounds, seed_length, callback) {
   if (typeof seed_length === "function")
     callback = seed_length, seed_length = void 0;
@@ -5716,7 +7278,7 @@ function genSalt(rounds, seed_length, callback) {
   else if (typeof rounds !== "number")
     throw Error("illegal arguments: " + typeof rounds);
   function _async(callback2) {
-    nextTick2(function() {
+    nextTick22(function() {
       try {
         callback2(null, genSaltSync(rounds));
       } catch (err) {
@@ -5725,6 +7287,7 @@ function genSalt(rounds, seed_length, callback) {
     });
   }
   __name(_async, "_async");
+  __name2(_async, "_async");
   if (callback) {
     if (typeof callback !== "function")
       throw Error("Illegal callback: " + typeof callback);
@@ -5740,6 +7303,7 @@ function genSalt(rounds, seed_length, callback) {
       });
     });
 }
+__name(genSalt, "genSalt");
 function hashSync(password, salt) {
   if (typeof salt === "undefined") salt = GENSALT_DEFAULT_LOG2_ROUNDS;
   if (typeof salt === "number") salt = genSaltSync(salt);
@@ -5747,6 +7311,7 @@ function hashSync(password, salt) {
     throw Error("Illegal arguments: " + typeof password + ", " + typeof salt);
   return _hash(password, salt);
 }
+__name(hashSync, "hashSync");
 function hash(password, salt, callback, progressCallback) {
   function _async(callback2) {
     if (typeof password === "string" && typeof salt === "number")
@@ -5756,7 +7321,7 @@ function hash(password, salt, callback, progressCallback) {
     else if (typeof password === "string" && typeof salt === "string")
       _hash(password, salt, callback2, progressCallback);
     else
-      nextTick2(
+      nextTick22(
         callback2.bind(
           this,
           Error("Illegal arguments: " + typeof password + ", " + typeof salt)
@@ -5764,6 +7329,7 @@ function hash(password, salt, callback, progressCallback) {
       );
   }
   __name(_async, "_async");
+  __name2(_async, "_async");
   if (callback) {
     if (typeof callback !== "function")
       throw Error("Illegal callback: " + typeof callback);
@@ -5779,6 +7345,7 @@ function hash(password, salt, callback, progressCallback) {
       });
     });
 }
+__name(hash, "hash");
 function safeStringCompare(known, unknown) {
   var diff = known.length ^ unknown.length;
   for (var i = 0; i < known.length; ++i) {
@@ -5786,6 +7353,7 @@ function safeStringCompare(known, unknown) {
   }
   return diff === 0;
 }
+__name(safeStringCompare, "safeStringCompare");
 function compareSync(password, hash2) {
   if (typeof password !== "string" || typeof hash2 !== "string")
     throw Error("Illegal arguments: " + typeof password + ", " + typeof hash2);
@@ -5795,10 +7363,11 @@ function compareSync(password, hash2) {
     hash2
   );
 }
+__name(compareSync, "compareSync");
 function compare(password, hashValue, callback, progressCallback) {
   function _async(callback2) {
     if (typeof password !== "string" || typeof hashValue !== "string") {
-      nextTick2(
+      nextTick22(
         callback2.bind(
           this,
           Error(
@@ -5809,7 +7378,7 @@ function compare(password, hashValue, callback, progressCallback) {
       return;
     }
     if (hashValue.length !== 60) {
-      nextTick2(callback2.bind(this, null, false));
+      nextTick22(callback2.bind(this, null, false));
       return;
     }
     hash(
@@ -5823,6 +7392,7 @@ function compare(password, hashValue, callback, progressCallback) {
     );
   }
   __name(_async, "_async");
+  __name2(_async, "_async");
   if (callback) {
     if (typeof callback !== "function")
       throw Error("Illegal callback: " + typeof callback);
@@ -5838,11 +7408,13 @@ function compare(password, hashValue, callback, progressCallback) {
       });
     });
 }
+__name(compare, "compare");
 function getRounds(hash2) {
   if (typeof hash2 !== "string")
     throw Error("Illegal arguments: " + typeof hash2);
   return parseInt(hash2.split("$")[2], 10);
 }
+__name(getRounds, "getRounds");
 function getSalt(hash2) {
   if (typeof hash2 !== "string")
     throw Error("Illegal arguments: " + typeof hash2);
@@ -5850,11 +7422,13 @@ function getSalt(hash2) {
     throw Error("Illegal hash length: " + hash2.length + " != 60");
   return hash2.substring(0, 29);
 }
+__name(getSalt, "getSalt");
 function truncates(password) {
   if (typeof password !== "string")
     throw Error("Illegal arguments: " + typeof password);
   return utf8Length(password) > 72;
 }
+__name(truncates, "truncates");
 function utf8Length(string) {
   var len = 0, c = 0;
   for (var i = 0; i < string.length; ++i) {
@@ -5868,6 +7442,7 @@ function utf8Length(string) {
   }
   return len;
 }
+__name(utf8Length, "utf8Length");
 function utf8Array(string) {
   var offset = 0, c1, c2;
   var buffer = new Array(utf8Length(string));
@@ -5893,53 +7468,55 @@ function utf8Array(string) {
   }
   return buffer;
 }
+__name(utf8Array, "utf8Array");
 function base64_encode(b, len) {
-  var off2 = 0, rs = [], c1, c2;
+  var off22 = 0, rs = [], c1, c2;
   if (len <= 0 || len > b.length) throw Error("Illegal len: " + len);
-  while (off2 < len) {
-    c1 = b[off2++] & 255;
+  while (off22 < len) {
+    c1 = b[off22++] & 255;
     rs.push(BASE64_CODE[c1 >> 2 & 63]);
     c1 = (c1 & 3) << 4;
-    if (off2 >= len) {
+    if (off22 >= len) {
       rs.push(BASE64_CODE[c1 & 63]);
       break;
     }
-    c2 = b[off2++] & 255;
+    c2 = b[off22++] & 255;
     c1 |= c2 >> 4 & 15;
     rs.push(BASE64_CODE[c1 & 63]);
     c1 = (c2 & 15) << 2;
-    if (off2 >= len) {
+    if (off22 >= len) {
       rs.push(BASE64_CODE[c1 & 63]);
       break;
     }
-    c2 = b[off2++] & 255;
+    c2 = b[off22++] & 255;
     c1 |= c2 >> 6 & 3;
     rs.push(BASE64_CODE[c1 & 63]);
     rs.push(BASE64_CODE[c2 & 63]);
   }
   return rs.join("");
 }
+__name(base64_encode, "base64_encode");
 function base64_decode(s, len) {
-  var off2 = 0, slen = s.length, olen = 0, rs = [], c1, c2, c3, c4, o, code;
+  var off22 = 0, slen = s.length, olen = 0, rs = [], c1, c2, c3, c4, o, code;
   if (len <= 0) throw Error("Illegal len: " + len);
-  while (off2 < slen - 1 && olen < len) {
-    code = s.charCodeAt(off2++);
+  while (off22 < slen - 1 && olen < len) {
+    code = s.charCodeAt(off22++);
     c1 = code < BASE64_INDEX.length ? BASE64_INDEX[code] : -1;
-    code = s.charCodeAt(off2++);
+    code = s.charCodeAt(off22++);
     c2 = code < BASE64_INDEX.length ? BASE64_INDEX[code] : -1;
     if (c1 == -1 || c2 == -1) break;
     o = c1 << 2 >>> 0;
     o |= (c2 & 48) >> 4;
     rs.push(String.fromCharCode(o));
-    if (++olen >= len || off2 >= slen) break;
-    code = s.charCodeAt(off2++);
+    if (++olen >= len || off22 >= slen) break;
+    code = s.charCodeAt(off22++);
     c3 = code < BASE64_INDEX.length ? BASE64_INDEX[code] : -1;
     if (c3 == -1) break;
     o = (c2 & 15) << 4 >>> 0;
     o |= (c3 & 60) >> 2;
     rs.push(String.fromCharCode(o));
-    if (++olen >= len || off2 >= slen) break;
-    code = s.charCodeAt(off2++);
+    if (++olen >= len || off22 >= slen) break;
+    code = s.charCodeAt(off22++);
     c4 = code < BASE64_INDEX.length ? BASE64_INDEX[code] : -1;
     o = (c3 & 3) << 6 >>> 0;
     o |= c4;
@@ -5947,11 +7524,12 @@ function base64_decode(s, len) {
     ++olen;
   }
   var res = [];
-  for (off2 = 0; off2 < olen; off2++) res.push(rs[off2].charCodeAt(0));
+  for (off22 = 0; off22 < olen; off22++) res.push(rs[off22].charCodeAt(0));
   return res;
 }
-function _encipher(lr, off2, P, S) {
-  var n, l = lr[off2], r = lr[off2 + 1];
+__name(base64_decode, "base64_decode");
+function _encipher(lr, off22, P, S) {
+  var n, l = lr[off22], r = lr[off22 + 1];
   l ^= P[0];
   n = S[l >>> 24];
   n += S[256 | l >> 16 & 255];
@@ -6033,15 +7611,17 @@ function _encipher(lr, off2, P, S) {
   n ^= S[512 | r >> 8 & 255];
   n += S[768 | r & 255];
   l ^= n ^ P[16];
-  lr[off2] = r ^ P[BLOWFISH_NUM_ROUNDS + 1];
-  lr[off2 + 1] = l;
+  lr[off22] = r ^ P[BLOWFISH_NUM_ROUNDS + 1];
+  lr[off22 + 1] = l;
   return lr;
 }
+__name(_encipher, "_encipher");
 function _streamtoword(data, offp) {
   for (var i = 0, word = 0; i < 4; ++i)
     word = word << 8 | data[offp] & 255, offp = (offp + 1) % data.length;
   return { key: word, offp };
 }
+__name(_streamtoword, "_streamtoword");
 function _key(key, P, S) {
   var offset = 0, lr = [0, 0], plen = P.length, slen = S.length, sw;
   for (var i = 0; i < plen; i++)
@@ -6051,6 +7631,7 @@ function _key(key, P, S) {
   for (i = 0; i < slen; i += 2)
     lr = _encipher(lr, 0, P, S), S[i] = lr[0], S[i + 1] = lr[1];
 }
+__name(_key, "_key");
 function _ekskey(data, key, P, S) {
   var offp = 0, lr = [0, 0], plen = P.length, slen = S.length, sw;
   for (var i = 0; i < plen; i++)
@@ -6061,12 +7642,13 @@ function _ekskey(data, key, P, S) {
   for (i = 0; i < slen; i += 2)
     sw = _streamtoword(data, offp), offp = sw.offp, lr[0] ^= sw.key, sw = _streamtoword(data, offp), offp = sw.offp, lr[1] ^= sw.key, lr = _encipher(lr, 0, P, S), S[i] = lr[0], S[i + 1] = lr[1];
 }
+__name(_ekskey, "_ekskey");
 function _crypt(b, salt, rounds, callback, progressCallback) {
   var cdata = C_ORIG.slice(), clen = cdata.length, err;
   if (rounds < 4 || rounds > 31) {
     err = Error("Illegal number of rounds (4-31): " + rounds);
     if (callback) {
-      nextTick2(callback.bind(this, err));
+      nextTick22(callback.bind(this, err));
       return;
     } else throw err;
   }
@@ -6075,7 +7657,7 @@ function _crypt(b, salt, rounds, callback, progressCallback) {
       "Illegal salt length: " + salt.length + " != " + BCRYPT_SALT_LEN
     );
     if (callback) {
-      nextTick2(callback.bind(this, err));
+      nextTick22(callback.bind(this, err));
       return;
     } else throw err;
   }
@@ -6110,9 +7692,10 @@ function _crypt(b, salt, rounds, callback, progressCallback) {
         return;
       } else return ret;
     }
-    if (callback) nextTick2(next);
+    if (callback) nextTick22(next);
   }
   __name(next, "next");
+  __name2(next, "next");
   if (typeof callback !== "undefined") {
     next();
   } else {
@@ -6120,12 +7703,13 @@ function _crypt(b, salt, rounds, callback, progressCallback) {
     while (true) if (typeof (res = next()) !== "undefined") return res || [];
   }
 }
+__name(_crypt, "_crypt");
 function _hash(password, salt, callback, progressCallback) {
   var err;
   if (typeof password !== "string" || typeof salt !== "string") {
     err = Error("Invalid string / salt: Not a string");
     if (callback) {
-      nextTick2(callback.bind(this, err));
+      nextTick22(callback.bind(this, err));
       return;
     } else throw err;
   }
@@ -6133,7 +7717,7 @@ function _hash(password, salt, callback, progressCallback) {
   if (salt.charAt(0) !== "$" || salt.charAt(1) !== "2") {
     err = Error("Invalid salt version: " + salt.substring(0, 2));
     if (callback) {
-      nextTick2(callback.bind(this, err));
+      nextTick22(callback.bind(this, err));
       return;
     } else throw err;
   }
@@ -6143,7 +7727,7 @@ function _hash(password, salt, callback, progressCallback) {
     if (minor !== "a" && minor !== "b" && minor !== "y" || salt.charAt(3) !== "$") {
       err = Error("Invalid salt revision: " + salt.substring(2, 4));
       if (callback) {
-        nextTick2(callback.bind(this, err));
+        nextTick22(callback.bind(this, err));
         return;
       } else throw err;
     }
@@ -6152,7 +7736,7 @@ function _hash(password, salt, callback, progressCallback) {
   if (salt.charAt(offset + 2) > "$") {
     err = Error("Missing salt rounds");
     if (callback) {
-      nextTick2(callback.bind(this, err));
+      nextTick22(callback.bind(this, err));
       return;
     } else throw err;
   }
@@ -6172,6 +7756,7 @@ function _hash(password, salt, callback, progressCallback) {
     return res.join("");
   }
   __name(finish, "finish");
+  __name2(finish, "finish");
   if (typeof callback == "undefined")
     return finish(_crypt(passwordb, saltb, rounds));
   else {
@@ -6187,13 +7772,27 @@ function _hash(password, salt, callback, progressCallback) {
     );
   }
 }
+__name(_hash, "_hash");
 function encodeBase64(bytes, length) {
   return base64_encode(bytes, length);
 }
+__name(encodeBase64, "encodeBase64");
 function decodeBase64(string, length) {
   return base64_decode(string, length);
 }
-var randomFallback, nextTick2, BASE64_CODE, BASE64_INDEX, BCRYPT_SALT_LEN, GENSALT_DEFAULT_LOG2_ROUNDS, BLOWFISH_NUM_ROUNDS, MAX_EXECUTION_TIME, P_ORIG, S_ORIG, C_ORIG, bcryptjs_default;
+__name(decodeBase64, "decodeBase64");
+var randomFallback;
+var nextTick22;
+var BASE64_CODE;
+var BASE64_INDEX;
+var BCRYPT_SALT_LEN;
+var GENSALT_DEFAULT_LOG2_ROUNDS;
+var BLOWFISH_NUM_ROUNDS;
+var MAX_EXECUTION_TIME;
+var P_ORIG;
+var S_ORIG;
+var C_ORIG;
+var bcryptjs_default;
 var init_bcryptjs = __esm({
   "../node_modules/bcryptjs/index.js"() {
     init_functionsRoutes_0_6656645675734922();
@@ -6201,21 +7800,21 @@ var init_bcryptjs = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
     randomFallback = null;
-    __name(randomBytes, "randomBytes");
-    __name(setRandomFallback, "setRandomFallback");
-    __name(genSaltSync, "genSaltSync");
-    __name(genSalt, "genSalt");
-    __name(hashSync, "hashSync");
-    __name(hash, "hash");
-    __name(safeStringCompare, "safeStringCompare");
-    __name(compareSync, "compareSync");
-    __name(compare, "compare");
-    __name(getRounds, "getRounds");
-    __name(getSalt, "getSalt");
-    __name(truncates, "truncates");
-    nextTick2 = typeof setImmediate === "function" ? setImmediate : typeof scheduler === "object" && typeof scheduler.postTask === "function" ? scheduler.postTask.bind(scheduler) : setTimeout;
-    __name(utf8Length, "utf8Length");
-    __name(utf8Array, "utf8Array");
+    __name2(randomBytes, "randomBytes");
+    __name2(setRandomFallback, "setRandomFallback");
+    __name2(genSaltSync, "genSaltSync");
+    __name2(genSalt, "genSalt");
+    __name2(hashSync, "hashSync");
+    __name2(hash, "hash");
+    __name2(safeStringCompare, "safeStringCompare");
+    __name2(compareSync, "compareSync");
+    __name2(compare, "compare");
+    __name2(getRounds, "getRounds");
+    __name2(getSalt, "getSalt");
+    __name2(truncates, "truncates");
+    nextTick22 = typeof setImmediate === "function" ? setImmediate : typeof scheduler === "object" && typeof scheduler.postTask === "function" ? scheduler.postTask.bind(scheduler) : setTimeout;
+    __name2(utf8Length, "utf8Length");
+    __name2(utf8Array, "utf8Array");
     BASE64_CODE = "./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".split("");
     BASE64_INDEX = [
       -1,
@@ -6347,8 +7946,8 @@ var init_bcryptjs = __esm({
       -1,
       -1
     ];
-    __name(base64_encode, "base64_encode");
-    __name(base64_decode, "base64_decode");
+    __name2(base64_encode, "base64_encode");
+    __name2(base64_decode, "base64_decode");
     BCRYPT_SALT_LEN = 16;
     GENSALT_DEFAULT_LOG2_ROUNDS = 10;
     BLOWFISH_NUM_ROUNDS = 16;
@@ -7407,14 +9006,14 @@ var init_bcryptjs = __esm({
       1668446532,
       1869963892
     ];
-    __name(_encipher, "_encipher");
-    __name(_streamtoword, "_streamtoword");
-    __name(_key, "_key");
-    __name(_ekskey, "_ekskey");
-    __name(_crypt, "_crypt");
-    __name(_hash, "_hash");
-    __name(encodeBase64, "encodeBase64");
-    __name(decodeBase64, "decodeBase64");
+    __name2(_encipher, "_encipher");
+    __name2(_streamtoword, "_streamtoword");
+    __name2(_key, "_key");
+    __name2(_ekskey, "_ekskey");
+    __name2(_crypt, "_crypt");
+    __name2(_hash, "_hash");
+    __name2(encodeBase64, "encodeBase64");
+    __name2(decodeBase64, "decodeBase64");
     bcryptjs_default = {
       setRandomFallback,
       genSaltSync,
@@ -7431,16 +9030,15 @@ var init_bcryptjs = __esm({
     };
   }
 });
-
-// api/v1/auth/login.ts
-async function onRequestOptions3() {
+async function onRequestOptions5() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
     status: 204,
     headers: corsHeaders2
   });
 }
-async function onRequestPost2({ env: env2, request }) {
+__name(onRequestOptions5, "onRequestOptions5");
+async function onRequestPost3({ env: env22, request }) {
   try {
     console.log("Login request received");
     const body = await request.json();
@@ -7454,7 +9052,7 @@ async function onRequestPost2({ env: env2, request }) {
     let userResult;
     try {
       console.log("Querying user from database...");
-      userResult = await env2.DB.prepare(
+      userResult = await env22.DB.prepare(
         "SELECT * FROM users WHERE email = ? AND is_active = 1"
       ).bind(email).first();
       console.log("User query result:", userResult ? { id: userResult.id, email: userResult.email } : "not found");
@@ -7466,7 +9064,7 @@ async function onRequestPost2({ env: env2, request }) {
     if (!userResult) {
       console.log("User not found or inactive");
       try {
-        await env2.DB.prepare(
+        await env22.DB.prepare(
           "INSERT INTO login_logs (email, success, ip_address, user_agent) VALUES (?, 0, ?, ?)"
         ).bind(
           email,
@@ -7492,7 +9090,7 @@ async function onRequestPost2({ env: env2, request }) {
     }
     if (!passwordValid) {
       try {
-        await env2.DB.prepare(
+        await env22.DB.prepare(
           "INSERT INTO login_logs (user_id, email, success, ip_address, user_agent) VALUES (?, ?, 0, ?, ?)"
         ).bind(
           userResult.id,
@@ -7506,7 +9104,7 @@ async function onRequestPost2({ env: env2, request }) {
       return errorResponse2("Invalid email or password", 401);
     }
     try {
-      await env2.DB.prepare(
+      await env22.DB.prepare(
         "INSERT INTO login_logs (user_id, email, success, ip_address, user_agent) VALUES (?, ?, 1, ?, ?)"
       ).bind(
         userResult.id,
@@ -7518,7 +9116,7 @@ async function onRequestPost2({ env: env2, request }) {
       console.warn("Failed to log successful login:", logErr);
     }
     try {
-      await env2.DB.prepare('UPDATE users SET last_login_at = datetime("now") WHERE id = ?').bind(userResult.id).run();
+      await env22.DB.prepare('UPDATE users SET last_login_at = datetime("now") WHERE id = ?').bind(userResult.id).run();
     } catch (updateErr) {
       console.warn("Failed to update last_login_at:", updateErr);
     }
@@ -7571,7 +9169,9 @@ async function onRequestPost2({ env: env2, request }) {
     return errorResponse2("Login failed: " + (err?.message || "Unknown error"), 500);
   }
 }
-var import_jsonwebtoken2, JWT_SECRET2;
+__name(onRequestPost3, "onRequestPost3");
+var import_jsonwebtoken2;
+var JWT_SECRET2;
 var init_login = __esm({
   "api/v1/auth/login.ts"() {
     "use strict";
@@ -7582,12 +9182,10 @@ var init_login = __esm({
     init_bcryptjs();
     import_jsonwebtoken2 = __toESM(require_jsonwebtoken());
     JWT_SECRET2 = process.env.JWT_SECRET || "your-secret-key-change-in-production";
-    __name(onRequestOptions3, "onRequestOptions");
-    __name(onRequestPost2, "onRequestPost");
+    __name2(onRequestOptions5, "onRequestOptions");
+    __name2(onRequestPost3, "onRequestPost");
   }
 });
-
-// api/v1/auth/me.ts
 function extractToken2(request) {
   const authHeader = request.headers.get("Authorization");
   if (authHeader && authHeader.startsWith("Bearer ")) {
@@ -7606,14 +9204,16 @@ function extractToken2(request) {
   }
   return null;
 }
-async function onRequestOptions4() {
+__name(extractToken2, "extractToken2");
+async function onRequestOptions6() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
     status: 204,
     headers: corsHeaders2
   });
 }
-async function onRequestGet2({ env: env2, request }) {
+__name(onRequestOptions6, "onRequestOptions6");
+async function onRequestGet3({ env: env22, request }) {
   try {
     const { errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const token = extractToken2(request);
@@ -7621,7 +9221,7 @@ async function onRequestGet2({ env: env2, request }) {
       return errorResponse2("Unauthorized", 401);
     }
     const decoded = import_jsonwebtoken3.default.verify(token, JWT_SECRET3);
-    const userResult = await env2.DB.prepare(
+    const userResult = await env22.DB.prepare(
       "SELECT id, email, name, role, avatar_url, created_at FROM users WHERE id = ?"
     ).bind(decoded.userId).first();
     if (!userResult) {
@@ -7636,7 +9236,9 @@ async function onRequestGet2({ env: env2, request }) {
     return errorResponse2("Unauthorized", 401);
   }
 }
-var import_jsonwebtoken3, JWT_SECRET3;
+__name(onRequestGet3, "onRequestGet3");
+var import_jsonwebtoken3;
+var JWT_SECRET3;
 var init_me = __esm({
   "api/v1/auth/me.ts"() {
     "use strict";
@@ -7646,21 +9248,20 @@ var init_me = __esm({
     init_performance2();
     import_jsonwebtoken3 = __toESM(require_jsonwebtoken());
     JWT_SECRET3 = process.env.JWT_SECRET || "your-secret-key-change-in-production";
-    __name(extractToken2, "extractToken");
-    __name(onRequestOptions4, "onRequestOptions");
-    __name(onRequestGet2, "onRequestGet");
+    __name2(extractToken2, "extractToken");
+    __name2(onRequestOptions6, "onRequestOptions");
+    __name2(onRequestGet3, "onRequestGet");
   }
 });
-
-// api/v1/blogs/[id].ts
-async function onRequestOptions5() {
+async function onRequestOptions7() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
     status: 204,
     headers: corsHeaders2
   });
 }
-async function onRequestGet3({ env: env2, request, params }) {
+__name(onRequestOptions7, "onRequestOptions7");
+async function onRequestGet4({ env: env22, request, params }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -7669,7 +9270,7 @@ async function onRequestGet3({ env: env2, request, params }) {
     }
     const { id } = await params;
     const blogId = parseInt(id);
-    const blog = await env2.DB.prepare(
+    const blog = await env22.DB.prepare(
       `SELECT 
         b.*, u.name as author_name, u.avatar_url as author_avatar,
         c.id as category_id, c.name as category_name, c.slug as category_slug
@@ -7684,7 +9285,7 @@ async function onRequestGet3({ env: env2, request, params }) {
     if (!checkRole2(user, ["admin"]) && blog.status !== "published" && blog.author_id !== user.userId) {
       return errorResponse2("Forbidden", 403);
     }
-    const tags = await env2.DB.prepare(
+    const tags = await env22.DB.prepare(
       `SELECT t.id, t.name, t.slug FROM tags t
        INNER JOIN blog_tags bt ON t.id = bt.tag_id
        WHERE bt.blog_id = ?`
@@ -7701,7 +9302,8 @@ async function onRequestGet3({ env: env2, request, params }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestPut({ env: env2, request, params }) {
+__name(onRequestGet4, "onRequestGet4");
+async function onRequestPut3({ env: env22, request, params }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -7710,7 +9312,7 @@ async function onRequestPut({ env: env2, request, params }) {
     }
     const { id } = await params;
     const blogId = parseInt(id);
-    const existing = await env2.DB.prepare("SELECT * FROM blogs WHERE id = ?").bind(blogId).first();
+    const existing = await env22.DB.prepare("SELECT * FROM blogs WHERE id = ?").bind(blogId).first();
     if (!existing) {
       return errorResponse2("Blog not found", 404);
     }
@@ -7777,16 +9379,16 @@ async function onRequestPut({ env: env2, request, params }) {
     }
     updates.push('updated_at = datetime("now")');
     values.push(blogId);
-    await env2.DB.prepare(`UPDATE blogs SET ${updates.join(", ")} WHERE id = ?`).bind(...values).run();
+    await env22.DB.prepare(`UPDATE blogs SET ${updates.join(", ")} WHERE id = ?`).bind(...values).run();
     if (body.tags !== void 0) {
-      await env2.DB.prepare("DELETE FROM blog_tags WHERE blog_id = ?").bind(blogId).run();
+      await env22.DB.prepare("DELETE FROM blog_tags WHERE blog_id = ?").bind(blogId).run();
       if (Array.isArray(body.tags) && body.tags.length > 0) {
         for (const tagId of body.tags) {
-          await env2.DB.prepare("INSERT INTO blog_tags (blog_id, tag_id) VALUES (?, ?)").bind(blogId, tagId).run();
+          await env22.DB.prepare("INSERT INTO blog_tags (blog_id, tag_id) VALUES (?, ?)").bind(blogId, tagId).run();
         }
       }
     }
-    const updated = await env2.DB.prepare(
+    const updated = await env22.DB.prepare(
       `SELECT 
         b.*, u.name as author_name, c.name as category_name
       FROM blogs b
@@ -7794,7 +9396,7 @@ async function onRequestPut({ env: env2, request, params }) {
       LEFT JOIN categories c ON b.category_id = c.id
       WHERE b.id = ?`
     ).bind(blogId).first();
-    const tags = await env2.DB.prepare(
+    const tags = await env22.DB.prepare(
       `SELECT t.id, t.name, t.slug FROM tags t
        INNER JOIN blog_tags bt ON t.id = bt.tag_id
        WHERE bt.blog_id = ?`
@@ -7814,7 +9416,8 @@ async function onRequestPut({ env: env2, request, params }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestDelete({ env: env2, request, params }) {
+__name(onRequestPut3, "onRequestPut3");
+async function onRequestDelete3({ env: env22, request, params }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -7823,14 +9426,14 @@ async function onRequestDelete({ env: env2, request, params }) {
     }
     const { id } = await params;
     const blogId = parseInt(id);
-    const existing = await env2.DB.prepare("SELECT * FROM blogs WHERE id = ?").bind(blogId).first();
+    const existing = await env22.DB.prepare("SELECT * FROM blogs WHERE id = ?").bind(blogId).first();
     if (!existing) {
       return errorResponse2("Blog not found", 404);
     }
     if (!checkRole2(user, ["admin"]) && existing.author_id !== user.userId) {
       return errorResponse2("Forbidden", 403);
     }
-    await env2.DB.prepare("DELETE FROM blogs WHERE id = ?").bind(blogId).run();
+    await env22.DB.prepare("DELETE FROM blogs WHERE id = ?").bind(blogId).run();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     return jsonResponse2({
       success: true,
@@ -7841,11 +9444,12 @@ async function onRequestDelete({ env: env2, request, params }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestPost3({ env: env2, params }) {
+__name(onRequestDelete3, "onRequestDelete3");
+async function onRequestPost4({ env: env22, params }) {
   try {
     const { id } = await params;
     const blogId = parseInt(id);
-    await env2.DB.prepare("UPDATE blogs SET view_count = view_count + 1 WHERE id = ?").bind(blogId).run();
+    await env22.DB.prepare("UPDATE blogs SET view_count = view_count + 1 WHERE id = ?").bind(blogId).run();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     return jsonResponse2({
       success: true
@@ -7855,6 +9459,7 @@ async function onRequestPost3({ env: env2, params }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
+__name(onRequestPost4, "onRequestPost4");
 var init_id = __esm({
   "api/v1/blogs/[id].ts"() {
     "use strict";
@@ -7862,23 +9467,246 @@ var init_id = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestOptions5, "onRequestOptions");
-    __name(onRequestGet3, "onRequestGet");
-    __name(onRequestPut, "onRequestPut");
-    __name(onRequestDelete, "onRequestDelete");
-    __name(onRequestPost3, "onRequestPost");
+    __name2(onRequestOptions7, "onRequestOptions");
+    __name2(onRequestGet4, "onRequestGet");
+    __name2(onRequestPut3, "onRequestPut");
+    __name2(onRequestDelete3, "onRequestDelete");
+    __name2(onRequestPost4, "onRequestPost");
   }
 });
-
-// api/v1/media/[id].ts
-async function onRequestOptions6() {
+async function onRequestOptions8() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
     status: 204,
     headers: corsHeaders2
   });
 }
-async function onRequestDelete2({ env: env2, request, params }) {
+__name(onRequestOptions8, "onRequestOptions8");
+async function onRequestPut4({ env: env22, request, params }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user || !checkRole2(user, ["admin", "editor"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const commentId = parseInt(params.id);
+    const body = await request.json();
+    const { status, content } = body;
+    if (!status || !["pending", "approved", "rejected", "spam"].includes(status)) {
+      return errorResponse2("Invalid status", 400);
+    }
+    const updateFields = [];
+    const bindings = [];
+    if (status) {
+      updateFields.push("status = ?");
+      bindings.push(status);
+    }
+    if (content !== void 0) {
+      updateFields.push("content = ?");
+      bindings.push(content);
+    }
+    updateFields.push("updated_at = ?");
+    bindings.push((/* @__PURE__ */ new Date()).toISOString());
+    bindings.push(commentId);
+    await env22.DB.prepare(
+      `UPDATE comments SET ${updateFields.join(", ")} WHERE id = ?`
+    ).bind(...bindings).run();
+    const updatedComment = await env22.DB.prepare("SELECT * FROM comments WHERE id = ?").bind(commentId).first();
+    return jsonResponse2({
+      success: true,
+      data: updatedComment
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestPut4, "onRequestPut4");
+async function onRequestDelete4({ env: env22, request, params }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user || !checkRole2(user, ["admin", "editor"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const commentId = parseInt(params.id);
+    await env22.DB.prepare("DELETE FROM comments WHERE id = ?").bind(commentId).run();
+    return jsonResponse2({
+      success: true,
+      message: "Comment deleted successfully"
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestDelete4, "onRequestDelete4");
+var init_id2 = __esm({
+  "api/v1/comments/[id].ts"() {
+    "use strict";
+    init_functionsRoutes_0_6656645675734922();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
+    init_performance2();
+    __name2(onRequestOptions8, "onRequestOptions");
+    __name2(onRequestPut4, "onRequestPut");
+    __name2(onRequestDelete4, "onRequestDelete");
+  }
+});
+async function onRequestOptions9() {
+  const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders2
+  });
+}
+__name(onRequestOptions9, "onRequestOptions9");
+async function onRequestGet5({ env: env22, request, params }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user || !checkRole2(user, ["admin", "editor"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const imageId = parseInt(params.id);
+    const image = await env22.DB.prepare(
+      `SELECT 
+        m.*,
+        u.name as uploaded_by_name
+      FROM media m
+      LEFT JOIN users u ON m.uploaded_by = u.id
+      WHERE m.id = ?`
+    ).bind(imageId).first();
+    if (!image) {
+      return errorResponse2("Image not found", 404);
+    }
+    const blogUsage = await env22.DB.prepare(
+      `SELECT b.id, b.title, b.slug FROM blogs b
+       WHERE b.cover_image = ? OR b.id IN (
+         SELECT blog_id FROM blog_gallery WHERE image_id = ?
+       )`
+    ).bind(image.url, imageId).all();
+    image.used_in_blogs = blogUsage.results || [];
+    const workUsage = await env22.DB.prepare(
+      `SELECT w.id, w.title, w.slug FROM works w
+       WHERE w.cover_image_id = ? OR w.id IN (
+         SELECT work_id FROM work_gallery WHERE image_id = ?
+       )`
+    ).bind(imageId, imageId).all();
+    image.used_in_works = workUsage.results || [];
+    const projectUsage = await env22.DB.prepare(
+      `SELECT p.id, p.title, p.slug FROM projects p
+       WHERE p.cover_image = ?`
+    ).bind(image.url).all();
+    image.used_in_projects = projectUsage.results || [];
+    return jsonResponse2({
+      success: true,
+      data: image
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestGet5, "onRequestGet5");
+async function onRequestPut5({ env: env22, request, params }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user || !checkRole2(user, ["admin", "editor"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const imageId = parseInt(params.id);
+    const body = await request.json();
+    const { alt_text } = body;
+    const updateFields = [];
+    const bindings = [];
+    if (alt_text !== void 0) {
+      updateFields.push("alt_text = ?");
+      bindings.push(alt_text);
+    }
+    if (updateFields.length === 0) {
+      return errorResponse2("No fields to update", 400);
+    }
+    bindings.push(imageId);
+    await env22.DB.prepare(
+      `UPDATE media SET ${updateFields.join(", ")} WHERE id = ?`
+    ).bind(...bindings).run();
+    const updatedImage = await env22.DB.prepare("SELECT * FROM media WHERE id = ?").bind(imageId).first();
+    return jsonResponse2({
+      success: true,
+      data: updatedImage
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestPut5, "onRequestPut5");
+async function onRequestDelete5({ env: env22, request, params }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user || !checkRole2(user, ["admin", "editor"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const imageId = parseInt(params.id);
+    const image = await env22.DB.prepare("SELECT * FROM media WHERE id = ?").bind(imageId).first();
+    if (!image) {
+      return errorResponse2("Image not found", 404);
+    }
+    if (image.cloudflare_image_id) {
+      const cloudflareAccountId = env22.CLOUDFLARE_ACCOUNT_ID;
+      const cloudflareApiToken = env22.CLOUDFLARE_API_TOKEN;
+      if (cloudflareAccountId && cloudflareApiToken) {
+        try {
+          await fetch(
+            `https://api.cloudflare.com/client/v4/accounts/${cloudflareAccountId}/images/v1/${image.cloudflare_image_id}`,
+            {
+              method: "DELETE",
+              headers: {
+                "Authorization": `Bearer ${cloudflareApiToken}`
+              }
+            }
+          );
+        } catch (err) {
+          console.error("Failed to delete from Cloudflare Images:", err);
+        }
+      }
+    }
+    await env22.DB.prepare("DELETE FROM media WHERE id = ?").bind(imageId).run();
+    return jsonResponse2({
+      success: true,
+      message: "Image deleted successfully"
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestDelete5, "onRequestDelete5");
+var init_id3 = __esm({
+  "api/v1/images/[id].ts"() {
+    "use strict";
+    init_functionsRoutes_0_6656645675734922();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
+    init_performance2();
+    __name2(onRequestOptions9, "onRequestOptions");
+    __name2(onRequestGet5, "onRequestGet");
+    __name2(onRequestPut5, "onRequestPut");
+    __name2(onRequestDelete5, "onRequestDelete");
+  }
+});
+async function onRequestOptions10() {
+  const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders2
+  });
+}
+__name(onRequestOptions10, "onRequestOptions10");
+async function onRequestDelete6({ env: env22, request, params }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -7886,7 +9714,7 @@ async function onRequestDelete2({ env: env2, request, params }) {
       return errorResponse2("Forbidden", 403);
     }
     const { id } = await params;
-    await env2.DB.prepare("DELETE FROM media WHERE id = ?").bind(parseInt(id)).run();
+    await env22.DB.prepare("DELETE FROM media WHERE id = ?").bind(parseInt(id)).run();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     return jsonResponse2({
       success: true,
@@ -7897,27 +9725,27 @@ async function onRequestDelete2({ env: env2, request, params }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-var init_id2 = __esm({
+__name(onRequestDelete6, "onRequestDelete6");
+var init_id4 = __esm({
   "api/v1/media/[id].ts"() {
     "use strict";
     init_functionsRoutes_0_6656645675734922();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestOptions6, "onRequestOptions");
-    __name(onRequestDelete2, "onRequestDelete");
+    __name2(onRequestOptions10, "onRequestOptions");
+    __name2(onRequestDelete6, "onRequestDelete");
   }
 });
-
-// api/v1/projects/[id].ts
-async function onRequestOptions7() {
+async function onRequestOptions11() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
     status: 204,
     headers: corsHeaders2
   });
 }
-async function onRequestGet4({ env: env2, request, params }) {
+__name(onRequestOptions11, "onRequestOptions11");
+async function onRequestGet6({ env: env22, request, params }) {
   try {
     const { getAuthUser: getAuthUser2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -7925,7 +9753,7 @@ async function onRequestGet4({ env: env2, request, params }) {
       return errorResponse2("Unauthorized", 401);
     }
     const { id } = await params;
-    const project = await env2.DB.prepare(
+    const project = await env22.DB.prepare(
       `SELECT p.*, u.name as created_by_name 
        FROM projects p 
        LEFT JOIN users u ON p.created_by = u.id 
@@ -7946,7 +9774,8 @@ async function onRequestGet4({ env: env2, request, params }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestPut2({ env: env2, request, params }) {
+__name(onRequestGet6, "onRequestGet6");
+async function onRequestPut6({ env: env22, request, params }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -7976,8 +9805,8 @@ async function onRequestPut2({ env: env2, request, params }) {
     }
     updates.push('updated_at = datetime("now")');
     values.push(parseInt(id));
-    await env2.DB.prepare(`UPDATE projects SET ${updates.join(", ")} WHERE id = ?`).bind(...values).run();
-    const updated = await env2.DB.prepare("SELECT * FROM projects WHERE id = ?").bind(parseInt(id)).first();
+    await env22.DB.prepare(`UPDATE projects SET ${updates.join(", ")} WHERE id = ?`).bind(...values).run();
+    const updated = await env22.DB.prepare("SELECT * FROM projects WHERE id = ?").bind(parseInt(id)).first();
     return jsonResponse2({
       success: true,
       data: {
@@ -7990,7 +9819,8 @@ async function onRequestPut2({ env: env2, request, params }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestDelete3({ env: env2, request, params }) {
+__name(onRequestPut6, "onRequestPut6");
+async function onRequestDelete7({ env: env22, request, params }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -7998,7 +9828,7 @@ async function onRequestDelete3({ env: env2, request, params }) {
       return errorResponse2("Forbidden", 403);
     }
     const { id } = await params;
-    await env2.DB.prepare("DELETE FROM projects WHERE id = ?").bind(parseInt(id)).run();
+    await env22.DB.prepare("DELETE FROM projects WHERE id = ?").bind(parseInt(id)).run();
     return jsonResponse2({
       success: true,
       message: "Project deleted successfully"
@@ -8008,29 +9838,29 @@ async function onRequestDelete3({ env: env2, request, params }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-var init_id3 = __esm({
+__name(onRequestDelete7, "onRequestDelete7");
+var init_id5 = __esm({
   "api/v1/projects/[id].ts"() {
     "use strict";
     init_functionsRoutes_0_6656645675734922();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestOptions7, "onRequestOptions");
-    __name(onRequestGet4, "onRequestGet");
-    __name(onRequestPut2, "onRequestPut");
-    __name(onRequestDelete3, "onRequestDelete");
+    __name2(onRequestOptions11, "onRequestOptions");
+    __name2(onRequestGet6, "onRequestGet");
+    __name2(onRequestPut6, "onRequestPut");
+    __name2(onRequestDelete7, "onRequestDelete");
   }
 });
-
-// api/v1/users/[id].ts
-async function onRequestOptions8() {
+async function onRequestOptions12() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
     status: 204,
     headers: corsHeaders2
   });
 }
-async function onRequestGet5({ env: env2, request, params }) {
+__name(onRequestOptions12, "onRequestOptions12");
+async function onRequestGet7({ env: env22, request, params }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8042,7 +9872,7 @@ async function onRequestGet5({ env: env2, request, params }) {
     if (user.userId !== userId && !checkRole2(user, ["admin"])) {
       return errorResponse2("Forbidden", 403);
     }
-    const result = await env2.DB.prepare(
+    const result = await env22.DB.prepare(
       "SELECT id, email, name, role, avatar_url, is_active, last_login_at, created_at, updated_at FROM users WHERE id = ?"
     ).bind(userId).first();
     if (!result) {
@@ -8057,7 +9887,8 @@ async function onRequestGet5({ env: env2, request, params }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestPut3({ env: env2, request, params }) {
+__name(onRequestGet7, "onRequestGet7");
+async function onRequestPut7({ env: env22, request, params }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8100,8 +9931,8 @@ async function onRequestPut3({ env: env2, request, params }) {
     }
     updates.push('updated_at = datetime("now")');
     values.push(userId);
-    await env2.DB.prepare(`UPDATE users SET ${updates.join(", ")} WHERE id = ?`).bind(...values).run();
-    const updated = await env2.DB.prepare(
+    await env22.DB.prepare(`UPDATE users SET ${updates.join(", ")} WHERE id = ?`).bind(...values).run();
+    const updated = await env22.DB.prepare(
       "SELECT id, email, name, role, avatar_url, is_active, created_at, updated_at FROM users WHERE id = ?"
     ).bind(userId).first();
     return jsonResponse2({
@@ -8113,7 +9944,8 @@ async function onRequestPut3({ env: env2, request, params }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestDelete4({ env: env2, request, params }) {
+__name(onRequestPut7, "onRequestPut7");
+async function onRequestDelete8({ env: env22, request, params }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8122,7 +9954,7 @@ async function onRequestDelete4({ env: env2, request, params }) {
     }
     const { id } = await params;
     const userId = parseInt(id);
-    await env2.DB.prepare("DELETE FROM users WHERE id = ?").bind(userId).run();
+    await env22.DB.prepare("DELETE FROM users WHERE id = ?").bind(userId).run();
     return jsonResponse2({
       success: true,
       message: "User deleted successfully"
@@ -8132,29 +9964,466 @@ async function onRequestDelete4({ env: env2, request, params }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-var init_id4 = __esm({
+__name(onRequestDelete8, "onRequestDelete8");
+var init_id6 = __esm({
   "api/v1/users/[id].ts"() {
     "use strict";
     init_functionsRoutes_0_6656645675734922();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestOptions8, "onRequestOptions");
-    __name(onRequestGet5, "onRequestGet");
-    __name(onRequestPut3, "onRequestPut");
-    __name(onRequestDelete4, "onRequestDelete");
+    __name2(onRequestOptions12, "onRequestOptions");
+    __name2(onRequestGet7, "onRequestGet");
+    __name2(onRequestPut7, "onRequestPut");
+    __name2(onRequestDelete8, "onRequestDelete");
   }
 });
-
-// api/v1/blogs.ts
-async function onRequestOptions9() {
+async function onRequestOptions13() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
     status: 204,
     headers: corsHeaders2
   });
 }
-async function onRequestGet6({ env: env2, request }) {
+__name(onRequestOptions13, "onRequestOptions13");
+async function onRequestGet8({ env: env22, request, params }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    const workId = parseInt(params.id);
+    const work = await env22.DB.prepare(
+      `SELECT 
+        w.*, u.name as author_name, u.avatar_url as author_avatar,
+        m.url as cover_image_url, m.alt_text as cover_image_alt
+      FROM works w
+      LEFT JOIN users u ON w.author_id = u.id
+      LEFT JOIN media m ON w.cover_image_id = m.id
+      WHERE w.id = ?`
+    ).bind(workId).first();
+    if (!work) {
+      return errorResponse2("Work not found", 404);
+    }
+    if (work.status !== "published" && (!user || work.author_id !== user.userId && !checkRole2(user, ["admin"]))) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const tags = await env22.DB.prepare(
+      `SELECT t.id, t.name, t.slug FROM tags t
+       INNER JOIN work_tags wt ON t.id = wt.tag_id
+       WHERE wt.work_id = ?`
+    ).bind(workId).all();
+    const gallery = await env22.DB.prepare(
+      `SELECT m.id, m.url, m.alt_text, wg.caption, wg.display_order
+       FROM work_gallery wg
+       INNER JOIN media m ON wg.image_id = m.id
+       WHERE wg.work_id = ?
+       ORDER BY wg.display_order ASC`
+    ).bind(workId).all();
+    const timeline = await env22.DB.prepare(
+      `SELECT * FROM timeline_items
+       WHERE work_id = ?
+       ORDER BY display_order ASC`
+    ).bind(workId).all();
+    for (const item of timeline.results) {
+      const tasks = await env22.DB.prepare(
+        `SELECT task FROM timeline_tasks WHERE timeline_item_id = ? ORDER BY display_order ASC`
+      ).bind(item.id).all();
+      item.tasks = tasks.results?.map((t) => t.task) || [];
+      const tech = await env22.DB.prepare(
+        `SELECT tech_name FROM timeline_tech WHERE timeline_item_id = ? ORDER BY display_order ASC`
+      ).bind(item.id).all();
+      item.tech = tech.results?.map((t) => t.tech_name) || [];
+      const media = await env22.DB.prepare(
+        `SELECT m.id, m.url, m.alt_text FROM timeline_media tm
+         INNER JOIN media m ON tm.image_id = m.id
+         WHERE tm.timeline_item_id = ?
+         ORDER BY tm.display_order ASC`
+      ).bind(item.id).all();
+      item.media = media.results || [];
+    }
+    if (work.status === "published" && (!user || work.author_id !== user.userId)) {
+      await env22.DB.prepare("UPDATE works SET view_count = view_count + 1 WHERE id = ?").bind(workId).run();
+      work.view_count = (work.view_count || 0) + 1;
+    }
+    return jsonResponse2({
+      success: true,
+      data: {
+        ...work,
+        tags: tags.results || [],
+        gallery: gallery.results || [],
+        timeline: timeline.results || []
+      }
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestGet8, "onRequestGet8");
+async function onRequestPut8({ env: env22, request, params }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user) {
+      return errorResponse2("Unauthorized", 401);
+    }
+    const workId = parseInt(params.id);
+    const body = await request.json();
+    const existingWork = await env22.DB.prepare("SELECT * FROM works WHERE id = ?").bind(workId).first();
+    if (!existingWork) {
+      return errorResponse2("Work not found", 404);
+    }
+    if (existingWork.author_id !== user.userId && !checkRole2(user, ["admin"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const {
+      title: title22,
+      slug,
+      summary,
+      full_content,
+      cover_image_id,
+      status,
+      tags,
+      published_at
+    } = body;
+    const updateFields = [];
+    const bindings = [];
+    if (title22 !== void 0) {
+      updateFields.push("title = ?");
+      bindings.push(title22);
+    }
+    if (slug !== void 0) {
+      updateFields.push("slug = ?");
+      bindings.push(slug);
+    }
+    if (summary !== void 0) {
+      updateFields.push("summary = ?");
+      bindings.push(summary);
+    }
+    if (full_content !== void 0) {
+      updateFields.push("full_content = ?");
+      bindings.push(full_content);
+    }
+    if (cover_image_id !== void 0) {
+      updateFields.push("cover_image_id = ?");
+      bindings.push(cover_image_id);
+    }
+    if (status !== void 0) {
+      updateFields.push("status = ?");
+      bindings.push(status);
+      if (status === "published" && !existingWork.published_at) {
+        updateFields.push("published_at = ?");
+        bindings.push(published_at || (/* @__PURE__ */ new Date()).toISOString());
+      }
+    }
+    updateFields.push("updated_at = ?");
+    bindings.push((/* @__PURE__ */ new Date()).toISOString());
+    bindings.push(workId);
+    await env22.DB.prepare(
+      `UPDATE works SET ${updateFields.join(", ")} WHERE id = ?`
+    ).bind(...bindings).run();
+    if (tags !== void 0) {
+      await env22.DB.prepare("DELETE FROM work_tags WHERE work_id = ?").bind(workId).run();
+      if (tags.length > 0) {
+        for (const tagId of tags) {
+          await env22.DB.prepare("INSERT INTO work_tags (work_id, tag_id) VALUES (?, ?)").bind(workId, tagId).run();
+        }
+      }
+    }
+    if (status === "pending" && !checkRole2(user, ["admin"])) {
+      const existingRequest = await env22.DB.prepare(
+        "SELECT * FROM publish_requests WHERE content_type = ? AND content_id = ? AND status = ?"
+      ).bind("work", workId, "pending").first();
+      if (!existingRequest) {
+        await env22.DB.prepare(
+          `INSERT INTO publish_requests (content_type, content_id, requested_by, status)
+           VALUES (?, ?, ?, ?)`
+        ).bind("work", workId, user.userId, "pending").run();
+      }
+    }
+    const updatedWork = await env22.DB.prepare(
+      `SELECT 
+        w.*, u.name as author_name, m.url as cover_image_url
+      FROM works w
+      LEFT JOIN users u ON w.author_id = u.id
+      LEFT JOIN media m ON w.cover_image_id = m.id
+      WHERE w.id = ?`
+    ).bind(workId).first();
+    const workTags = await env22.DB.prepare(
+      `SELECT t.id, t.name, t.slug FROM tags t
+       INNER JOIN work_tags wt ON t.id = wt.tag_id
+       WHERE wt.work_id = ?`
+    ).bind(workId).all();
+    return jsonResponse2({
+      success: true,
+      data: {
+        ...updatedWork,
+        tags: workTags.results || []
+      }
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    if (err.message?.includes("UNIQUE constraint")) {
+      return errorResponse2("Slug already exists", 409);
+    }
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestPut8, "onRequestPut8");
+async function onRequestDelete9({ env: env22, request, params }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user) {
+      return errorResponse2("Unauthorized", 401);
+    }
+    const workId = parseInt(params.id);
+    const work = await env22.DB.prepare("SELECT * FROM works WHERE id = ?").bind(workId).first();
+    if (!work) {
+      return errorResponse2("Work not found", 404);
+    }
+    if (work.author_id !== user.userId && !checkRole2(user, ["admin"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    await env22.DB.prepare("DELETE FROM works WHERE id = ?").bind(workId).run();
+    return jsonResponse2({
+      success: true,
+      message: "Work deleted successfully"
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestDelete9, "onRequestDelete9");
+var init_id7 = __esm({
+  "api/v1/works/[id].ts"() {
+    "use strict";
+    init_functionsRoutes_0_6656645675734922();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
+    init_performance2();
+    __name2(onRequestOptions13, "onRequestOptions");
+    __name2(onRequestGet8, "onRequestGet");
+    __name2(onRequestPut8, "onRequestPut");
+    __name2(onRequestDelete9, "onRequestDelete");
+  }
+});
+async function onRequestOptions14() {
+  const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders2
+  });
+}
+__name(onRequestOptions14, "onRequestOptions14");
+async function onRequestGet9({ env: env22, request }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user || !checkRole2(user, ["admin", "editor"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const url = new URL(request.url);
+    const type = url.searchParams.get("type") || "summary";
+    const startDate = url.searchParams.get("start_date");
+    const endDate = url.searchParams.get("end_date");
+    const contentType = url.searchParams.get("content_type");
+    const contentId = url.searchParams.get("content_id");
+    let query;
+    const bindings = [];
+    switch (type) {
+      case "summary": {
+        const views = await env22.DB.prepare(
+          `SELECT 
+            DATE(created_at) as date,
+            COUNT(*) as count,
+            event_type
+          FROM analytics_events
+          WHERE event_type IN ('page_view', 'blog_view', 'work_view', 'project_view')
+            AND created_at >= datetime('now', '-30 days')
+          GROUP BY DATE(created_at), event_type
+          ORDER BY date DESC`
+        ).all();
+        const topPages = await env22.DB.prepare(
+          `SELECT 
+            page_path,
+            content_type,
+            content_id,
+            COUNT(*) as views
+          FROM analytics_events
+          WHERE event_type IN ('page_view', 'blog_view', 'work_view', 'project_view')
+            AND created_at >= datetime('now', '-30 days')
+          GROUP BY page_path, content_type, content_id
+          ORDER BY views DESC
+          LIMIT 10`
+        ).all();
+        const referrers = await env22.DB.prepare(
+          `SELECT 
+            referrer,
+            COUNT(*) as count
+          FROM analytics_events
+          WHERE referrer IS NOT NULL
+            AND created_at >= datetime('now', '-30 days')
+          GROUP BY referrer
+          ORDER BY count DESC
+          LIMIT 10`
+        ).all();
+        const devices = await env22.DB.prepare(
+          `SELECT 
+            device_type,
+            COUNT(*) as count
+          FROM analytics_events
+          WHERE device_type IS NOT NULL
+            AND created_at >= datetime('now', '-30 days')
+          GROUP BY device_type
+          ORDER BY count DESC`
+        ).all();
+        return jsonResponse2({
+          success: true,
+          data: {
+            views: views.results || [],
+            topPages: topPages.results || [],
+            referrers: referrers.results || [],
+            devices: devices.results || []
+          }
+        });
+      }
+      case "page_views": {
+        query = `SELECT 
+          DATE(created_at) as date,
+          COUNT(*) as count
+        FROM analytics_events
+        WHERE event_type IN ('page_view', 'blog_view', 'work_view', 'project_view')`;
+        if (startDate) {
+          query += " AND created_at >= ?";
+          bindings.push(startDate);
+        }
+        if (endDate) {
+          query += " AND created_at <= ?";
+          bindings.push(endDate);
+        }
+        if (contentType && contentId) {
+          query += " AND content_type = ? AND content_id = ?";
+          bindings.push(contentType, parseInt(contentId));
+        }
+        query += ` GROUP BY DATE(created_at)
+                   ORDER BY date DESC
+                   LIMIT 100`;
+        const result = await env22.DB.prepare(query).bind(...bindings).all();
+        return jsonResponse2({
+          success: true,
+          data: result.results || []
+        });
+      }
+      case "top_pages": {
+        query = `SELECT 
+          page_path,
+          content_type,
+          content_id,
+          COUNT(*) as views
+        FROM analytics_events
+        WHERE event_type IN ('page_view', 'blog_view', 'work_view', 'project_view')`;
+        if (startDate) {
+          query += " AND created_at >= ?";
+          bindings.push(startDate);
+        }
+        if (endDate) {
+          query += " AND created_at <= ?";
+          bindings.push(endDate);
+        }
+        query += ` GROUP BY page_path, content_type, content_id
+                   ORDER BY views DESC
+                   LIMIT 50`;
+        const result = await env22.DB.prepare(query).bind(...bindings).all();
+        return jsonResponse2({
+          success: true,
+          data: result.results || []
+        });
+      }
+      default:
+        return errorResponse2("Invalid analytics type", 400);
+    }
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestGet9, "onRequestGet9");
+async function onRequestPost5({ env: env22, request }) {
+  try {
+    const { getAuthUser: getAuthUser2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    const body = await request.json();
+    const {
+      event_type,
+      content_type,
+      content_id,
+      page_path,
+      referrer,
+      device_type
+    } = body;
+    if (!event_type) {
+      return errorResponse2("Event type is required", 400);
+    }
+    const ipAddress = request.headers.get("CF-Connecting-IP") || request.headers.get("X-Forwarded-For") || "unknown";
+    const userAgent = request.headers.get("User-Agent") || "unknown";
+    let detectedDeviceType = device_type;
+    if (!detectedDeviceType) {
+      if (userAgent.includes("Mobile")) {
+        detectedDeviceType = "mobile";
+      } else if (userAgent.includes("Tablet")) {
+        detectedDeviceType = "tablet";
+      } else {
+        detectedDeviceType = "desktop";
+      }
+    }
+    await env22.DB.prepare(
+      `INSERT INTO analytics_events (
+        event_type, content_type, content_id, page_path, referrer,
+        user_agent, ip_address, device_type, user_id
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).bind(
+      event_type,
+      content_type || null,
+      content_id ? parseInt(content_id) : null,
+      page_path || null,
+      referrer || null,
+      userAgent,
+      ipAddress,
+      detectedDeviceType,
+      user?.userId || null
+    ).run();
+    return jsonResponse2({
+      success: true,
+      message: "Event tracked"
+    }, 201);
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestPost5, "onRequestPost5");
+var init_analytics = __esm({
+  "api/v1/analytics.ts"() {
+    "use strict";
+    init_functionsRoutes_0_6656645675734922();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
+    init_performance2();
+    __name2(onRequestOptions14, "onRequestOptions");
+    __name2(onRequestGet9, "onRequestGet");
+    __name2(onRequestPost5, "onRequestPost");
+  }
+});
+async function onRequestOptions15() {
+  const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders2
+  });
+}
+__name(onRequestOptions15, "onRequestOptions15");
+async function onRequestGet10({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8205,10 +10474,10 @@ async function onRequestGet6({ env: env2, request }) {
     }
     query += ` ${orderBy} LIMIT ? OFFSET ?`;
     bindings.push(limit, offset);
-    const results = await env2.DB.prepare(query).bind(...bindings).all();
+    const results = await env22.DB.prepare(query).bind(...bindings).all();
     const blogsWithTags = await Promise.all(
       results.results.map(async (blog) => {
-        const tags = await env2.DB.prepare(
+        const tags = await env22.DB.prepare(
           `SELECT t.id, t.name, t.slug FROM tags t
            INNER JOIN blog_tags bt ON t.id = bt.tag_id
            WHERE bt.blog_id = ?`
@@ -8221,7 +10490,7 @@ async function onRequestGet6({ env: env2, request }) {
     );
     const countQuery = conditions.length > 0 ? `SELECT COUNT(*) as total FROM blogs b WHERE ${conditions.join(" AND ")}` : "SELECT COUNT(*) as total FROM blogs";
     const countBindings = bindings.slice(0, -2);
-    const countResult = await env2.DB.prepare(countQuery).bind(...countBindings).first();
+    const countResult = await env22.DB.prepare(countQuery).bind(...countBindings).first();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     return jsonResponse2({
       success: true,
@@ -8238,7 +10507,8 @@ async function onRequestGet6({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestPost4({ env: env2, request }) {
+__name(onRequestGet10, "onRequestGet10");
+async function onRequestPost6({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8247,7 +10517,7 @@ async function onRequestPost4({ env: env2, request }) {
     }
     const body = await request.json();
     const {
-      title: title2,
+      title: title22,
       slug,
       excerpt,
       content,
@@ -8262,20 +10532,20 @@ async function onRequestPost4({ env: env2, request }) {
       author_id
     } = body;
     const finalAuthorId = checkRole2(user, ["admin"]) ? author_id || user.userId : user.userId;
-    if (!title2 || !slug || !content) {
+    if (!title22 || !slug || !content) {
       return errorResponse2("Title, slug, and content are required", 400);
     }
     const wordsPerMinute = 200;
     const words = content.trim().split(/\s+/).length;
     const readingTime = Math.max(1, Math.ceil(words / wordsPerMinute));
     const finalPublishDate = status === "published" && !publish_date ? (/* @__PURE__ */ new Date()).toISOString() : publish_date;
-    const insertResult = await env2.DB.prepare(
+    const insertResult = await env22.DB.prepare(
       `INSERT INTO blogs (
         title, slug, excerpt, content, cover_image, meta_title, meta_description,
         category_id, status, featured, author_id, reading_time, publish_date
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     ).bind(
-      title2,
+      title22,
       slug,
       excerpt || null,
       content,
@@ -8292,10 +10562,10 @@ async function onRequestPost4({ env: env2, request }) {
     const blogId = insertResult.meta.last_row_id;
     if (tags.length > 0) {
       for (const tagId of tags) {
-        await env2.DB.prepare("INSERT OR IGNORE INTO blog_tags (blog_id, tag_id) VALUES (?, ?)").bind(blogId, tagId).run();
+        await env22.DB.prepare("INSERT OR IGNORE INTO blog_tags (blog_id, tag_id) VALUES (?, ?)").bind(blogId, tagId).run();
       }
     }
-    const newBlog = await env2.DB.prepare(
+    const newBlog = await env22.DB.prepare(
       `SELECT 
         b.*, u.name as author_name, c.name as category_name
       FROM blogs b
@@ -8303,7 +10573,7 @@ async function onRequestPost4({ env: env2, request }) {
       LEFT JOIN categories c ON b.category_id = c.id
       WHERE b.id = ?`
     ).bind(blogId).first();
-    const blogTags = await env2.DB.prepare(
+    const blogTags = await env22.DB.prepare(
       `SELECT t.id, t.name, t.slug FROM tags t
        INNER JOIN blog_tags bt ON t.id = bt.tag_id
        WHERE bt.blog_id = ?`
@@ -8324,6 +10594,7 @@ async function onRequestPost4({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
+__name(onRequestPost6, "onRequestPost6");
 var init_blogs = __esm({
   "api/v1/blogs.ts"() {
     "use strict";
@@ -8331,17 +10602,15 @@ var init_blogs = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestOptions9, "onRequestOptions");
-    __name(onRequestGet6, "onRequestGet");
-    __name(onRequestPost4, "onRequestPost");
+    __name2(onRequestOptions15, "onRequestOptions");
+    __name2(onRequestGet10, "onRequestGet");
+    __name2(onRequestPost6, "onRequestPost");
   }
 });
-
-// api/_mock-data.ts
 var mock_data_exports = {};
 __export(mock_data_exports, {
-  loadMockData: () => loadMockData,
-  shouldUseMockData: () => shouldUseMockData
+  loadMockData: /* @__PURE__ */ __name(() => loadMockData, "loadMockData"),
+  shouldUseMockData: /* @__PURE__ */ __name(() => shouldUseMockData, "shouldUseMockData")
 });
 async function loadMockData(entity) {
   try {
@@ -8387,17 +10656,19 @@ async function loadMockData(entity) {
       }
     };
     return mockData[entity] || { data: [] };
-  } catch (error3) {
-    console.error(`Error loading mock data for ${entity}:`, error3);
+  } catch (error32) {
+    console.error(`Error loading mock data for ${entity}:`, error32);
     return { data: [] };
   }
 }
+__name(loadMockData, "loadMockData");
 function shouldUseMockData(result) {
   if (!result || !result.results || result.results.length === 0) {
     return true;
   }
   return false;
 }
+__name(shouldUseMockData, "shouldUseMockData");
 var init_mock_data = __esm({
   "api/_mock-data.ts"() {
     "use strict";
@@ -8405,20 +10676,19 @@ var init_mock_data = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(loadMockData, "loadMockData");
-    __name(shouldUseMockData, "shouldUseMockData");
+    __name2(loadMockData, "loadMockData");
+    __name2(shouldUseMockData, "shouldUseMockData");
   }
 });
-
-// api/v1/categories.ts
-async function onRequestOptions10() {
+async function onRequestOptions16() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
     status: 204,
     headers: corsHeaders2
   });
 }
-async function onRequestGet7({ env: env2, request }) {
+__name(onRequestOptions16, "onRequestOptions16");
+async function onRequestGet11({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8428,7 +10698,7 @@ async function onRequestGet7({ env: env2, request }) {
         headers: { "Content-Type": "application/json" }
       });
     }
-    const results = await env2.DB.prepare("SELECT * FROM categories ORDER BY name ASC").all();
+    const results = await env22.DB.prepare("SELECT * FROM categories ORDER BY name ASC").all();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     if (!results.results || results.results.length === 0) {
       const { loadMockData: loadMockData2 } = await Promise.resolve().then(() => (init_mock_data(), mock_data_exports));
@@ -8447,7 +10717,8 @@ async function onRequestGet7({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestPost5({ env: env2, request }) {
+__name(onRequestGet11, "onRequestGet11");
+async function onRequestPost7({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8459,10 +10730,10 @@ async function onRequestPost5({ env: env2, request }) {
     if (!name || !slug) {
       return errorResponse2("Name and slug are required", 400);
     }
-    const insertResult = await env2.DB.prepare(
+    const insertResult = await env22.DB.prepare(
       "INSERT INTO categories (name, slug, description) VALUES (?, ?, ?)"
     ).bind(name, slug, description || null).run();
-    const result = await env2.DB.prepare("SELECT * FROM categories WHERE id = ?").bind(insertResult.meta.last_row_id).first();
+    const result = await env22.DB.prepare("SELECT * FROM categories WHERE id = ?").bind(insertResult.meta.last_row_id).first();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     return jsonResponse2({
       success: true,
@@ -8476,6 +10747,7 @@ async function onRequestPost5({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
+__name(onRequestPost7, "onRequestPost7");
 var init_categories = __esm({
   "api/v1/categories.ts"() {
     "use strict";
@@ -8483,21 +10755,358 @@ var init_categories = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestOptions10, "onRequestOptions");
-    __name(onRequestGet7, "onRequestGet");
-    __name(onRequestPost5, "onRequestPost");
+    __name2(onRequestOptions16, "onRequestOptions");
+    __name2(onRequestGet11, "onRequestGet");
+    __name2(onRequestPost7, "onRequestPost");
   }
 });
-
-// api/v1/media.ts
-async function onRequestOptions11() {
+async function onRequestOptions17() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
     status: 204,
     headers: corsHeaders2
   });
 }
-async function onRequestGet8({ env: env2, request }) {
+__name(onRequestOptions17, "onRequestOptions17");
+async function onRequestGet12({ env: env22, request }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    const url = new URL(request.url);
+    const contentType = url.searchParams.get("content_type");
+    const contentId = url.searchParams.get("content_id");
+    const status = url.searchParams.get("status");
+    const page = parseInt(url.searchParams.get("page") || "1");
+    const limit = parseInt(url.searchParams.get("limit") || "50");
+    const offset = (page - 1) * limit;
+    let query = `SELECT * FROM comments WHERE 1=1`;
+    const conditions = [];
+    const bindings = [];
+    if (contentType && contentId) {
+      conditions.push("content_type = ? AND content_id = ?");
+      bindings.push(contentType, parseInt(contentId));
+    }
+    if (!checkRole2(user, ["admin", "editor"])) {
+      conditions.push('status = "approved"');
+    } else if (status) {
+      conditions.push("status = ?");
+      bindings.push(status);
+    }
+    if (conditions.length > 0) {
+      query += " AND " + conditions.join(" AND ");
+    }
+    query += " ORDER BY created_at DESC LIMIT ? OFFSET ?";
+    bindings.push(limit, offset);
+    const comments = await env22.DB.prepare(query).bind(...bindings).all();
+    const commentMap = /* @__PURE__ */ new Map();
+    const rootComments = [];
+    for (const comment of comments.results) {
+      commentMap.set(comment.id, { ...comment, replies: [] });
+    }
+    for (const comment of comments.results) {
+      const commentNode = commentMap.get(comment.id);
+      if (comment.parent_id) {
+        const parent = commentMap.get(comment.parent_id);
+        if (parent) {
+          parent.replies.push(commentNode);
+        } else {
+          rootComments.push(commentNode);
+        }
+      } else {
+        rootComments.push(commentNode);
+      }
+    }
+    let countQuery = `SELECT COUNT(*) as total FROM comments WHERE 1=1`;
+    if (conditions.length > 0) {
+      countQuery += " AND " + conditions.join(" AND ");
+    }
+    const countResult = await env22.DB.prepare(countQuery).bind(...bindings.slice(0, -2)).first();
+    return jsonResponse2({
+      success: true,
+      data: rootComments,
+      pagination: {
+        page,
+        limit,
+        total: countResult?.total || 0,
+        totalPages: Math.ceil((countResult?.total || 0) / limit)
+      }
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestGet12, "onRequestGet12");
+async function onRequestPost8({ env: env22, request }) {
+  try {
+    const { getAuthUser: getAuthUser2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    const body = await request.json();
+    const {
+      content_type,
+      content_id,
+      parent_id,
+      author_name,
+      author_email,
+      author_website,
+      content
+    } = body;
+    if (!content_type || !content_id || !author_name || !content) {
+      return errorResponse2("Content type, content ID, author name, and content are required", 400);
+    }
+    if (!["blog", "work", "project"].includes(content_type)) {
+      return errorResponse2("Invalid content type", 400);
+    }
+    const ipAddress = request.headers.get("CF-Connecting-IP") || request.headers.get("X-Forwarded-For") || "unknown";
+    const userAgent = request.headers.get("User-Agent") || "unknown";
+    const recentComment = await env22.DB.prepare(
+      `SELECT * FROM comments 
+       WHERE ip_address = ? 
+       AND created_at > datetime('now', '-1 minute')
+       ORDER BY created_at DESC
+       LIMIT 1`
+    ).bind(ipAddress).first();
+    if (recentComment) {
+      return errorResponse2("Please wait before posting another comment", 429);
+    }
+    const status = user ? "approved" : "pending";
+    const insertResult = await env22.DB.prepare(
+      `INSERT INTO comments (
+        content_type, content_id, parent_id, author_name, author_email, author_website,
+        content, status, ip_address, user_agent
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).bind(
+      content_type,
+      parseInt(content_id),
+      parent_id ? parseInt(parent_id) : null,
+      author_name,
+      author_email || null,
+      author_website || null,
+      content,
+      status,
+      ipAddress,
+      userAgent
+    ).run();
+    const commentId = insertResult.meta.last_row_id;
+    const newComment = await env22.DB.prepare("SELECT * FROM comments WHERE id = ?").bind(commentId).first();
+    if (status === "pending") {
+      let authorId;
+      if (content_type === "blog") {
+        const blog = await env22.DB.prepare("SELECT author_id FROM blogs WHERE id = ?").bind(content_id).first();
+        authorId = blog?.author_id;
+      } else if (content_type === "work") {
+        const work = await env22.DB.prepare("SELECT author_id FROM works WHERE id = ?").bind(content_id).first();
+        authorId = work?.author_id;
+      }
+      if (authorId) {
+        await env22.DB.prepare(
+          `INSERT INTO notifications (user_id, title, message, type)
+           VALUES (?, ?, ?, ?)`
+        ).bind(
+          authorId,
+          "New Comment Pending Review",
+          `A new comment on your ${content_type} is pending review`,
+          "info"
+        ).run();
+      }
+    }
+    return jsonResponse2({
+      success: true,
+      data: newComment,
+      message: status === "pending" ? "Comment submitted and pending review" : "Comment posted successfully"
+    }, 201);
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestPost8, "onRequestPost8");
+var init_comments = __esm({
+  "api/v1/comments.ts"() {
+    "use strict";
+    init_functionsRoutes_0_6656645675734922();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
+    init_performance2();
+    __name2(onRequestOptions17, "onRequestOptions");
+    __name2(onRequestGet12, "onRequestGet");
+    __name2(onRequestPost8, "onRequestPost");
+  }
+});
+async function onRequestOptions18() {
+  const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders2
+  });
+}
+__name(onRequestOptions18, "onRequestOptions18");
+async function onRequestGet13({ env: env22, request }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user || !checkRole2(user, ["admin", "editor"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get("page") || "1");
+    const limit = parseInt(url.searchParams.get("limit") || "50");
+    const search = url.searchParams.get("search");
+    const uploadedBy = url.searchParams.get("uploaded_by");
+    const offset = (page - 1) * limit;
+    let query = `
+      SELECT 
+        m.*,
+        u.name as uploaded_by_name
+      FROM media m
+      LEFT JOIN users u ON m.uploaded_by = u.id
+      WHERE 1=1
+    `;
+    const conditions = [];
+    const bindings = [];
+    if (search) {
+      conditions.push("(m.filename LIKE ? OR m.original_filename LIKE ?)");
+      const searchTerm = `%${search}%`;
+      bindings.push(searchTerm, searchTerm);
+    }
+    if (uploadedBy) {
+      conditions.push("m.uploaded_by = ?");
+      bindings.push(parseInt(uploadedBy));
+    }
+    if (conditions.length > 0) {
+      query += " AND " + conditions.join(" AND ");
+    }
+    query += ` ORDER BY m.created_at DESC LIMIT ? OFFSET ?`;
+    bindings.push(limit, offset);
+    const images = await env22.DB.prepare(query).bind(...bindings).all();
+    for (const image of images.results) {
+      const blogUsage = await env22.DB.prepare(
+        `SELECT COUNT(*) as count FROM blogs WHERE cover_image = ? OR id IN (
+          SELECT blog_id FROM blog_gallery WHERE image_id = ?
+        )`
+      ).bind(image.url, image.id).first();
+      image.used_in_blogs = blogUsage?.count || 0;
+      const workUsage = await env22.DB.prepare(
+        `SELECT COUNT(*) as count FROM works WHERE cover_image_id = ? OR id IN (
+          SELECT work_id FROM work_gallery WHERE image_id = ?
+        )`
+      ).bind(image.id, image.id).first();
+      image.used_in_works = workUsage?.count || 0;
+      const projectUsage = await env22.DB.prepare(
+        `SELECT COUNT(*) as count FROM projects WHERE cover_image = ?`
+      ).bind(image.url).first();
+      image.used_in_projects = projectUsage?.count || 0;
+    }
+    let countQuery = `SELECT COUNT(*) as total FROM media m WHERE 1=1`;
+    if (conditions.length > 0) {
+      countQuery += " AND " + conditions.join(" AND ");
+    }
+    const countResult = await env22.DB.prepare(countQuery).bind(...bindings.slice(0, -2)).first();
+    return jsonResponse2({
+      success: true,
+      data: images.results || [],
+      pagination: {
+        page,
+        limit,
+        total: countResult?.total || 0,
+        totalPages: Math.ceil((countResult?.total || 0) / limit)
+      }
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestGet13, "onRequestGet13");
+async function onRequestPost9({ env: env22, request }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user || !checkRole2(user, ["admin", "editor"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const formData = await request.formData();
+    const file = formData.get("file");
+    const altText = formData.get("alt_text");
+    if (!file) {
+      return errorResponse2("File is required", 400);
+    }
+    const cloudflareAccountId = env22.CLOUDFLARE_ACCOUNT_ID;
+    const cloudflareApiToken = env22.CLOUDFLARE_API_TOKEN;
+    if (!cloudflareAccountId || !cloudflareApiToken) {
+      return errorResponse2("Cloudflare Images not configured", 500);
+    }
+    const cloudflareFormData = new FormData();
+    cloudflareFormData.append("file", file);
+    const cloudflareResponse = await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${cloudflareAccountId}/images/v1`,
+      {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${cloudflareApiToken}`
+        },
+        body: cloudflareFormData
+      }
+    );
+    if (!cloudflareResponse.ok) {
+      const error32 = await cloudflareResponse.json();
+      return errorResponse2(`Cloudflare Images upload failed: ${error32.errors?.[0]?.message || "Unknown error"}`, 500);
+    }
+    const cloudflareData = await cloudflareResponse.json();
+    const imageData = cloudflareData.result;
+    const insertResult = await env22.DB.prepare(
+      `INSERT INTO media (
+        filename, original_filename, file_type, file_size, url,
+        cloudflare_image_id, cloudflare_variant, width, height, alt_text, uploaded_by
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).bind(
+      imageData.filename || file.name,
+      file.name,
+      file.type,
+      file.size,
+      imageData.variants?.[0] || imageData.id,
+      // Use first variant or ID as URL
+      imageData.id,
+      "public",
+      // Default variant
+      imageData.width || null,
+      imageData.height || null,
+      altText || null,
+      user.userId
+    ).run();
+    const mediaId = insertResult.meta.last_row_id;
+    const newMedia = await env22.DB.prepare("SELECT * FROM media WHERE id = ?").bind(mediaId).first();
+    return jsonResponse2({
+      success: true,
+      data: newMedia
+    }, 201);
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestPost9, "onRequestPost9");
+var init_images = __esm({
+  "api/v1/images.ts"() {
+    "use strict";
+    init_functionsRoutes_0_6656645675734922();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
+    init_performance2();
+    __name2(onRequestOptions18, "onRequestOptions");
+    __name2(onRequestGet13, "onRequestGet");
+    __name2(onRequestPost9, "onRequestPost");
+  }
+});
+async function onRequestOptions19() {
+  const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders2
+  });
+}
+__name(onRequestOptions19, "onRequestOptions19");
+async function onRequestGet14({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8508,13 +11117,13 @@ async function onRequestGet8({ env: env2, request }) {
     const page = parseInt(url.searchParams.get("page") || "1");
     const limit = parseInt(url.searchParams.get("limit") || "20");
     const offset = (page - 1) * limit;
-    const results = await env2.DB.prepare(
+    const results = await env22.DB.prepare(
       `SELECT m.*, u.name as uploaded_by_name 
        FROM media m 
        LEFT JOIN users u ON m.uploaded_by = u.id 
        ORDER BY m.created_at DESC LIMIT ? OFFSET ?`
     ).bind(limit, offset).all();
-    const countResult = await env2.DB.prepare("SELECT COUNT(*) as total FROM media").first();
+    const countResult = await env22.DB.prepare("SELECT COUNT(*) as total FROM media").first();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     return jsonResponse2({
       success: true,
@@ -8531,7 +11140,8 @@ async function onRequestGet8({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestPost6({ env: env2, request }) {
+__name(onRequestGet14, "onRequestGet14");
+async function onRequestPost10({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8543,11 +11153,11 @@ async function onRequestPost6({ env: env2, request }) {
     if (!filename || !original_filename || !file_type || !url) {
       return errorResponse2("All fields are required", 400);
     }
-    const insertResult = await env2.DB.prepare(
+    const insertResult = await env22.DB.prepare(
       `INSERT INTO media (filename, original_filename, file_type, file_size, url, uploaded_by)
        VALUES (?, ?, ?, ?, ?, ?)`
     ).bind(filename, original_filename, file_type, file_size || 0, url, uploaded_by || null).run();
-    const result = await env2.DB.prepare("SELECT * FROM media WHERE id = ?").bind(insertResult.meta.last_row_id).first();
+    const result = await env22.DB.prepare("SELECT * FROM media WHERE id = ?").bind(insertResult.meta.last_row_id).first();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     return jsonResponse2({
       success: true,
@@ -8558,6 +11168,7 @@ async function onRequestPost6({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
+__name(onRequestPost10, "onRequestPost10");
 var init_media = __esm({
   "api/v1/media.ts"() {
     "use strict";
@@ -8565,21 +11176,20 @@ var init_media = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestOptions11, "onRequestOptions");
-    __name(onRequestGet8, "onRequestGet");
-    __name(onRequestPost6, "onRequestPost");
+    __name2(onRequestOptions19, "onRequestOptions");
+    __name2(onRequestGet14, "onRequestGet");
+    __name2(onRequestPost10, "onRequestPost");
   }
 });
-
-// api/v1/notifications.ts
-async function onRequestOptions12() {
+async function onRequestOptions20() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
     status: 204,
     headers: corsHeaders2
   });
 }
-async function onRequestGet9({ env: env2, request }) {
+__name(onRequestOptions20, "onRequestOptions20");
+async function onRequestGet15({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8601,7 +11211,7 @@ async function onRequestGet9({ env: env2, request }) {
       query += " WHERE read = 0";
     }
     query += " ORDER BY created_at DESC LIMIT 50";
-    const results = await env2.DB.prepare(query).bind(...params).all();
+    const results = await env22.DB.prepare(query).bind(...params).all();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     return jsonResponse2({
       success: true,
@@ -8612,7 +11222,8 @@ async function onRequestGet9({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestPost7({ env: env2, request }) {
+__name(onRequestGet15, "onRequestGet15");
+async function onRequestPost11({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8620,14 +11231,14 @@ async function onRequestPost7({ env: env2, request }) {
       return errorResponse2("Forbidden", 403);
     }
     const body = await request.json();
-    const { user_id, title: title2, message, type = "info" } = body;
-    if (!user_id || !title2 || !message) {
+    const { user_id, title: title22, message, type = "info" } = body;
+    if (!user_id || !title22 || !message) {
       return errorResponse2("user_id, title, and message are required", 400);
     }
-    const insertResult = await env2.DB.prepare(
+    const insertResult = await env22.DB.prepare(
       "INSERT INTO notifications (user_id, title, message, type) VALUES (?, ?, ?, ?)"
-    ).bind(user_id, title2, message, type).run();
-    const result = await env2.DB.prepare("SELECT * FROM notifications WHERE id = ?").bind(insertResult.meta.last_row_id).first();
+    ).bind(user_id, title22, message, type).run();
+    const result = await env22.DB.prepare("SELECT * FROM notifications WHERE id = ?").bind(insertResult.meta.last_row_id).first();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     return jsonResponse2({
       success: true,
@@ -8638,7 +11249,8 @@ async function onRequestPost7({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestPut4({ env: env2, request }) {
+__name(onRequestPost11, "onRequestPost11");
+async function onRequestPut9({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8652,10 +11264,10 @@ async function onRequestPut4({ env: env2, request }) {
       return errorResponse2("read boolean is required", 400);
     }
     if (!Array.isArray(ids) || ids.length === 0) {
-      await env2.DB.prepare("UPDATE notifications SET read = ? WHERE user_id = ?").bind(read ? 1 : 0, userId).run();
+      await env22.DB.prepare("UPDATE notifications SET read = ? WHERE user_id = ?").bind(read ? 1 : 0, userId).run();
     } else {
       const placeholders = ids.map(() => "?").join(",");
-      await env2.DB.prepare(
+      await env22.DB.prepare(
         `UPDATE notifications SET read = ? WHERE id IN (${placeholders}) AND user_id = ?`
       ).bind(read ? 1 : 0, ...ids, userId).run();
     }
@@ -8669,6 +11281,7 @@ async function onRequestPut4({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
+__name(onRequestPut9, "onRequestPut9");
 var init_notifications = __esm({
   "api/v1/notifications.ts"() {
     "use strict";
@@ -8676,22 +11289,21 @@ var init_notifications = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestOptions12, "onRequestOptions");
-    __name(onRequestGet9, "onRequestGet");
-    __name(onRequestPost7, "onRequestPost");
-    __name(onRequestPut4, "onRequestPut");
+    __name2(onRequestOptions20, "onRequestOptions");
+    __name2(onRequestGet15, "onRequestGet");
+    __name2(onRequestPost11, "onRequestPost");
+    __name2(onRequestPut9, "onRequestPut");
   }
 });
-
-// api/v1/projects.ts
-async function onRequestOptions13() {
+async function onRequestOptions21() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
     status: 204,
     headers: corsHeaders2
   });
 }
-async function onRequestGet10({ env: env2, request }) {
+__name(onRequestOptions21, "onRequestOptions21");
+async function onRequestGet16({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8702,13 +11314,13 @@ async function onRequestGet10({ env: env2, request }) {
     const page = parseInt(url.searchParams.get("page") || "1");
     const limit = parseInt(url.searchParams.get("limit") || "20");
     const offset = (page - 1) * limit;
-    const results = await env2.DB.prepare(
+    const results = await env22.DB.prepare(
       `SELECT p.*, u.name as created_by_name 
        FROM projects p 
        LEFT JOIN users u ON p.created_by = u.id 
        ORDER BY p.created_at DESC LIMIT ? OFFSET ?`
     ).bind(limit, offset).all();
-    const countResult = await env2.DB.prepare("SELECT COUNT(*) as total FROM projects").first();
+    const countResult = await env22.DB.prepare("SELECT COUNT(*) as total FROM projects").first();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     return jsonResponse2({
       success: true,
@@ -8728,7 +11340,8 @@ async function onRequestGet10({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestPost8({ env: env2, request }) {
+__name(onRequestGet16, "onRequestGet16");
+async function onRequestPost12({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8736,15 +11349,15 @@ async function onRequestPost8({ env: env2, request }) {
       return errorResponse2("Forbidden", 403);
     }
     const body = await request.json();
-    const { title: title2, slug, description, content, cover_image, featured, status, tags, created_by } = body;
-    if (!title2 || !slug) {
+    const { title: title22, slug, description, content, cover_image, featured, status, tags, created_by } = body;
+    if (!title22 || !slug) {
       return errorResponse2("Title and slug are required", 400);
     }
-    const insertResult = await env2.DB.prepare(
+    const insertResult = await env22.DB.prepare(
       `INSERT INTO projects (title, slug, description, content, cover_image, featured, status, tags, created_by)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
     ).bind(
-      title2,
+      title22,
       slug,
       description || null,
       content || null,
@@ -8754,7 +11367,7 @@ async function onRequestPost8({ env: env2, request }) {
       tags ? JSON.stringify(tags) : "[]",
       created_by || null
     ).run();
-    const result = await env2.DB.prepare("SELECT * FROM projects WHERE id = ?").bind(insertResult.meta.last_row_id).first();
+    const result = await env22.DB.prepare("SELECT * FROM projects WHERE id = ?").bind(insertResult.meta.last_row_id).first();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     return jsonResponse2({
       success: true,
@@ -8771,6 +11384,7 @@ async function onRequestPost8({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
+__name(onRequestPost12, "onRequestPost12");
 var init_projects = __esm({
   "api/v1/projects.ts"() {
     "use strict";
@@ -8778,28 +11392,180 @@ var init_projects = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestOptions13, "onRequestOptions");
-    __name(onRequestGet10, "onRequestGet");
-    __name(onRequestPost8, "onRequestPost");
+    __name2(onRequestOptions21, "onRequestOptions");
+    __name2(onRequestGet16, "onRequestGet");
+    __name2(onRequestPost12, "onRequestPost");
   }
 });
-
-// api/v1/settings.ts
-async function onRequestOptions14() {
+async function onRequestOptions22() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
     status: 204,
     headers: corsHeaders2
   });
 }
-async function onRequestGet11({ env: env2, request }) {
+__name(onRequestOptions22, "onRequestOptions22");
+async function onRequestGet17({ env: env22, request }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user || !checkRole2(user, ["admin", "editor"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const url = new URL(request.url);
+    const status = url.searchParams.get("status") || "pending";
+    const page = parseInt(url.searchParams.get("page") || "1");
+    const limit = parseInt(url.searchParams.get("limit") || "20");
+    const offset = (page - 1) * limit;
+    const requests = await env22.DB.prepare(
+      `SELECT 
+        pr.*,
+        u1.name as requested_by_name,
+        u1.email as requested_by_email,
+        u2.name as reviewed_by_name
+      FROM publish_requests pr
+      LEFT JOIN users u1 ON pr.requested_by = u1.id
+      LEFT JOIN users u2 ON pr.reviewed_by = u2.id
+      WHERE pr.status = ?
+      ORDER BY pr.created_at DESC
+      LIMIT ? OFFSET ?`
+    ).bind(status, limit, offset).all();
+    for (const req of requests.results) {
+      if (req.content_type === "blog") {
+        const blog = await env22.DB.prepare(
+          `SELECT id, title, slug, status FROM blogs WHERE id = ?`
+        ).bind(req.content_id).first();
+        req.content = blog;
+      } else if (req.content_type === "work") {
+        const work = await env22.DB.prepare(
+          `SELECT id, title, slug, status FROM works WHERE id = ?`
+        ).bind(req.content_id).first();
+        req.content = work;
+      }
+    }
+    const countResult = await env22.DB.prepare(
+      "SELECT COUNT(*) as total FROM publish_requests WHERE status = ?"
+    ).bind(status).first();
+    return jsonResponse2({
+      success: true,
+      data: requests.results || [],
+      pagination: {
+        page,
+        limit,
+        total: countResult?.total || 0,
+        totalPages: Math.ceil((countResult?.total || 0) / limit)
+      }
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestGet17, "onRequestGet17");
+async function onRequestPut10({ env: env22, request, params }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user || !checkRole2(user, ["admin", "editor"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const requestId = parseInt(params.id);
+    const body = await request.json();
+    const { status, admin_notes } = body;
+    if (!status || !["approved", "rejected"].includes(status)) {
+      return errorResponse2("Invalid status", 400);
+    }
+    const publishRequest = await env22.DB.prepare("SELECT * FROM publish_requests WHERE id = ?").bind(requestId).first();
+    if (!publishRequest) {
+      return errorResponse2("Publish request not found", 404);
+    }
+    await env22.DB.prepare(
+      `UPDATE publish_requests 
+       SET status = ?, admin_notes = ?, reviewed_by = ?, reviewed_at = ?
+       WHERE id = ?`
+    ).bind(status, admin_notes || null, user.userId, (/* @__PURE__ */ new Date()).toISOString(), requestId).run();
+    if (status === "approved") {
+      if (publishRequest.content_type === "blog") {
+        await env22.DB.prepare(
+          `UPDATE blogs 
+           SET status = 'published', published_at = COALESCE(published_at, datetime('now'))
+           WHERE id = ?`
+        ).bind(publishRequest.content_id).run();
+      } else if (publishRequest.content_type === "work") {
+        await env22.DB.prepare(
+          `UPDATE works 
+           SET status = 'published', published_at = COALESCE(published_at, datetime('now'))
+           WHERE id = ?`
+        ).bind(publishRequest.content_id).run();
+      }
+      await env22.DB.prepare(
+        `INSERT INTO notifications (user_id, title, message, type)
+         VALUES (?, ?, ?, ?)`
+      ).bind(
+        publishRequest.requested_by,
+        "Publish Request Approved",
+        `Your ${publishRequest.content_type} has been approved and published`,
+        "success"
+      ).run();
+    } else {
+      await env22.DB.prepare(
+        `INSERT INTO notifications (user_id, title, message, type)
+         VALUES (?, ?, ?, ?)`
+      ).bind(
+        publishRequest.requested_by,
+        "Publish Request Rejected",
+        `Your ${publishRequest.content_type} publish request has been rejected`,
+        "warning"
+      ).run();
+    }
+    const updatedRequest = await env22.DB.prepare(
+      `SELECT 
+        pr.*,
+        u1.name as requested_by_name,
+        u2.name as reviewed_by_name
+      FROM publish_requests pr
+      LEFT JOIN users u1 ON pr.requested_by = u1.id
+      LEFT JOIN users u2 ON pr.reviewed_by = u2.id
+      WHERE pr.id = ?`
+    ).bind(requestId).first();
+    return jsonResponse2({
+      success: true,
+      data: updatedRequest
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestPut10, "onRequestPut10");
+var init_publish_requests = __esm({
+  "api/v1/publish-requests.ts"() {
+    "use strict";
+    init_functionsRoutes_0_6656645675734922();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
+    init_performance2();
+    __name2(onRequestOptions22, "onRequestOptions");
+    __name2(onRequestGet17, "onRequestGet");
+    __name2(onRequestPut10, "onRequestPut");
+  }
+});
+async function onRequestOptions23() {
+  const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders2
+  });
+}
+__name(onRequestOptions23, "onRequestOptions23");
+async function onRequestGet18({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
     if (!user) {
       return errorResponse2("Unauthorized", 401);
     }
-    const results = await env2.DB.prepare("SELECT * FROM settings").all();
+    const results = await env22.DB.prepare("SELECT * FROM settings").all();
     const settings = {};
     results.results.forEach((setting) => {
       let value = setting.value;
@@ -8825,7 +11591,8 @@ async function onRequestGet11({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestPut5({ env: env2, request }) {
+__name(onRequestGet18, "onRequestGet18");
+async function onRequestPut11({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8848,7 +11615,7 @@ async function onRequestPut5({ env: env2, request }) {
       } else {
         stringValue = String(value);
       }
-      await env2.DB.prepare(
+      await env22.DB.prepare(
         `INSERT INTO settings (key, value, type, updated_at)
          VALUES (?, ?, ?, datetime("now"))
          ON CONFLICT(key) DO UPDATE SET
@@ -8867,6 +11634,7 @@ async function onRequestPut5({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
+__name(onRequestPut11, "onRequestPut11");
 var init_settings = __esm({
   "api/v1/settings.ts"() {
     "use strict";
@@ -8874,28 +11642,27 @@ var init_settings = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestOptions14, "onRequestOptions");
-    __name(onRequestGet11, "onRequestGet");
-    __name(onRequestPut5, "onRequestPut");
+    __name2(onRequestOptions23, "onRequestOptions");
+    __name2(onRequestGet18, "onRequestGet");
+    __name2(onRequestPut11, "onRequestPut");
   }
 });
-
-// api/v1/tags.ts
-async function onRequestOptions15() {
+async function onRequestOptions24() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
     status: 204,
     headers: corsHeaders2
   });
 }
-async function onRequestGet12({ env: env2, request }) {
+__name(onRequestOptions24, "onRequestOptions24");
+async function onRequestGet19({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
     if (!user) {
       return errorResponse2("Unauthorized", 401);
     }
-    const results = await env2.DB.prepare("SELECT * FROM tags ORDER BY name ASC").all();
+    const results = await env22.DB.prepare("SELECT * FROM tags ORDER BY name ASC").all();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     if (!results.results || results.results.length === 0) {
       const { loadMockData: loadMockData2 } = await Promise.resolve().then(() => (init_mock_data(), mock_data_exports));
@@ -8914,7 +11681,8 @@ async function onRequestGet12({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestPost9({ env: env2, request }) {
+__name(onRequestGet19, "onRequestGet19");
+async function onRequestPost13({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8926,8 +11694,8 @@ async function onRequestPost9({ env: env2, request }) {
     if (!name || !slug) {
       return errorResponse2("Name and slug are required", 400);
     }
-    const insertResult = await env2.DB.prepare("INSERT INTO tags (name, slug) VALUES (?, ?)").bind(name, slug).run();
-    const result = await env2.DB.prepare("SELECT * FROM tags WHERE id = ?").bind(insertResult.meta.last_row_id).first();
+    const insertResult = await env22.DB.prepare("INSERT INTO tags (name, slug) VALUES (?, ?)").bind(name, slug).run();
+    const result = await env22.DB.prepare("SELECT * FROM tags WHERE id = ?").bind(insertResult.meta.last_row_id).first();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     return jsonResponse2({
       success: true,
@@ -8941,6 +11709,7 @@ async function onRequestPost9({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
+__name(onRequestPost13, "onRequestPost13");
 var init_tags = __esm({
   "api/v1/tags.ts"() {
     "use strict";
@@ -8948,21 +11717,20 @@ var init_tags = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestOptions15, "onRequestOptions");
-    __name(onRequestGet12, "onRequestGet");
-    __name(onRequestPost9, "onRequestPost");
+    __name2(onRequestOptions24, "onRequestOptions");
+    __name2(onRequestGet19, "onRequestGet");
+    __name2(onRequestPost13, "onRequestPost");
   }
 });
-
-// api/v1/users.ts
-async function onRequestOptions16() {
+async function onRequestOptions25() {
   const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
   return new Response(null, {
     status: 204,
     headers: corsHeaders2
   });
 }
-async function onRequestGet13({ env: env2, request }) {
+__name(onRequestOptions25, "onRequestOptions25");
+async function onRequestGet20({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -8973,10 +11741,10 @@ async function onRequestGet13({ env: env2, request }) {
     const page = parseInt(url.searchParams.get("page") || "1");
     const limit = parseInt(url.searchParams.get("limit") || "20");
     const offset = (page - 1) * limit;
-    const results = await env2.DB.prepare(
+    const results = await env22.DB.prepare(
       "SELECT id, email, name, role, avatar_url, is_active, last_login_at, created_at FROM users ORDER BY created_at DESC LIMIT ? OFFSET ?"
     ).bind(limit, offset).all();
-    const countResult = await env2.DB.prepare("SELECT COUNT(*) as total FROM users").first();
+    const countResult = await env22.DB.prepare("SELECT COUNT(*) as total FROM users").first();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     return jsonResponse2({
       success: true,
@@ -8993,7 +11761,8 @@ async function onRequestGet13({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
-async function onRequestPost10({ env: env2, request }) {
+__name(onRequestGet20, "onRequestGet20");
+async function onRequestPost14({ env: env22, request }) {
   try {
     const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
     const user = getAuthUser2(request);
@@ -9005,10 +11774,10 @@ async function onRequestPost10({ env: env2, request }) {
     if (!email || !password_hash || !name) {
       return errorResponse2("Email, password_hash, and name are required", 400);
     }
-    const insertResult = await env2.DB.prepare(
+    const insertResult = await env22.DB.prepare(
       "INSERT INTO users (email, password_hash, name, role) VALUES (?, ?, ?, ?)"
     ).bind(email, password_hash, name, role).run();
-    const result = await env2.DB.prepare(
+    const result = await env22.DB.prepare(
       "SELECT id, email, name, role, created_at FROM users WHERE id = ?"
     ).bind(insertResult.meta.last_row_id).first();
     const { jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
@@ -9024,6 +11793,7 @@ async function onRequestPost10({ env: env2, request }) {
     return errorResponse2(err.message || "Request failed", 500);
   }
 }
+__name(onRequestPost14, "onRequestPost14");
 var init_users = __esm({
   "api/v1/users.ts"() {
     "use strict";
@@ -9031,14 +11801,215 @@ var init_users = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestOptions16, "onRequestOptions");
-    __name(onRequestGet13, "onRequestGet");
-    __name(onRequestPost10, "onRequestPost");
+    __name2(onRequestOptions25, "onRequestOptions");
+    __name2(onRequestGet20, "onRequestGet");
+    __name2(onRequestPost14, "onRequestPost");
   }
 });
-
-// post.ts
-async function onRequestGet14({ env: env2, request }) {
+async function onRequestOptions26() {
+  const { corsHeaders: corsHeaders2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders2
+  });
+}
+__name(onRequestOptions26, "onRequestOptions26");
+async function onRequestGet21({ env: env22, request }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get("page") || "1");
+    const limit = parseInt(url.searchParams.get("limit") || "20");
+    const sortBy = url.searchParams.get("sortBy") || "published_at";
+    const status = url.searchParams.get("status");
+    const tag = url.searchParams.get("tag");
+    const search = url.searchParams.get("search");
+    const offset = (page - 1) * limit;
+    let query = `
+      SELECT 
+        w.id, w.title, w.slug, w.summary, w.cover_image_id, w.status,
+        w.view_count, w.likes_count, w.created_at, w.updated_at, w.published_at,
+        u.id as author_id, u.name as author_name, u.avatar_url as author_avatar,
+        m.url as cover_image_url
+      FROM works w
+      LEFT JOIN users u ON w.author_id = u.id
+      LEFT JOIN media m ON w.cover_image_id = m.id
+    `;
+    const conditions = [];
+    const bindings = [];
+    if (!checkRole2(user, ["admin"])) {
+      if (user) {
+        conditions.push('(w.status = "published" OR w.author_id = ?)');
+        bindings.push(user.userId);
+      } else {
+        conditions.push('w.status = "published"');
+      }
+    }
+    if (status) {
+      conditions.push("w.status = ?");
+      bindings.push(status);
+    }
+    if (search) {
+      conditions.push("(w.title LIKE ? OR w.summary LIKE ?)");
+      const searchTerm = `%${search}%`;
+      bindings.push(searchTerm, searchTerm);
+    }
+    if (tag) {
+      query += ` INNER JOIN work_tags wt ON w.id = wt.work_id
+                 INNER JOIN tags t ON wt.tag_id = t.id`;
+      conditions.push("t.slug = ?");
+      bindings.push(tag);
+    }
+    if (conditions.length > 0) {
+      query += " WHERE " + conditions.join(" AND ");
+    }
+    let orderBy = "ORDER BY ";
+    switch (sortBy) {
+      case "view_count":
+        orderBy += "w.view_count DESC";
+        break;
+      case "likes_count":
+        orderBy += "w.likes_count DESC";
+        break;
+      case "created_at":
+        orderBy += "w.created_at DESC";
+        break;
+      case "published_at":
+      default:
+        orderBy += "w.published_at DESC, w.created_at DESC";
+        break;
+    }
+    query += ` ${orderBy} LIMIT ? OFFSET ?`;
+    bindings.push(limit, offset);
+    const works = await env22.DB.prepare(query).bind(...bindings).all();
+    for (const work of works.results) {
+      const tags = await env22.DB.prepare(
+        `SELECT t.id, t.name, t.slug FROM tags t
+         INNER JOIN work_tags wt ON t.id = wt.tag_id
+         WHERE wt.work_id = ?`
+      ).bind(work.id).all();
+      work.tags = tags.results || [];
+    }
+    let countQuery = `SELECT COUNT(DISTINCT w.id) as total FROM works w`;
+    if (tag) {
+      countQuery += ` INNER JOIN work_tags wt ON w.id = wt.work_id
+                      INNER JOIN tags t ON wt.tag_id = t.id`;
+    }
+    if (conditions.length > 0) {
+      const countConditions = conditions.filter((c) => !c.includes('w.status = "published"') || status);
+      if (countConditions.length > 0) {
+        countQuery += " WHERE " + countConditions.join(" AND ");
+      }
+    }
+    const countResult = await env22.DB.prepare(countQuery).bind(...bindings.slice(0, -2)).first();
+    return jsonResponse2({
+      success: true,
+      data: works.results,
+      pagination: {
+        page,
+        limit,
+        total: countResult?.total || 0,
+        totalPages: Math.ceil((countResult?.total || 0) / limit)
+      }
+    });
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestGet21, "onRequestGet21");
+async function onRequestPost15({ env: env22, request }) {
+  try {
+    const { getAuthUser: getAuthUser2, checkRole: checkRole2, errorResponse: errorResponse2, jsonResponse: jsonResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    const user = getAuthUser2(request);
+    if (!user || !checkRole2(user, ["admin", "editor"])) {
+      return errorResponse2("Forbidden", 403);
+    }
+    const body = await request.json();
+    const {
+      title: title22,
+      slug,
+      summary,
+      full_content,
+      cover_image_id,
+      status,
+      tags,
+      published_at
+    } = body;
+    if (!title22 || !slug || !full_content) {
+      return errorResponse2("Title, slug, and content are required", 400);
+    }
+    const finalStatus = status || "draft";
+    const finalPublishedAt = finalStatus === "published" ? published_at || (/* @__PURE__ */ new Date()).toISOString() : null;
+    const insertResult = await env22.DB.prepare(
+      `INSERT INTO works (
+        title, slug, summary, full_content, cover_image_id, status, published_at, author_id
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+    ).bind(
+      title22,
+      slug,
+      summary || null,
+      full_content,
+      cover_image_id || null,
+      finalStatus,
+      finalPublishedAt,
+      user.userId
+    ).run();
+    const workId = insertResult.meta.last_row_id;
+    if (tags && tags.length > 0) {
+      for (const tagId of tags) {
+        await env22.DB.prepare("INSERT OR IGNORE INTO work_tags (work_id, tag_id) VALUES (?, ?)").bind(workId, tagId).run();
+      }
+    }
+    if (finalStatus === "pending" && !checkRole2(user, ["admin"])) {
+      await env22.DB.prepare(
+        `INSERT INTO publish_requests (content_type, content_id, requested_by, status)
+         VALUES (?, ?, ?, ?)`
+      ).bind("work", workId, user.userId, "pending").run();
+    }
+    const newWork = await env22.DB.prepare(
+      `SELECT 
+        w.*, u.name as author_name, m.url as cover_image_url
+      FROM works w
+      LEFT JOIN users u ON w.author_id = u.id
+      LEFT JOIN media m ON w.cover_image_id = m.id
+      WHERE w.id = ?`
+    ).bind(workId).first();
+    const workTags = await env22.DB.prepare(
+      `SELECT t.id, t.name, t.slug FROM tags t
+       INNER JOIN work_tags wt ON t.id = wt.tag_id
+       WHERE wt.work_id = ?`
+    ).bind(workId).all();
+    return jsonResponse2({
+      success: true,
+      data: {
+        ...newWork,
+        tags: workTags.results || []
+      }
+    }, 201);
+  } catch (err) {
+    const { errorResponse: errorResponse2 } = await Promise.resolve().then(() => (init_utils2(), utils_exports));
+    if (err.message?.includes("UNIQUE constraint")) {
+      return errorResponse2("Slug already exists", 409);
+    }
+    return errorResponse2(err.message || "Request failed", 500);
+  }
+}
+__name(onRequestPost15, "onRequestPost15");
+var init_works = __esm({
+  "api/v1/works.ts"() {
+    "use strict";
+    init_functionsRoutes_0_6656645675734922();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
+    init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
+    init_performance2();
+    __name2(onRequestOptions26, "onRequestOptions");
+    __name2(onRequestGet21, "onRequestGet");
+    __name2(onRequestPost15, "onRequestPost");
+  }
+});
+async function onRequestGet22({ env: env22, request }) {
   try {
     const url = new URL(request.url);
     const slug = url.searchParams.get("slug");
@@ -9048,7 +12019,7 @@ async function onRequestGet14({ env: env2, request }) {
         headers: { "Content-Type": "application/json" }
       });
     }
-    const { results } = await env2.DB.prepare("SELECT * FROM posts WHERE slug = ?").bind(slug).all();
+    const { results } = await env22.DB.prepare("SELECT * FROM posts WHERE slug = ?").bind(slug).all();
     return new Response(JSON.stringify({
       success: true,
       count: results.length,
@@ -9063,6 +12034,7 @@ async function onRequestGet14({ env: env2, request }) {
     });
   }
 }
+__name(onRequestGet22, "onRequestGet22");
 var init_post = __esm({
   "post.ts"() {
     "use strict";
@@ -9070,14 +12042,12 @@ var init_post = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestGet14, "onRequestGet");
+    __name2(onRequestGet22, "onRequestGet");
   }
 });
-
-// posts.ts
-async function onRequestGet15({ env: env2 }) {
+async function onRequestGet23({ env: env22 }) {
   try {
-    const { results } = await env2.DB.prepare("SELECT * FROM posts").all();
+    const { results } = await env22.DB.prepare("SELECT * FROM posts").all();
     return new Response(JSON.stringify({
       success: true,
       count: results.length,
@@ -9092,6 +12062,7 @@ async function onRequestGet15({ env: env2 }) {
     });
   }
 }
+__name(onRequestGet23, "onRequestGet23");
 var init_posts = __esm({
   "posts.ts"() {
     "use strict";
@@ -9099,14 +12070,12 @@ var init_posts = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestGet15, "onRequestGet");
+    __name2(onRequestGet23, "onRequestGet");
   }
 });
-
-// projects.ts
-async function onRequestGet16({ env: env2 }) {
+async function onRequestGet24({ env: env22 }) {
   try {
-    const { results } = await env2.DB.prepare("SELECT * FROM projects").all();
+    const { results } = await env22.DB.prepare("SELECT * FROM projects").all();
     return new Response(JSON.stringify({
       success: true,
       count: results.length,
@@ -9121,6 +12090,7 @@ async function onRequestGet16({ env: env2 }) {
     });
   }
 }
+__name(onRequestGet24, "onRequestGet24");
 var init_projects2 = __esm({
   "projects.ts"() {
     "use strict";
@@ -9128,17 +12098,23 @@ var init_projects2 = __esm({
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
     init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
     init_performance2();
-    __name(onRequestGet16, "onRequestGet");
+    __name2(onRequestGet24, "onRequestGet");
   }
 });
-
-// ../.wrangler/tmp/pages-ECSBH5/functionsRoutes-0.6656645675734922.mjs
 var routes;
 var init_functionsRoutes_0_6656645675734922 = __esm({
   "../.wrangler/tmp/pages-ECSBH5/functionsRoutes-0.6656645675734922.mjs"() {
     "use strict";
+    init_itemId();
+    init_itemId();
+    init_itemId();
     init_slug();
     init_slug();
+    init_timeline();
+    init_timeline();
+    init_timeline();
+    init_timeline();
+    init_timeline();
     init_forgot_password();
     init_forgot_password();
     init_login();
@@ -9152,20 +12128,40 @@ var init_functionsRoutes_0_6656645675734922 = __esm({
     init_id();
     init_id2();
     init_id2();
+    init_id2();
     init_id3();
     init_id3();
     init_id3();
     init_id3();
     init_id4();
     init_id4();
-    init_id4();
-    init_id4();
+    init_id5();
+    init_id5();
+    init_id5();
+    init_id5();
+    init_id6();
+    init_id6();
+    init_id6();
+    init_id6();
+    init_id7();
+    init_id7();
+    init_id7();
+    init_id7();
+    init_analytics();
+    init_analytics();
+    init_analytics();
     init_blogs();
     init_blogs();
     init_blogs();
     init_categories();
     init_categories();
     init_categories();
+    init_comments();
+    init_comments();
+    init_comments();
+    init_images();
+    init_images();
+    init_images();
     init_media();
     init_media();
     init_media();
@@ -9176,6 +12172,9 @@ var init_functionsRoutes_0_6656645675734922 = __esm({
     init_projects();
     init_projects();
     init_projects();
+    init_publish_requests();
+    init_publish_requests();
+    init_publish_requests();
     init_settings();
     init_settings();
     init_settings();
@@ -9185,10 +12184,34 @@ var init_functionsRoutes_0_6656645675734922 = __esm({
     init_users();
     init_users();
     init_users();
+    init_works();
+    init_works();
+    init_works();
     init_post();
     init_posts();
     init_projects2();
     routes = [
+      {
+        routePath: "/api/v1/works/:id/timeline/:itemId",
+        mountPath: "/api/v1/works/:id/timeline",
+        method: "DELETE",
+        middlewares: [],
+        modules: [onRequestDelete]
+      },
+      {
+        routePath: "/api/v1/works/:id/timeline/:itemId",
+        mountPath: "/api/v1/works/:id/timeline",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions]
+      },
+      {
+        routePath: "/api/v1/works/:id/timeline/:itemId",
+        mountPath: "/api/v1/works/:id/timeline",
+        method: "PUT",
+        middlewares: [],
+        modules: [onRequestPut]
+      },
       {
         routePath: "/api/v1/blogs/slug/:slug",
         mountPath: "/api/v1/blogs/slug",
@@ -9201,374 +12224,583 @@ var init_functionsRoutes_0_6656645675734922 = __esm({
         mountPath: "/api/v1/blogs/slug",
         method: "OPTIONS",
         middlewares: [],
-        modules: [onRequestOptions]
-      },
-      {
-        routePath: "/api/v1/auth/forgot-password",
-        mountPath: "/api/v1/auth",
-        method: "OPTIONS",
-        middlewares: [],
         modules: [onRequestOptions2]
       },
       {
-        routePath: "/api/v1/auth/forgot-password",
-        mountPath: "/api/v1/auth",
-        method: "POST",
+        routePath: "/api/v1/works/:id/timeline",
+        mountPath: "/api/v1/works/:id",
+        method: "DELETE",
         middlewares: [],
-        modules: [onRequestPost]
+        modules: [onRequestDelete2]
       },
       {
-        routePath: "/api/v1/auth/login",
-        mountPath: "/api/v1/auth",
-        method: "OPTIONS",
-        middlewares: [],
-        modules: [onRequestOptions3]
-      },
-      {
-        routePath: "/api/v1/auth/login",
-        mountPath: "/api/v1/auth",
-        method: "POST",
-        middlewares: [],
-        modules: [onRequestPost2]
-      },
-      {
-        routePath: "/api/v1/auth/me",
-        mountPath: "/api/v1/auth",
+        routePath: "/api/v1/works/:id/timeline",
+        mountPath: "/api/v1/works/:id",
         method: "GET",
         middlewares: [],
         modules: [onRequestGet2]
       },
       {
-        routePath: "/api/v1/auth/me",
+        routePath: "/api/v1/works/:id/timeline",
+        mountPath: "/api/v1/works/:id",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions3]
+      },
+      {
+        routePath: "/api/v1/works/:id/timeline",
+        mountPath: "/api/v1/works/:id",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost]
+      },
+      {
+        routePath: "/api/v1/works/:id/timeline",
+        mountPath: "/api/v1/works/:id",
+        method: "PUT",
+        middlewares: [],
+        modules: [onRequestPut2]
+      },
+      {
+        routePath: "/api/v1/auth/forgot-password",
         mountPath: "/api/v1/auth",
         method: "OPTIONS",
         middlewares: [],
         modules: [onRequestOptions4]
       },
       {
-        routePath: "/api/v1/blogs/:id",
-        mountPath: "/api/v1/blogs",
-        method: "DELETE",
+        routePath: "/api/v1/auth/forgot-password",
+        mountPath: "/api/v1/auth",
+        method: "POST",
         middlewares: [],
-        modules: [onRequestDelete]
+        modules: [onRequestPost2]
       },
       {
-        routePath: "/api/v1/blogs/:id",
-        mountPath: "/api/v1/blogs",
-        method: "GET",
-        middlewares: [],
-        modules: [onRequestGet3]
-      },
-      {
-        routePath: "/api/v1/blogs/:id",
-        mountPath: "/api/v1/blogs",
+        routePath: "/api/v1/auth/login",
+        mountPath: "/api/v1/auth",
         method: "OPTIONS",
         middlewares: [],
         modules: [onRequestOptions5]
       },
       {
-        routePath: "/api/v1/blogs/:id",
-        mountPath: "/api/v1/blogs",
+        routePath: "/api/v1/auth/login",
+        mountPath: "/api/v1/auth",
         method: "POST",
         middlewares: [],
         modules: [onRequestPost3]
       },
       {
-        routePath: "/api/v1/blogs/:id",
-        mountPath: "/api/v1/blogs",
-        method: "PUT",
+        routePath: "/api/v1/auth/me",
+        mountPath: "/api/v1/auth",
+        method: "GET",
         middlewares: [],
-        modules: [onRequestPut]
+        modules: [onRequestGet3]
       },
       {
-        routePath: "/api/v1/media/:id",
-        mountPath: "/api/v1/media",
-        method: "DELETE",
-        middlewares: [],
-        modules: [onRequestDelete2]
-      },
-      {
-        routePath: "/api/v1/media/:id",
-        mountPath: "/api/v1/media",
+        routePath: "/api/v1/auth/me",
+        mountPath: "/api/v1/auth",
         method: "OPTIONS",
         middlewares: [],
         modules: [onRequestOptions6]
       },
       {
-        routePath: "/api/v1/projects/:id",
-        mountPath: "/api/v1/projects",
+        routePath: "/api/v1/blogs/:id",
+        mountPath: "/api/v1/blogs",
         method: "DELETE",
         middlewares: [],
         modules: [onRequestDelete3]
       },
       {
+        routePath: "/api/v1/blogs/:id",
+        mountPath: "/api/v1/blogs",
+        method: "GET",
+        middlewares: [],
+        modules: [onRequestGet4]
+      },
+      {
+        routePath: "/api/v1/blogs/:id",
+        mountPath: "/api/v1/blogs",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions7]
+      },
+      {
+        routePath: "/api/v1/blogs/:id",
+        mountPath: "/api/v1/blogs",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost4]
+      },
+      {
+        routePath: "/api/v1/blogs/:id",
+        mountPath: "/api/v1/blogs",
+        method: "PUT",
+        middlewares: [],
+        modules: [onRequestPut3]
+      },
+      {
+        routePath: "/api/v1/comments/:id",
+        mountPath: "/api/v1/comments",
+        method: "DELETE",
+        middlewares: [],
+        modules: [onRequestDelete4]
+      },
+      {
+        routePath: "/api/v1/comments/:id",
+        mountPath: "/api/v1/comments",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions8]
+      },
+      {
+        routePath: "/api/v1/comments/:id",
+        mountPath: "/api/v1/comments",
+        method: "PUT",
+        middlewares: [],
+        modules: [onRequestPut4]
+      },
+      {
+        routePath: "/api/v1/images/:id",
+        mountPath: "/api/v1/images",
+        method: "DELETE",
+        middlewares: [],
+        modules: [onRequestDelete5]
+      },
+      {
+        routePath: "/api/v1/images/:id",
+        mountPath: "/api/v1/images",
+        method: "GET",
+        middlewares: [],
+        modules: [onRequestGet5]
+      },
+      {
+        routePath: "/api/v1/images/:id",
+        mountPath: "/api/v1/images",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions9]
+      },
+      {
+        routePath: "/api/v1/images/:id",
+        mountPath: "/api/v1/images",
+        method: "PUT",
+        middlewares: [],
+        modules: [onRequestPut5]
+      },
+      {
+        routePath: "/api/v1/media/:id",
+        mountPath: "/api/v1/media",
+        method: "DELETE",
+        middlewares: [],
+        modules: [onRequestDelete6]
+      },
+      {
+        routePath: "/api/v1/media/:id",
+        mountPath: "/api/v1/media",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions10]
+      },
+      {
+        routePath: "/api/v1/projects/:id",
+        mountPath: "/api/v1/projects",
+        method: "DELETE",
+        middlewares: [],
+        modules: [onRequestDelete7]
+      },
+      {
         routePath: "/api/v1/projects/:id",
         mountPath: "/api/v1/projects",
         method: "GET",
         middlewares: [],
-        modules: [onRequestGet4]
+        modules: [onRequestGet6]
       },
       {
         routePath: "/api/v1/projects/:id",
         mountPath: "/api/v1/projects",
         method: "OPTIONS",
         middlewares: [],
-        modules: [onRequestOptions7]
+        modules: [onRequestOptions11]
       },
       {
         routePath: "/api/v1/projects/:id",
         mountPath: "/api/v1/projects",
         method: "PUT",
         middlewares: [],
-        modules: [onRequestPut2]
+        modules: [onRequestPut6]
       },
       {
         routePath: "/api/v1/users/:id",
         mountPath: "/api/v1/users",
         method: "DELETE",
         middlewares: [],
-        modules: [onRequestDelete4]
+        modules: [onRequestDelete8]
       },
       {
         routePath: "/api/v1/users/:id",
         mountPath: "/api/v1/users",
         method: "GET",
         middlewares: [],
-        modules: [onRequestGet5]
+        modules: [onRequestGet7]
       },
       {
         routePath: "/api/v1/users/:id",
         mountPath: "/api/v1/users",
         method: "OPTIONS",
         middlewares: [],
-        modules: [onRequestOptions8]
+        modules: [onRequestOptions12]
       },
       {
         routePath: "/api/v1/users/:id",
         mountPath: "/api/v1/users",
         method: "PUT",
         middlewares: [],
-        modules: [onRequestPut3]
+        modules: [onRequestPut7]
       },
       {
-        routePath: "/api/v1/blogs",
-        mountPath: "/api/v1",
-        method: "GET",
+        routePath: "/api/v1/works/:id",
+        mountPath: "/api/v1/works",
+        method: "DELETE",
         middlewares: [],
-        modules: [onRequestGet6]
+        modules: [onRequestDelete9]
       },
       {
-        routePath: "/api/v1/blogs",
-        mountPath: "/api/v1",
-        method: "OPTIONS",
-        middlewares: [],
-        modules: [onRequestOptions9]
-      },
-      {
-        routePath: "/api/v1/blogs",
-        mountPath: "/api/v1",
-        method: "POST",
-        middlewares: [],
-        modules: [onRequestPost4]
-      },
-      {
-        routePath: "/api/v1/categories",
-        mountPath: "/api/v1",
-        method: "GET",
-        middlewares: [],
-        modules: [onRequestGet7]
-      },
-      {
-        routePath: "/api/v1/categories",
-        mountPath: "/api/v1",
-        method: "OPTIONS",
-        middlewares: [],
-        modules: [onRequestOptions10]
-      },
-      {
-        routePath: "/api/v1/categories",
-        mountPath: "/api/v1",
-        method: "POST",
-        middlewares: [],
-        modules: [onRequestPost5]
-      },
-      {
-        routePath: "/api/v1/media",
-        mountPath: "/api/v1",
+        routePath: "/api/v1/works/:id",
+        mountPath: "/api/v1/works",
         method: "GET",
         middlewares: [],
         modules: [onRequestGet8]
       },
       {
-        routePath: "/api/v1/media",
-        mountPath: "/api/v1",
+        routePath: "/api/v1/works/:id",
+        mountPath: "/api/v1/works",
         method: "OPTIONS",
         middlewares: [],
-        modules: [onRequestOptions11]
+        modules: [onRequestOptions13]
       },
       {
-        routePath: "/api/v1/media",
-        mountPath: "/api/v1",
-        method: "POST",
+        routePath: "/api/v1/works/:id",
+        mountPath: "/api/v1/works",
+        method: "PUT",
         middlewares: [],
-        modules: [onRequestPost6]
+        modules: [onRequestPut8]
       },
       {
-        routePath: "/api/v1/notifications",
+        routePath: "/api/v1/analytics",
         mountPath: "/api/v1",
         method: "GET",
         middlewares: [],
         modules: [onRequestGet9]
       },
       {
-        routePath: "/api/v1/notifications",
-        mountPath: "/api/v1",
-        method: "OPTIONS",
-        middlewares: [],
-        modules: [onRequestOptions12]
-      },
-      {
-        routePath: "/api/v1/notifications",
-        mountPath: "/api/v1",
-        method: "POST",
-        middlewares: [],
-        modules: [onRequestPost7]
-      },
-      {
-        routePath: "/api/v1/notifications",
-        mountPath: "/api/v1",
-        method: "PUT",
-        middlewares: [],
-        modules: [onRequestPut4]
-      },
-      {
-        routePath: "/api/v1/projects",
-        mountPath: "/api/v1",
-        method: "GET",
-        middlewares: [],
-        modules: [onRequestGet10]
-      },
-      {
-        routePath: "/api/v1/projects",
-        mountPath: "/api/v1",
-        method: "OPTIONS",
-        middlewares: [],
-        modules: [onRequestOptions13]
-      },
-      {
-        routePath: "/api/v1/projects",
-        mountPath: "/api/v1",
-        method: "POST",
-        middlewares: [],
-        modules: [onRequestPost8]
-      },
-      {
-        routePath: "/api/v1/settings",
-        mountPath: "/api/v1",
-        method: "GET",
-        middlewares: [],
-        modules: [onRequestGet11]
-      },
-      {
-        routePath: "/api/v1/settings",
+        routePath: "/api/v1/analytics",
         mountPath: "/api/v1",
         method: "OPTIONS",
         middlewares: [],
         modules: [onRequestOptions14]
       },
       {
-        routePath: "/api/v1/settings",
+        routePath: "/api/v1/analytics",
         mountPath: "/api/v1",
-        method: "PUT",
+        method: "POST",
         middlewares: [],
-        modules: [onRequestPut5]
+        modules: [onRequestPost5]
       },
       {
-        routePath: "/api/v1/tags",
+        routePath: "/api/v1/blogs",
         mountPath: "/api/v1",
         method: "GET",
         middlewares: [],
-        modules: [onRequestGet12]
+        modules: [onRequestGet10]
       },
       {
-        routePath: "/api/v1/tags",
+        routePath: "/api/v1/blogs",
         mountPath: "/api/v1",
         method: "OPTIONS",
         middlewares: [],
         modules: [onRequestOptions15]
       },
       {
-        routePath: "/api/v1/tags",
+        routePath: "/api/v1/blogs",
         mountPath: "/api/v1",
         method: "POST",
         middlewares: [],
-        modules: [onRequestPost9]
+        modules: [onRequestPost6]
       },
       {
-        routePath: "/api/v1/users",
+        routePath: "/api/v1/categories",
         mountPath: "/api/v1",
         method: "GET",
         middlewares: [],
-        modules: [onRequestGet13]
+        modules: [onRequestGet11]
       },
       {
-        routePath: "/api/v1/users",
+        routePath: "/api/v1/categories",
         mountPath: "/api/v1",
         method: "OPTIONS",
         middlewares: [],
         modules: [onRequestOptions16]
       },
       {
-        routePath: "/api/v1/users",
+        routePath: "/api/v1/categories",
+        mountPath: "/api/v1",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost7]
+      },
+      {
+        routePath: "/api/v1/comments",
+        mountPath: "/api/v1",
+        method: "GET",
+        middlewares: [],
+        modules: [onRequestGet12]
+      },
+      {
+        routePath: "/api/v1/comments",
+        mountPath: "/api/v1",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions17]
+      },
+      {
+        routePath: "/api/v1/comments",
+        mountPath: "/api/v1",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost8]
+      },
+      {
+        routePath: "/api/v1/images",
+        mountPath: "/api/v1",
+        method: "GET",
+        middlewares: [],
+        modules: [onRequestGet13]
+      },
+      {
+        routePath: "/api/v1/images",
+        mountPath: "/api/v1",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions18]
+      },
+      {
+        routePath: "/api/v1/images",
+        mountPath: "/api/v1",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost9]
+      },
+      {
+        routePath: "/api/v1/media",
+        mountPath: "/api/v1",
+        method: "GET",
+        middlewares: [],
+        modules: [onRequestGet14]
+      },
+      {
+        routePath: "/api/v1/media",
+        mountPath: "/api/v1",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions19]
+      },
+      {
+        routePath: "/api/v1/media",
         mountPath: "/api/v1",
         method: "POST",
         middlewares: [],
         modules: [onRequestPost10]
       },
       {
+        routePath: "/api/v1/notifications",
+        mountPath: "/api/v1",
+        method: "GET",
+        middlewares: [],
+        modules: [onRequestGet15]
+      },
+      {
+        routePath: "/api/v1/notifications",
+        mountPath: "/api/v1",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions20]
+      },
+      {
+        routePath: "/api/v1/notifications",
+        mountPath: "/api/v1",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost11]
+      },
+      {
+        routePath: "/api/v1/notifications",
+        mountPath: "/api/v1",
+        method: "PUT",
+        middlewares: [],
+        modules: [onRequestPut9]
+      },
+      {
+        routePath: "/api/v1/projects",
+        mountPath: "/api/v1",
+        method: "GET",
+        middlewares: [],
+        modules: [onRequestGet16]
+      },
+      {
+        routePath: "/api/v1/projects",
+        mountPath: "/api/v1",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions21]
+      },
+      {
+        routePath: "/api/v1/projects",
+        mountPath: "/api/v1",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost12]
+      },
+      {
+        routePath: "/api/v1/publish-requests",
+        mountPath: "/api/v1",
+        method: "GET",
+        middlewares: [],
+        modules: [onRequestGet17]
+      },
+      {
+        routePath: "/api/v1/publish-requests",
+        mountPath: "/api/v1",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions22]
+      },
+      {
+        routePath: "/api/v1/publish-requests",
+        mountPath: "/api/v1",
+        method: "PUT",
+        middlewares: [],
+        modules: [onRequestPut10]
+      },
+      {
+        routePath: "/api/v1/settings",
+        mountPath: "/api/v1",
+        method: "GET",
+        middlewares: [],
+        modules: [onRequestGet18]
+      },
+      {
+        routePath: "/api/v1/settings",
+        mountPath: "/api/v1",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions23]
+      },
+      {
+        routePath: "/api/v1/settings",
+        mountPath: "/api/v1",
+        method: "PUT",
+        middlewares: [],
+        modules: [onRequestPut11]
+      },
+      {
+        routePath: "/api/v1/tags",
+        mountPath: "/api/v1",
+        method: "GET",
+        middlewares: [],
+        modules: [onRequestGet19]
+      },
+      {
+        routePath: "/api/v1/tags",
+        mountPath: "/api/v1",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions24]
+      },
+      {
+        routePath: "/api/v1/tags",
+        mountPath: "/api/v1",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost13]
+      },
+      {
+        routePath: "/api/v1/users",
+        mountPath: "/api/v1",
+        method: "GET",
+        middlewares: [],
+        modules: [onRequestGet20]
+      },
+      {
+        routePath: "/api/v1/users",
+        mountPath: "/api/v1",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions25]
+      },
+      {
+        routePath: "/api/v1/users",
+        mountPath: "/api/v1",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost14]
+      },
+      {
+        routePath: "/api/v1/works",
+        mountPath: "/api/v1",
+        method: "GET",
+        middlewares: [],
+        modules: [onRequestGet21]
+      },
+      {
+        routePath: "/api/v1/works",
+        mountPath: "/api/v1",
+        method: "OPTIONS",
+        middlewares: [],
+        modules: [onRequestOptions26]
+      },
+      {
+        routePath: "/api/v1/works",
+        mountPath: "/api/v1",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost15]
+      },
+      {
         routePath: "/post",
         mountPath: "/",
         method: "GET",
         middlewares: [],
-        modules: [onRequestGet14]
+        modules: [onRequestGet22]
       },
       {
         routePath: "/posts",
         mountPath: "/",
         method: "GET",
         middlewares: [],
-        modules: [onRequestGet15]
+        modules: [onRequestGet23]
       },
       {
         routePath: "/projects",
         mountPath: "/",
         method: "GET",
         middlewares: [],
-        modules: [onRequestGet16]
+        modules: [onRequestGet24]
       }
     ];
   }
 });
-
-// ../.wrangler/tmp/bundle-vYyQBg/middleware-loader.entry.ts
 init_functionsRoutes_0_6656645675734922();
 init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
 init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
 init_performance2();
-
-// ../.wrangler/tmp/bundle-vYyQBg/middleware-insertion-facade.js
 init_functionsRoutes_0_6656645675734922();
 init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
 init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
 init_performance2();
-
-// ../node_modules/wrangler/templates/pages-template-worker.ts
 init_functionsRoutes_0_6656645675734922();
 init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
 init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
 init_performance2();
-
-// ../node_modules/path-to-regexp/dist.es2015/index.js
 init_functionsRoutes_0_6656645675734922();
 init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
 init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
@@ -9618,7 +12850,7 @@ function lexer(str) {
       continue;
     }
     if (char === "(") {
-      var count3 = 1;
+      var count32 = 1;
       var pattern = "";
       var j = i + 1;
       if (str[j] === "?") {
@@ -9630,20 +12862,20 @@ function lexer(str) {
           continue;
         }
         if (str[j] === ")") {
-          count3--;
-          if (count3 === 0) {
+          count32--;
+          if (count32 === 0) {
             j++;
             break;
           }
         } else if (str[j] === "(") {
-          count3++;
+          count32++;
           if (str[j + 1] !== "?") {
             throw new TypeError("Capturing groups are not allowed at ".concat(j));
           }
         }
         pattern += str[j++];
       }
-      if (count3)
+      if (count32)
         throw new TypeError("Unbalanced pattern at ".concat(i));
       if (!pattern)
         throw new TypeError("Missing pattern at ".concat(i));
@@ -9657,6 +12889,7 @@ function lexer(str) {
   return tokens;
 }
 __name(lexer, "lexer");
+__name2(lexer, "lexer");
 function parse(str, options) {
   if (options === void 0) {
     options = {};
@@ -9667,18 +12900,18 @@ function parse(str, options) {
   var key = 0;
   var i = 0;
   var path = "";
-  var tryConsume = /* @__PURE__ */ __name(function(type) {
+  var tryConsume = /* @__PURE__ */ __name2(function(type) {
     if (i < tokens.length && tokens[i].type === type)
       return tokens[i++].value;
   }, "tryConsume");
-  var mustConsume = /* @__PURE__ */ __name(function(type) {
+  var mustConsume = /* @__PURE__ */ __name2(function(type) {
     var value2 = tryConsume(type);
     if (value2 !== void 0)
       return value2;
     var _a2 = tokens[i], nextType = _a2.type, index = _a2.index;
     throw new TypeError("Unexpected ".concat(nextType, " at ").concat(index, ", expected ").concat(type));
   }, "mustConsume");
-  var consumeText = /* @__PURE__ */ __name(function() {
+  var consumeText = /* @__PURE__ */ __name2(function() {
     var result2 = "";
     var value2;
     while (value2 = tryConsume("CHAR") || tryConsume("ESCAPED_CHAR")) {
@@ -9686,7 +12919,7 @@ function parse(str, options) {
     }
     return result2;
   }, "consumeText");
-  var isSafe = /* @__PURE__ */ __name(function(value2) {
+  var isSafe = /* @__PURE__ */ __name2(function(value2) {
     for (var _i = 0, delimiter_1 = delimiter; _i < delimiter_1.length; _i++) {
       var char2 = delimiter_1[_i];
       if (value2.indexOf(char2) > -1)
@@ -9694,7 +12927,7 @@ function parse(str, options) {
     }
     return false;
   }, "isSafe");
-  var safePattern = /* @__PURE__ */ __name(function(prefix2) {
+  var safePattern = /* @__PURE__ */ __name2(function(prefix2) {
     var prev = result[result.length - 1];
     var prevText = prefix2 || (prev && typeof prev === "string" ? prev : "");
     if (prev && !prevText) {
@@ -9757,12 +12990,14 @@ function parse(str, options) {
   return result;
 }
 __name(parse, "parse");
+__name2(parse, "parse");
 function match(str, options) {
   var keys = [];
   var re = pathToRegexp(str, keys, options);
   return regexpToFunction(re, keys, options);
 }
 __name(match, "match");
+__name2(match, "match");
 function regexpToFunction(re, keys, options) {
   if (options === void 0) {
     options = {};
@@ -9776,7 +13011,7 @@ function regexpToFunction(re, keys, options) {
       return false;
     var path = m[0], index = m.index;
     var params = /* @__PURE__ */ Object.create(null);
-    var _loop_1 = /* @__PURE__ */ __name(function(i2) {
+    var _loop_1 = /* @__PURE__ */ __name2(function(i2) {
       if (m[i2] === void 0)
         return "continue";
       var key = keys[i2 - 1];
@@ -9795,14 +13030,17 @@ function regexpToFunction(re, keys, options) {
   };
 }
 __name(regexpToFunction, "regexpToFunction");
+__name2(regexpToFunction, "regexpToFunction");
 function escapeString(str) {
   return str.replace(/([.+*?=^!:${}()[\]|/\\])/g, "\\$1");
 }
 __name(escapeString, "escapeString");
+__name2(escapeString, "escapeString");
 function flags(options) {
   return options && options.sensitive ? "" : "i";
 }
 __name(flags, "flags");
+__name2(flags, "flags");
 function regexpToRegexp(path, keys) {
   if (!keys)
     return path;
@@ -9823,6 +13061,7 @@ function regexpToRegexp(path, keys) {
   return path;
 }
 __name(regexpToRegexp, "regexpToRegexp");
+__name2(regexpToRegexp, "regexpToRegexp");
 function arrayToRegexp(paths, keys, options) {
   var parts = paths.map(function(path) {
     return pathToRegexp(path, keys, options).source;
@@ -9830,10 +13069,12 @@ function arrayToRegexp(paths, keys, options) {
   return new RegExp("(?:".concat(parts.join("|"), ")"), flags(options));
 }
 __name(arrayToRegexp, "arrayToRegexp");
+__name2(arrayToRegexp, "arrayToRegexp");
 function stringToRegexp(path, keys, options) {
   return tokensToRegexp(parse(path, options), keys, options);
 }
 __name(stringToRegexp, "stringToRegexp");
+__name2(stringToRegexp, "stringToRegexp");
 function tokensToRegexp(tokens, keys, options) {
   if (options === void 0) {
     options = {};
@@ -9889,6 +13130,7 @@ function tokensToRegexp(tokens, keys, options) {
   return new RegExp(route, flags(options));
 }
 __name(tokensToRegexp, "tokensToRegexp");
+__name2(tokensToRegexp, "tokensToRegexp");
 function pathToRegexp(path, keys, options) {
   if (path instanceof RegExp)
     return regexpToRegexp(path, keys);
@@ -9897,8 +13139,7 @@ function pathToRegexp(path, keys, options) {
   return stringToRegexp(path, keys, options);
 }
 __name(pathToRegexp, "pathToRegexp");
-
-// ../node_modules/wrangler/templates/pages-template-worker.ts
+__name2(pathToRegexp, "pathToRegexp");
 var escapeRegex = /[.+?^${}()|[\]\\]/g;
 function* executeRequest(request) {
   const requestPath = new URL(request.url).pathname;
@@ -9949,13 +13190,14 @@ function* executeRequest(request) {
   }
 }
 __name(executeRequest, "executeRequest");
+__name2(executeRequest, "executeRequest");
 var pages_template_worker_default = {
-  async fetch(originalRequest, env2, workerContext) {
+  async fetch(originalRequest, env22, workerContext) {
     let request = originalRequest;
     const handlerIterator = executeRequest(request);
     let data = {};
     let isFailOpen = false;
-    const next = /* @__PURE__ */ __name(async (input, init) => {
+    const next = /* @__PURE__ */ __name2(async (input, init) => {
       if (input !== void 0) {
         let url = input;
         if (typeof input === "string") {
@@ -9966,7 +13208,7 @@ var pages_template_worker_default = {
       const result = handlerIterator.next();
       if (result.done === false) {
         const { handler, params, path } = result.value;
-        const context2 = {
+        const context22 = {
           request: new Request(request.clone()),
           functionPath: path,
           next,
@@ -9980,19 +13222,19 @@ var pages_template_worker_default = {
             }
             data = value;
           },
-          env: env2,
+          env: env22,
           waitUntil: workerContext.waitUntil.bind(workerContext),
-          passThroughOnException: /* @__PURE__ */ __name(() => {
+          passThroughOnException: /* @__PURE__ */ __name2(() => {
             isFailOpen = true;
           }, "passThroughOnException")
         };
-        const response = await handler(context2);
+        const response = await handler(context22);
         if (!(response instanceof Response)) {
           throw new Error("Your Pages function should return a Response");
         }
         return cloneResponse(response);
       } else if ("ASSETS") {
-        const response = await env2["ASSETS"].fetch(request);
+        const response = await env22["ASSETS"].fetch(request);
         return cloneResponse(response);
       } else {
         const response = await fetch(request);
@@ -10001,31 +13243,29 @@ var pages_template_worker_default = {
     }, "next");
     try {
       return await next();
-    } catch (error3) {
+    } catch (error32) {
       if (isFailOpen) {
-        const response = await env2["ASSETS"].fetch(request);
+        const response = await env22["ASSETS"].fetch(request);
         return cloneResponse(response);
       }
-      throw error3;
+      throw error32;
     }
   }
 };
-var cloneResponse = /* @__PURE__ */ __name((response) => (
+var cloneResponse = /* @__PURE__ */ __name2((response) => (
   // https://fetch.spec.whatwg.org/#null-body-status
   new Response(
     [101, 204, 205, 304].includes(response.status) ? null : response.body,
     response
   )
 ), "cloneResponse");
-
-// ../node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts
 init_functionsRoutes_0_6656645675734922();
 init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
 init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
 init_performance2();
-var drainBody = /* @__PURE__ */ __name(async (request, env2, _ctx, middlewareCtx) => {
+var drainBody = /* @__PURE__ */ __name2(async (request, env22, _ctx, middlewareCtx) => {
   try {
-    return await middlewareCtx.next(request, env2);
+    return await middlewareCtx.next(request, env22);
   } finally {
     try {
       if (request.body !== null && !request.bodyUsed) {
@@ -10039,8 +13279,6 @@ var drainBody = /* @__PURE__ */ __name(async (request, env2, _ctx, middlewareCtx
   }
 }, "drainBody");
 var middleware_ensure_req_body_drained_default = drainBody;
-
-// ../node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts
 init_functionsRoutes_0_6656645675734922();
 init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
 init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
@@ -10054,27 +13292,24 @@ function reduceError(e) {
   };
 }
 __name(reduceError, "reduceError");
-var jsonError = /* @__PURE__ */ __name(async (request, env2, _ctx, middlewareCtx) => {
+__name2(reduceError, "reduceError");
+var jsonError = /* @__PURE__ */ __name2(async (request, env22, _ctx, middlewareCtx) => {
   try {
-    return await middlewareCtx.next(request, env2);
+    return await middlewareCtx.next(request, env22);
   } catch (e) {
-    const error3 = reduceError(e);
-    return Response.json(error3, {
+    const error32 = reduceError(e);
+    return Response.json(error32, {
       status: 500,
       headers: { "MF-Experimental-Error-Stack": "true" }
     });
   }
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
-
-// ../.wrangler/tmp/bundle-vYyQBg/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
 ];
 var middleware_insertion_facade_default = pages_template_worker_default;
-
-// ../node_modules/wrangler/templates/middleware/common.ts
 init_functionsRoutes_0_6656645675734922();
 init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_process();
 init_virtual_unenv_global_polyfill_cloudflare_unenv_preset_node_console();
@@ -10084,7 +13319,8 @@ function __facade_register__(...args) {
   __facade_middleware__.push(...args.flat());
 }
 __name(__facade_register__, "__facade_register__");
-function __facade_invokeChain__(request, env2, ctx, dispatch, middlewareChain) {
+__name2(__facade_register__, "__facade_register__");
+function __facade_invokeChain__(request, env22, ctx, dispatch, middlewareChain) {
   const [head, ...tail] = middlewareChain;
   const middlewareCtx = {
     dispatch,
@@ -10092,26 +13328,29 @@ function __facade_invokeChain__(request, env2, ctx, dispatch, middlewareChain) {
       return __facade_invokeChain__(newRequest, newEnv, ctx, dispatch, tail);
     }
   };
-  return head(request, env2, ctx, middlewareCtx);
+  return head(request, env22, ctx, middlewareCtx);
 }
 __name(__facade_invokeChain__, "__facade_invokeChain__");
-function __facade_invoke__(request, env2, ctx, dispatch, finalMiddleware) {
-  return __facade_invokeChain__(request, env2, ctx, dispatch, [
+__name2(__facade_invokeChain__, "__facade_invokeChain__");
+function __facade_invoke__(request, env22, ctx, dispatch, finalMiddleware) {
+  return __facade_invokeChain__(request, env22, ctx, dispatch, [
     ...__facade_middleware__,
     finalMiddleware
   ]);
 }
 __name(__facade_invoke__, "__facade_invoke__");
-
-// ../.wrangler/tmp/bundle-vYyQBg/middleware-loader.entry.ts
+__name2(__facade_invoke__, "__facade_invoke__");
 var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
+  static {
+    __name(this, "___Facade_ScheduledController__");
+  }
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;
     this.cron = cron;
     this.#noRetry = noRetry;
   }
   static {
-    __name(this, "__Facade_ScheduledController__");
+    __name2(this, "__Facade_ScheduledController__");
   }
   #noRetry;
   noRetry() {
@@ -10128,16 +13367,16 @@ function wrapExportedHandler(worker) {
   for (const middleware of __INTERNAL_WRANGLER_MIDDLEWARE__) {
     __facade_register__(middleware);
   }
-  const fetchDispatcher = /* @__PURE__ */ __name(function(request, env2, ctx) {
+  const fetchDispatcher = /* @__PURE__ */ __name2(function(request, env22, ctx) {
     if (worker.fetch === void 0) {
       throw new Error("Handler does not export a fetch() function.");
     }
-    return worker.fetch(request, env2, ctx);
+    return worker.fetch(request, env22, ctx);
   }, "fetchDispatcher");
   return {
     ...worker,
-    fetch(request, env2, ctx) {
-      const dispatcher = /* @__PURE__ */ __name(function(type, init) {
+    fetch(request, env22, ctx) {
+      const dispatcher = /* @__PURE__ */ __name2(function(type, init) {
         if (type === "scheduled" && worker.scheduled !== void 0) {
           const controller = new __Facade_ScheduledController__(
             Date.now(),
@@ -10145,14 +13384,15 @@ function wrapExportedHandler(worker) {
             () => {
             }
           );
-          return worker.scheduled(controller, env2, ctx);
+          return worker.scheduled(controller, env22, ctx);
         }
       }, "dispatcher");
-      return __facade_invoke__(request, env2, ctx, dispatcher, fetchDispatcher);
+      return __facade_invoke__(request, env22, ctx, dispatcher, fetchDispatcher);
     }
   };
 }
 __name(wrapExportedHandler, "wrapExportedHandler");
+__name2(wrapExportedHandler, "wrapExportedHandler");
 function wrapWorkerEntrypoint(klass) {
   if (__INTERNAL_WRANGLER_MIDDLEWARE__ === void 0 || __INTERNAL_WRANGLER_MIDDLEWARE__.length === 0) {
     return klass;
@@ -10161,15 +13401,15 @@ function wrapWorkerEntrypoint(klass) {
     __facade_register__(middleware);
   }
   return class extends klass {
-    #fetchDispatcher = /* @__PURE__ */ __name((request, env2, ctx) => {
-      this.env = env2;
+    #fetchDispatcher = /* @__PURE__ */ __name2((request, env22, ctx) => {
+      this.env = env22;
       this.ctx = ctx;
       if (super.fetch === void 0) {
         throw new Error("Entrypoint class does not define a fetch() function.");
       }
       return super.fetch(request);
     }, "#fetchDispatcher");
-    #dispatcher = /* @__PURE__ */ __name((type, init) => {
+    #dispatcher = /* @__PURE__ */ __name2((type, init) => {
       if (type === "scheduled" && super.scheduled !== void 0) {
         const controller = new __Facade_ScheduledController__(
           Date.now(),
@@ -10192,6 +13432,7 @@ function wrapWorkerEntrypoint(klass) {
   };
 }
 __name(wrapWorkerEntrypoint, "wrapWorkerEntrypoint");
+__name2(wrapWorkerEntrypoint, "wrapWorkerEntrypoint");
 var WRAPPED_ENTRY;
 if (typeof middleware_insertion_facade_default === "object") {
   WRAPPED_ENTRY = wrapExportedHandler(middleware_insertion_facade_default);
@@ -10199,13 +13440,183 @@ if (typeof middleware_insertion_facade_default === "object") {
   WRAPPED_ENTRY = wrapWorkerEntrypoint(middleware_insertion_facade_default);
 }
 var middleware_loader_entry_default = WRAPPED_ENTRY;
+
+// node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts
+var drainBody2 = /* @__PURE__ */ __name(async (request, env3, _ctx, middlewareCtx) => {
+  try {
+    return await middlewareCtx.next(request, env3);
+  } finally {
+    try {
+      if (request.body !== null && !request.bodyUsed) {
+        const reader = request.body.getReader();
+        while (!(await reader.read()).done) {
+        }
+      }
+    } catch (e) {
+      console.error("Failed to drain the unused request body.", e);
+    }
+  }
+}, "drainBody");
+var middleware_ensure_req_body_drained_default2 = drainBody2;
+
+// node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts
+function reduceError2(e) {
+  return {
+    name: e?.name,
+    message: e?.message ?? String(e),
+    stack: e?.stack,
+    cause: e?.cause === void 0 ? void 0 : reduceError2(e.cause)
+  };
+}
+__name(reduceError2, "reduceError");
+var jsonError2 = /* @__PURE__ */ __name(async (request, env3, _ctx, middlewareCtx) => {
+  try {
+    return await middlewareCtx.next(request, env3);
+  } catch (e) {
+    const error4 = reduceError2(e);
+    return Response.json(error4, {
+      status: 500,
+      headers: { "MF-Experimental-Error-Stack": "true" }
+    });
+  }
+}, "jsonError");
+var middleware_miniflare3_json_error_default2 = jsonError2;
+
+// .wrangler/tmp/bundle-NZjCKY/middleware-insertion-facade.js
+var __INTERNAL_WRANGLER_MIDDLEWARE__2 = [
+  middleware_ensure_req_body_drained_default2,
+  middleware_miniflare3_json_error_default2
+];
+var middleware_insertion_facade_default2 = middleware_loader_entry_default;
+
+// node_modules/wrangler/templates/middleware/common.ts
+var __facade_middleware__2 = [];
+function __facade_register__2(...args) {
+  __facade_middleware__2.push(...args.flat());
+}
+__name(__facade_register__2, "__facade_register__");
+function __facade_invokeChain__2(request, env3, ctx, dispatch, middlewareChain) {
+  const [head, ...tail] = middlewareChain;
+  const middlewareCtx = {
+    dispatch,
+    next(newRequest, newEnv) {
+      return __facade_invokeChain__2(newRequest, newEnv, ctx, dispatch, tail);
+    }
+  };
+  return head(request, env3, ctx, middlewareCtx);
+}
+__name(__facade_invokeChain__2, "__facade_invokeChain__");
+function __facade_invoke__2(request, env3, ctx, dispatch, finalMiddleware) {
+  return __facade_invokeChain__2(request, env3, ctx, dispatch, [
+    ...__facade_middleware__2,
+    finalMiddleware
+  ]);
+}
+__name(__facade_invoke__2, "__facade_invoke__");
+
+// .wrangler/tmp/bundle-NZjCKY/middleware-loader.entry.ts
+var __Facade_ScheduledController__2 = class ___Facade_ScheduledController__2 {
+  constructor(scheduledTime, cron, noRetry) {
+    this.scheduledTime = scheduledTime;
+    this.cron = cron;
+    this.#noRetry = noRetry;
+  }
+  static {
+    __name(this, "__Facade_ScheduledController__");
+  }
+  #noRetry;
+  noRetry() {
+    if (!(this instanceof ___Facade_ScheduledController__2)) {
+      throw new TypeError("Illegal invocation");
+    }
+    this.#noRetry();
+  }
+};
+function wrapExportedHandler2(worker) {
+  if (__INTERNAL_WRANGLER_MIDDLEWARE__2 === void 0 || __INTERNAL_WRANGLER_MIDDLEWARE__2.length === 0) {
+    return worker;
+  }
+  for (const middleware of __INTERNAL_WRANGLER_MIDDLEWARE__2) {
+    __facade_register__2(middleware);
+  }
+  const fetchDispatcher = /* @__PURE__ */ __name(function(request, env3, ctx) {
+    if (worker.fetch === void 0) {
+      throw new Error("Handler does not export a fetch() function.");
+    }
+    return worker.fetch(request, env3, ctx);
+  }, "fetchDispatcher");
+  return {
+    ...worker,
+    fetch(request, env3, ctx) {
+      const dispatcher = /* @__PURE__ */ __name(function(type, init) {
+        if (type === "scheduled" && worker.scheduled !== void 0) {
+          const controller = new __Facade_ScheduledController__2(
+            Date.now(),
+            init.cron ?? "",
+            () => {
+            }
+          );
+          return worker.scheduled(controller, env3, ctx);
+        }
+      }, "dispatcher");
+      return __facade_invoke__2(request, env3, ctx, dispatcher, fetchDispatcher);
+    }
+  };
+}
+__name(wrapExportedHandler2, "wrapExportedHandler");
+function wrapWorkerEntrypoint2(klass) {
+  if (__INTERNAL_WRANGLER_MIDDLEWARE__2 === void 0 || __INTERNAL_WRANGLER_MIDDLEWARE__2.length === 0) {
+    return klass;
+  }
+  for (const middleware of __INTERNAL_WRANGLER_MIDDLEWARE__2) {
+    __facade_register__2(middleware);
+  }
+  return class extends klass {
+    #fetchDispatcher = /* @__PURE__ */ __name((request, env3, ctx) => {
+      this.env = env3;
+      this.ctx = ctx;
+      if (super.fetch === void 0) {
+        throw new Error("Entrypoint class does not define a fetch() function.");
+      }
+      return super.fetch(request);
+    }, "#fetchDispatcher");
+    #dispatcher = /* @__PURE__ */ __name((type, init) => {
+      if (type === "scheduled" && super.scheduled !== void 0) {
+        const controller = new __Facade_ScheduledController__2(
+          Date.now(),
+          init.cron ?? "",
+          () => {
+          }
+        );
+        return super.scheduled(controller);
+      }
+    }, "#dispatcher");
+    fetch(request) {
+      return __facade_invoke__2(
+        request,
+        this.env,
+        this.ctx,
+        this.#dispatcher,
+        this.#fetchDispatcher
+      );
+    }
+  };
+}
+__name(wrapWorkerEntrypoint2, "wrapWorkerEntrypoint");
+var WRAPPED_ENTRY2;
+if (typeof middleware_insertion_facade_default2 === "object") {
+  WRAPPED_ENTRY2 = wrapExportedHandler2(middleware_insertion_facade_default2);
+} else if (typeof middleware_insertion_facade_default2 === "function") {
+  WRAPPED_ENTRY2 = wrapWorkerEntrypoint2(middleware_insertion_facade_default2);
+}
+var middleware_loader_entry_default2 = WRAPPED_ENTRY2;
 export {
-  __INTERNAL_WRANGLER_MIDDLEWARE__,
-  middleware_loader_entry_default as default
+  __INTERNAL_WRANGLER_MIDDLEWARE__2 as __INTERNAL_WRANGLER_MIDDLEWARE__,
+  middleware_loader_entry_default2 as default
 };
 /*! Bundled license information:
 
 safe-buffer/index.js:
   (*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> *)
 */
-//# sourceMappingURL=functionsWorker-0.7592947546883193.mjs.map
+//# sourceMappingURL=functionsWorker-0.7592947546883193.js.map
