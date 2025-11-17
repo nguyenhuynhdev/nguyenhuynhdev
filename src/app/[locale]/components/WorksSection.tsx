@@ -52,11 +52,26 @@ export default function WorksSection({ t, locale }: { t: any; locale?: string })
 
   // Get post slug from URL query parameter
   useEffect(() => {
-    const checkUrlParams = () => {
+    const checkUrlParams = async () => {
       if (typeof window !== 'undefined') {
         const urlParams = new URLSearchParams(window.location.search);
         const slug = urlParams.get('post');
-        setPostSlug(slug);
+        const tempPrivacy = urlParams.get('temp-privacy');
+        
+        // If temp-privacy is set, we need to find the work by ID and open it
+        if (tempPrivacy && !slug) {
+          try {
+            // Fetch work by ID to get its slug, then open it
+            const response = await apiClient.get<{ success: boolean; data: any }>(`/works/${tempPrivacy}`);
+            if (response.success && response.data) {
+              setPostSlug(response.data.slug);
+            }
+          } catch (err) {
+            console.error('Failed to load work for privacy policy:', err);
+          }
+        } else if (slug) {
+          setPostSlug(slug);
+        }
       }
     };
     

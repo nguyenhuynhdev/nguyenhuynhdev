@@ -177,6 +177,7 @@ CREATE TABLE IF NOT EXISTS works (
   featured INTEGER DEFAULT 0,
   view_count INTEGER DEFAULT 0,
   likes_count INTEGER DEFAULT 0,
+  privacy_policy TEXT DEFAULT NULL, -- Privacy policy content
   created_at TEXT DEFAULT (datetime('now')),
   updated_at TEXT DEFAULT (datetime('now')),
   published_at TEXT,

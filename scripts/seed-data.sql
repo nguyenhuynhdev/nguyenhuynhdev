@@ -1,3 +1,6 @@
+-- UPDATE users 
+-- SET password_hash = '$2b$10$QKO4M0Mf1xk4Dv37vgwxp.VtOTWAOyt8bPZKBkcuDmu6TWuUfBKA2'
+-- WHERE email = 'admin@example.com';
 -- Seed Data Script for Database
 -- Run this after schema.sql to populate initial data
 
@@ -381,3 +384,32 @@ INSERT OR IGNORE INTO media (filename, original_filename, file_type, file_size, 
   ('nodejs-cover.jpg', 'nodejs-cover.jpg', 'image/jpeg', 112640, 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800', 1, 'Node.js API Cover Image');
 
 
+UPDATE works
+SET privacy_policy = '
+<h1>Privacy Policy</h1>
+<p>Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when you use this work or application.</p>
+
+<h2>Information We Collect</h2>
+<ul>
+  <li>User-provided information (e.g., name, contact)</li>
+  <li>Technical data (e.g., browser, device type)</li>
+  <li>Usage statistics via Cloudflare Analytics</li>
+</ul>
+
+<h2>How We Use Information</h2>
+<ul>
+  <li>To improve user experience</li>
+  <li>To monitor performance and fix issues</li>
+  <li>To ensure service security</li>
+</ul>
+
+<h2>Data Protection</h2>
+<p>All data is securely stored in Cloudflare D1 and protected using access control and encryption.</p>
+
+<h2>Third-Party Services</h2>
+<p>We use Cloudflare for CDN, D1 for storage, and optional analytics tracking.</p>
+
+<h2>Contact</h2>
+<p>If you have any questions about this policy, contact us at privacy@example.com.</p>
+'
+WHERE privacy_policy IS NULL;

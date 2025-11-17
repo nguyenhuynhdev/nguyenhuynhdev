@@ -40,6 +40,7 @@ export default function EditWorkPageClient() {
     tags: [] as number[],
     status: 'draft',
     featured: false,
+    privacy_policy: '',
   });
 
   const [tags, setTags] = useState<any[]>([]);
@@ -67,6 +68,7 @@ export default function EditWorkPageClient() {
         tags: (work.tags || []).map((t: any) => t.id),
         status: work.status || 'draft',
         featured: work.featured === 1,
+        privacy_policy: work.privacy_policy || '',
       });
       setTimelineItems(timelineRes.data || []);
       setLoading(false);
@@ -85,6 +87,7 @@ export default function EditWorkPageClient() {
       await apiClient.put(`/works/${workId}`, {
         ...formData,
         cover_image_id: formData.cover_image_id ? parseInt(formData.cover_image_id) : null,
+        privacy_policy: formData.privacy_policy?.trim() || null,
       });
 
       // Save timeline items
@@ -195,6 +198,17 @@ export default function EditWorkPageClient() {
                     onChange={(content) => setFormData({ ...formData, full_content: content })}
                     placeholder="Start writing about your work..."
                   />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="privacy_policy">Privacy Policy</Label>
+                  <RichTextEditor
+                    content={formData.privacy_policy}
+                    onChange={(content) => setFormData({ ...formData, privacy_policy: content })}
+                    placeholder="Enter privacy policy content for this work (optional)..."
+                  />
+                  <p className="text-sm text-muted-foreground">
+                    This privacy policy will be displayed in a dialog when users click the Privacy Policy button.
+                  </p>
                 </div>
               </CardContent>
             </Card>

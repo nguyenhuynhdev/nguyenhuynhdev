@@ -9,7 +9,7 @@
     "start": "next start",
     "deploy": "npm run build && npx wrangler pages deploy out",
     "db:create": "wrangler d1 create database",
-    "db:update": "wrangler d1 execute database --local --file=./schema.sql",
+    "db:update": "wrangler d1 execute database --local --file=./update.sql",
     "db:seed": "wrangler d1 execute database --local --file=./scripts/seed-data.sql",
     "db:deploy": "wrangler d1 execute database --file=./schema.sql --remote",
     "db:deploy:seed": "wrangler d1 execute database --file=./scripts/seed-data.sql --remote"

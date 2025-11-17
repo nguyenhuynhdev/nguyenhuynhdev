@@ -38,6 +38,14 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { FaShieldAlt, FaPrint as FaPrintIcon } from 'react-icons/fa';
 
 interface Work {
   id: number;
@@ -92,6 +100,9 @@ export default function WorkArticleView({ slug, locale, onClose }: ArticleViewPr
   const [submittingComment, setSubmittingComment] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [shareSheetOpen, setShareSheetOpen] = useState(false);
+  const [privacyDialogOpen, setPrivacyDialogOpen] = useState(false);
+  const [privacyPolicy, setPrivacyPolicy] = useState<string | null>(null);
+  const [loadingPrivacy, setLoadingPrivacy] = useState(false);
 
   // Load bookmark state from localStorage
   useEffect(() => {
@@ -100,6 +111,51 @@ export default function WorkArticleView({ slug, locale, onClose }: ArticleViewPr
       setIsBookmarked(bookmarks.includes(work.id));
     }
   }, [work]);
+
+  // Fetch privacy policy
+  const fetchPrivacyPolicy = async () => {
+    if (!work) return;
+    
+    try {
+      setLoadingPrivacy(true);
+      const response = await apiClient.get<{
+        success: boolean;
+        data: { id: number; title: string; privacy_policy: string };
+      }>(`/works/${work.id}/privacy`);
+      
+      if (response.success && response.data) {
+        setPrivacyPolicy(response.data.privacy_policy);
+      }
+    } catch (err: any) {
+      console.error('Failed to load privacy policy:', err);
+      toast.error('Failed to load privacy policy');
+    } finally {
+      setLoadingPrivacy(false);
+    }
+  };
+
+  const handleOpenPrivacyDialog = () => {
+    setPrivacyDialogOpen(true);
+    if (!privacyPolicy) {
+      fetchPrivacyPolicy();
+    }
+  };
+
+  // Check for temp-privacy query parameter - only once when work is loaded
+  useEffect(() => {
+    if (typeof window !== 'undefined' && work?.id) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tempPrivacy = urlParams.get('temp-privacy');
+      if (tempPrivacy && parseInt(tempPrivacy) === work.id) {
+        // Small delay to ensure dialog state is ready
+        setTimeout(() => {
+          setPrivacyDialogOpen(true);
+          fetchPrivacyPolicy();
+        }, 100);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [work?.id]);
 
   // Fetch work detail
   useEffect(() => {
@@ -560,6 +616,23 @@ export default function WorkArticleView({ slug, locale, onClose }: ArticleViewPr
               </Card>
             )}
 
+            {/* Privacy Policy Button */}
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle>Privacy & Terms</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Button
+                  variant="outline"
+                  onClick={handleOpenPrivacyDialog}
+                  className="flex items-center gap-2"
+                >
+                  <FaShieldAlt className="h-4 w-4" />
+                  Privacy Policy
+                </Button>
+              </CardContent>
+            </Card>
+
             {/* Share Buttons */}
             <Card className="mb-8">
               <CardHeader>
@@ -944,6 +1017,76 @@ export default function WorkArticleView({ slug, locale, onClose }: ArticleViewPr
           </div>
         </SheetContent>
       </Sheet>
+
+      {/* Privacy Policy Dialog */}
+      <Dialog open={privacyDialogOpen} onOpenChange={setPrivacyDialogOpen}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FaShieldAlt className="h-5 w-5" />
+              Privacy Policy – {work?.title || 'Work'}
+            </DialogTitle>
+            <DialogDescription>
+              Temporary Privacy Policy for this work
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-4">
+            {loadingPrivacy ? (
+              <div className="flex items-center justify-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              </div>
+            ) : privacyPolicy ? (
+              <div 
+                className="prose prose-sm dark:prose-invert max-w-none"
+                dangerouslySetInnerHTML={{ __html: privacyPolicy }}
+              />
+            ) : (
+              <div className="prose prose-sm dark:prose-invert max-w-none">
+                <p>Loading privacy policy...</p>
+              </div>
+            )}
+          </div>
+          <div className="flex justify-end gap-2 mt-6 pt-4 border-t">
+            <Button
+              variant="outline"
+              onClick={() => {
+                const printWindow = window.open('', '_blank');
+                if (printWindow && privacyPolicy && work) {
+                  printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                      <head>
+                        <title>Privacy Policy - ${work.title}</title>
+                        <style>
+                          body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+                          h1 { color: #333; }
+                          @media print { body { padding: 0; } }
+                        </style>
+                      </head>
+                      <body>
+                        <h1>Privacy Policy – ${work.title}</h1>
+                        ${privacyPolicy}
+                      </body>
+                    </html>
+                  `);
+                  printWindow.document.close();
+                  printWindow.focus();
+                  setTimeout(() => {
+                    printWindow.print();
+                    printWindow.onafterprint = () => printWindow.close();
+                  }, 250);
+                }
+              }}
+            >
+              <FaPrintIcon className="h-4 w-4 mr-2" />
+              Print
+            </Button>
+            <Button onClick={() => setPrivacyDialogOpen(false)}>
+              Close
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

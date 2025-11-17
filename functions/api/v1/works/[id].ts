@@ -144,6 +144,7 @@ export async function onRequestPut({ env, request, params }: any) {
       published_at,
       featured,
       author_id,
+      privacy_policy,
     } = body;
 
     // Only admin can change author
@@ -191,6 +192,10 @@ export async function onRequestPut({ env, request, params }: any) {
     if (author_id !== undefined && checkRole(user, ['admin'])) {
       updateFields.push('author_id = ?');
       bindings.push(author_id);
+    }
+    if (privacy_policy !== undefined) {
+      updateFields.push('privacy_policy = ?');
+      bindings.push(privacy_policy);
     }
     updateFields.push('updated_at = ?');
     bindings.push(new Date().toISOString());

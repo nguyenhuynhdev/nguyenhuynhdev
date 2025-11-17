@@ -186,6 +186,7 @@ export async function onRequestPost({ env, request }: any) {
       published_at,
       featured,
       author_id,
+      privacy_policy,
     } = body;
 
     if (!title || !slug || !full_content) {
@@ -202,8 +203,8 @@ export async function onRequestPost({ env, request }: any) {
 
     const insertResult = await env.DB.prepare(
       `INSERT INTO works (
-        title, slug, summary, full_content, cover_image_id, status, published_at, author_id, featured
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        title, slug, summary, full_content, cover_image_id, status, published_at, author_id, featured, privacy_policy
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
       .bind(
         title,
@@ -214,7 +215,8 @@ export async function onRequestPost({ env, request }: any) {
         finalStatus,
         finalPublishedAt,
         finalAuthorId,
-        featured ? 1 : 0
+        featured ? 1 : 0,
+        privacy_policy || null
       )
       .run();
 
